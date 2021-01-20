@@ -120,8 +120,3 @@ class Porta{
         this.animations[this.item][this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, PARAMS.SCALE);
     }
 }
-class Portal{
-    constructor(game, x, y){
-
-    }
-}
