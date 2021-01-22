@@ -38,6 +38,7 @@ class GameEngine {
     };
 
     startInput() {
+
         var that = this;
 
         var getXandY = function (e) {
@@ -48,23 +49,25 @@ class GameEngine {
         }
 
         this.ctx.canvas.addEventListener("keydown", function (e) {
-
             switch (e.code) {
-                //case "ArrowLeft":
+                case "ArrowLeft":
                 case "KeyA":
                     that.left = true;
                     break;
-                //case "ArrowRight":
+                case "ArrowRight":
                 case "KeyD":
                     that.right = true;
                     break;
-                //case "ArrowUp":
+                case "ArrowUp":
                 case "KeyW":
                     that.up = true;
                     break;
-                //case "ArrowDown":
+                case "ArrowDown":
                 case "KeyS":
                     that.down = true;
+                    break;
+                case "Period":
+                    that.A = true;
                     break;
                 case "KeyE":
                     that.E = true;
@@ -105,26 +108,24 @@ class GameEngine {
         }, false);
 
         this.ctx.canvas.addEventListener("mousemove", function (e) {
-            //console.log(getXandY(e));
             that.mouse = getXandY(e);
         }, false);
 
-        this.ctx.canvas.addEventListener("mousedown", function (e) {
+        this.ctx.canvas.addEventListener("click", function (e) {
             console.log(getXandY(e));
             that.leftclick = getXandY(e);
-        }, false);
-
-        this.ctx.canvas.addEventListener("mouseup", function (e) {
-            console.log(getXandY(e));
-            that.leftclick = getXandY(e);
-            that.leftclick = false;
         }, false);
 
         this.ctx.canvas.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
             console.log(getXandY(e));
             that.rightclick = getXandY(e);
-            e.preventDefault();
         }, false);
+
+        // this.ctx.canvas.addEventListener("mouseup", function (e) {
+        //     that.rightclick = false;
+        //     that.leftclick = false;
+        // }, false);
 
         // this.ctx.canvas.addEventListener("wheel", function (e) {
         //     //console.log(getXandY(e));
@@ -143,6 +144,7 @@ class GameEngine {
         for (var i = 0; i < this.entities.length; i++) {
             this.entities[i].draw(this.ctx);
         }
+        this.camera.draw(this.ctx);
     };
 
     update() {
@@ -155,12 +157,14 @@ class GameEngine {
                 entity.update();
             }
         }
+        this.camera.update();
 
         for (var i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {
                 this.entities.splice(i, 1);
             }
         }
+
     };
 
     loop() {
