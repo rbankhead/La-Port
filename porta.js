@@ -83,14 +83,13 @@ class Porta{
                 if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
 
                 //normally we would first make a projectile here && if that projectile collides with an eligible surface, the projectile would create the portal
-                let purple = new PurplePortal(this.game,this.game.leftclick.x, this.game.leftclick.y);
-                this.game.addEntity(purple);
+                this.game.addEntity(new Portal(this.game,this.game.leftclick.x, this.game.leftclick.y, "purple"));
                 this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
 
             } else if (this.game.rightclick && !this.game.leftclick){
                 if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
 
-                this.game.addEntity(new GreenPortal(this.game,this.game.rightclick.x, this.game.rightclick.y));
+                this.game.addEntity(new Portal(this.game,this.game.rightclick.x, this.game.rightclick.y, "green"));
                 this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
 
                 //right click portal
