@@ -79,17 +79,20 @@ class Porta{
 
         //if we are wielding the gun. Q: are we ever not? maybe if holding companion cube? unsure
         if (this.item === "portal gun") {
-            if (this.game.leftclick && !this.game.rightclick){
+            if(this.game.leftclick && this.game.rightclick){
+                this.game.rightclick = false;
+                this.game.leftclick = false;
+            } else if (this.game.leftclick){
                 if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
 
-                //normally we would first make a projectile here && if that projectile collides with an eligible surface, the projectile would create the portal
-                this.game.addEntity(new Portal(this.game,this.game.leftclick.x, this.game.leftclick.y, "purple"));
+                this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.leftclick.x+this.game.camera.x, this.game.leftclick.y, "purple"));
+                //this.game.addEntity(new Portal(this.game,this.game.leftclick.x, this.game.leftclick.y, "purple"));
                 this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
 
-            } else if (this.game.rightclick && !this.game.leftclick){
+            } else if (this.game.rightclick){
                 if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
-
-                this.game.addEntity(new Portal(this.game,this.game.rightclick.x, this.game.rightclick.y, "green"));
+                this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.rightclick.x, this.game.rightclick.y, "green"));
+                //this.game.addEntity(new Portal(this.game,this.game.rightclick.x, this.game.rightclick.y, "green"));
                 this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
 
                 //right click portal
