@@ -83,7 +83,7 @@ class Porta{
 
             else if (this.game.rightclick){
                 if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
-                this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.rightclick.x, this.game.rightclick.y, "green"));
+                this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.rightclick.x+this.game.camera.x, this.game.rightclick.y, "green"));
                 this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
             }
         } else {
