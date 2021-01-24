@@ -4,9 +4,11 @@ class Projectile {
         this.game.projectile = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/orb_anim_strip_6.png"); //add sprite
         this.animation = new Animator(this.spritesheet,0,0,8,8,6,.1,0,false,true); //135x 120y
+
         this.deltax = (xDestination-x);
         this.deltay= (yDestination-y);
         this.slope = this.deltay/this.deltax;
+
         this.BB = new BoundingBox(this.x+2,this.y+2,8,8);
     };
 
@@ -28,7 +30,6 @@ class Projectile {
         this.animation.drawFrame(this.game.clockTick,ctx,this.x- this.game.camera.x,this.y,PARAMS.SCALE);
         if (PARAMS.DEBUG){
             ctx.strokeStyle = 'Red';
-            //ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
     };

@@ -28,30 +28,20 @@ class Porta{
         this.animations["portal gun"]["left"] = [];
 
         //initializing the animation objects for each state
-        //37, 62
+
         //idle states
-        //this.animations["none"]["right"]["idle"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["none"]["left"]["idle"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
         this.animations["portal gun"]["right"]["idle"] = new Animator(this.spritesheet, 8, 8, 14, 25, 4, .2, 18, false,true);
         this.animations["portal gun"]["left"]["idle"] = new Animator(this.spritesheet, 8, 8, 14, 25, 4, .2, 18, false,true);
 
-
         //walking states
-        //this.animations["none"]["right"]["walking"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["none"]["left"]["walking"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
         this.animations["portal gun"]["right"]["walking"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .2, 18,false, true);
         this.animations["portal gun"]["left"]["walking"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .2, 18, false,true);
 
-
         //running states
-        //this.animations["none"]["right"]["running"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["none"]["left"]["running"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["portal gun"]["right"]["running"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["portal gun"]["left"]["running"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
+        this.animations["portal gun"]["right"]["running"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .1, 18,false, true);
+        this.animations["portal gun"]["left"]["running"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .1, 18, false,true);
 
         //jumping states
-        //this.animations["none"]["right"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["none"]["left"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
         //this.animations["portal gun"]["right"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
         //this.animations["portal gun"]["left"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
 
@@ -72,7 +62,7 @@ class Porta{
 
         //all const values are placeholders until we can test it
         const WALK_SPEED = 3;
-        const RUN_SPEED = 6;
+        const RUN_SPEED = 4;
         const MIN_FALL = 4;
         const MAX_FALL = 10;
         const ACC_FALLING = 1.25; //each 'tick' will make Porta's velocity.y *= ACC_FALLING until MAX_FALL is reached
@@ -82,26 +72,19 @@ class Porta{
             if(this.game.leftclick && this.game.rightclick){
                 this.game.rightclick = false;
                 this.game.leftclick = false;
-            } else if (this.game.leftclick){
-                if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
+            }
 
+            else if (this.game.leftclick){
+                if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
                 this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.leftclick.x+this.game.camera.x, this.game.leftclick.y, "purple"));
-                //this.game.addEntity(new Portal(this.game,this.game.leftclick.x, this.game.leftclick.y, "purple"));
                 this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
 
-            } else if (this.game.rightclick){
+            }
+
+            else if (this.game.rightclick){
                 if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
                 this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.rightclick.x, this.game.rightclick.y, "green"));
-                //this.game.addEntity(new Portal(this.game,this.game.rightclick.x, this.game.rightclick.y, "green"));
                 this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
-
-                //right click portal
-                //get x and y for click and for player
-                //calculate a straight line from player(or gun) position to the x and y from the click
-                //create new projectile object to travel along this straight line (with appropriate xy velocities)
-                //(the projectile should own this collision) when the projectile collides with anything, check if thing is portal eligible
-                //if yes, create new Portals
-                //if no, projectile dies
             }
         } else {
             if (this.item !== "none") {
@@ -120,7 +103,7 @@ class Porta{
             this.facing = "right";
             this.state = this.game.shift ? "running" : "walking";
             this.velocity.x = this.game.shift ? RUN_SPEED : WALK_SPEED;
-            if (this.x<PARAMS.CANVAS_WIDTH-25) this.x += this.velocity.x;
+            this.x += this.velocity.x;
         } else if (this.game.left) {
             this.facing = "left";
             this.state = this.game.shift ? "running" : "walking";
