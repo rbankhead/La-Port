@@ -10,6 +10,8 @@ ASSET_MANAGER.queueDownload("./sprites/tileset.png");
 ASSET_MANAGER.queueDownload("./sprites/checkpoint.png");
 ASSET_MANAGER.queueDownload("./sprites/info.png");
 ASSET_MANAGER.queueDownload("./sprites/coin.png");
+ASSET_MANAGER.queueDownload("./sprites/compCube.png");
+ASSET_MANAGER.queueDownload("./sprites/turret.png");
 
 ASSET_MANAGER.downloadAll(function () {
 	var canvas = document.getElementById('gameWorld');

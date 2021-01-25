@@ -2,7 +2,7 @@ class CompCube {
     constructor(game, x, y){
         Object.assign(this, {game, x, y});
         this.game.companionCube = this;
-        this.spritesheet = ASSET_MANAGER.getAsset("ADD SPRITE"); //add sprite
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/compCube.png"); //add sprite
     };
 
     update() {
@@ -10,7 +10,7 @@ class CompCube {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, 0, 0);
+        ctx.drawImage(this.spritesheet, this.x, this.y);
 
     };
 };
