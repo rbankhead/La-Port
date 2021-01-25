@@ -5,7 +5,7 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/greenportal.png");
 ASSET_MANAGER.queueDownload("./sprites/purpleportal.png");
 ASSET_MANAGER.queueDownload("./sprites/placeholder.png");
-ASSET_MANAGER.queueDownload("./sprites/orb_anim_strip_6.png");
+ASSET_MANAGER.queueDownload("./sprites/projectiles.png");
 ASSET_MANAGER.queueDownload("./sprites/tileset.png");
 ASSET_MANAGER.queueDownload("./sprites/checkpoint.png");
 ASSET_MANAGER.queueDownload("./sprites/info.png");

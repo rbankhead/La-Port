@@ -12,7 +12,6 @@ class Turret {
     };
 
     draw(ctx) {
-        //ctx.drawImage(this.spritesheet, 0, 0);
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 2);
 
     };
