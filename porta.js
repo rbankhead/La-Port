@@ -3,7 +3,7 @@ class Porta{
         Object.assign(this, {game, x, y});
         this.game.porta = this;
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/placeholder.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/porta.png");
 
         this.velocity = {x:0,y:0};
         this.item = "portal gun"; //none, portal gun
