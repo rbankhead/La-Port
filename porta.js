@@ -111,6 +111,8 @@ class Porta{
             if (this.x>0) this.x -= this.velocity.x;
 
         }
+
+        this.updateBB();
         //TODO jumping
         //TODO falling
         //TODO portal interactions
@@ -119,6 +121,39 @@ class Porta{
         var that = this;
         this.game.entities.forEach(function(entity){
             if(entity.BB && that.BB.collide(entity.BB)){
+                if (entity instanceof Portal && entity.linkedPortal){
+                    switch (entity.linkedPortal.orientation){
+                        case("top"):
+                            that.x = entity.linkedPortal.x;
+                            that.y = entity.linkedPortal.y-32;
+                            break;
+                        case("bottom"):
+                            that.x = entity.linkedPortal.x;
+                            that.y = entity.linkedPortal.y+32;
+                            break;
+                        case("left"):
+                            that.x = entity.linkedPortal.x-22;
+                            that.y = entity.linkedPortal.y;
+                            break;
+                        case("right"):
+                            that.x = entity.linkedPortal.x+22;
+                            that.y = entity.linkedPortal.y;
+                            break;
+
+                    }
+
+
+                }
+                if (that.velocity.y > 0){ //falling
+                    if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
+                        that.y = entity.BB.top - 32;
+                        that.velocity.y = 0;
+                    }
+
+                }
+                if (that.velocity.y < 0){ //jumping
+
+                }
                 //if we got here we have a collision
                 //different types of collisions:
                 //porta lands on the ground
@@ -129,7 +164,6 @@ class Porta{
 
             }
         });
-        this.updateBB();
     }
 
     draw(ctx){

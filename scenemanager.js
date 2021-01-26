@@ -37,6 +37,18 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH));
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
+        //right wall bricks
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 12 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 15 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 18 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 21 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
 
         this.game.addEntity(this.porta);
 

@@ -15,9 +15,15 @@ class Projectile {
         this.deltax = (xDestination-x);
         this.deltay= (yDestination-y);
         this.slope = this.deltay/this.deltax;
+        this.updateBB();
 
         this.BB = new BoundingBox(this.x,this.y,32,16);
     };
+
+    updateBB(){
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x,this.y,32,16)
+    }
 
     update() {
         const PROJECTILE_SPEED = 15;
@@ -29,8 +35,22 @@ class Projectile {
             this.x -= PROJECTILE_SPEED*Math.cos(degree);
             this.y -= PROJECTILE_SPEED*Math.sin(degree);
         }
-        this.BB.x = this.x;
-        this.BB.y = this.y;
+
+        var that = this;
+        this.game.entities.forEach(function(entity){
+            if(entity.BB && that.BB.collide(entity.BB)){
+                if((entity instanceof Brick) && (that.lastBB.bottom <= entity.BB.top || that.lastBB.bottom >= entity.BB.bottom )){ //landing
+                    that.game.addEntity(new Portal(that.game,that.BB.x,that.BB.y,that.color, "top"));
+                    that.removeFromWorld = true;
+                }
+                else if (entity instanceof Brick){
+                    that.game.addEntity(new Portal(that.game,that.BB.x,that.BB.y,that.color,"right"));
+                    that.removeFromWorld = true;
+                }
+
+            }
+        });
+        this.updateBB()
     };
 
     draw(ctx) {
