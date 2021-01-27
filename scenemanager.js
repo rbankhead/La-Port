@@ -5,7 +5,6 @@ class SceneManager {
         this.x = 0;
         this.y = 0;
 
-        //new Porta(gameEngine,0,712)
         this.porta = new Porta(this.game, 0 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH);
 
         this.loadLevelOne();
@@ -14,7 +13,6 @@ class SceneManager {
     loadLevelOne() {
         this.game.entities = [];
         //ceiling bricks
-        //floor bricks
         this.game.addEntity(new Brick(this.game,0*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,false,false,false, true));
         this.game.addEntity(new Brick(this.game,3*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,false,false,false, true));
         this.game.addEntity(new Brick(this.game,6*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,false,false,false, true));
@@ -63,13 +61,14 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,true));
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true));
 
-        this.game.addEntity(this.porta);
 
         this.game.addEntity(new Checkpoint(this.game, 100, 100));
         this.game.addEntity(new Coin(this.game, 150, 100));
         this.game.addEntity(new InfoSign(this.game, 60, 130));
-        this.game.addEntity(new CompCube(this.game, 60, 175));
+        this.game.addEntity(new CompanionCube(this.game, 60, 175));
         this.game.addEntity(new Turret(this.game, 100, 175));
+
+        this.game.addEntity(this.porta);
     };
 
     update() {
@@ -97,14 +96,6 @@ class SceneManager {
             ctx.fillStyle = ctx.strokeStyle;
             ctx.strokeRect(6 * PARAMS.BLOCKWIDTH - 2, 2.5 * PARAMS.BLOCKWIDTH - 2, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
             ctx.fillText("L", 6 * PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH);
-            // ctx.strokeStyle = this.game.down ? "White" : "Grey";
-            // ctx.fillStyle = ctx.strokeStyle;
-            // ctx.strokeRect(6.5 * PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
-            // ctx.fillText("D", 6.5 * PARAMS.BLOCKWIDTH + 2, 3.5 * PARAMS.BLOCKWIDTH + 2);
-            // ctx.strokeStyle = this.game.up ? "White" : "Grey";
-            // ctx.fillStyle = ctx.strokeStyle;
-            // ctx.strokeRect(6.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH - 4, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
-            // ctx.fillText("U", 6.5 * PARAMS.BLOCKWIDTH + 2, 2.5 * PARAMS.BLOCKWIDTH - 2);
             ctx.strokeStyle = this.game.right ? "White" : "Grey";
             ctx.fillStyle = ctx.strokeStyle;
             ctx.strokeRect(7 * PARAMS.BLOCKWIDTH + 2, 2.5 * PARAMS.BLOCKWIDTH - 2, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
@@ -118,20 +109,20 @@ class SceneManager {
     };
 };
 
-class Minimap {
-    constructor(game, x, y, w) {
-        Object.assign(this, { game, x, y, w });
-    };
-
-    update() {
-
-    };
-
-    draw(ctx) {
-        ctx.strokeStyle = "Black";
-        ctx.strokeRect(this.x, this.y, this.w, PARAMS.BLOCKWIDTH);
-        for (var i = 0; i < this.game.entities.length; i++) {
-            this.game.entities[i].drawMinimap(ctx, this.x, this.y);
-        }
-    };
-};
+// class Minimap {
+//     constructor(game, x, y, w) {
+//         Object.assign(this, { game, x, y, w });
+//     };
+//
+//     update() {
+//
+//     };
+//
+//     draw(ctx) {
+//         ctx.strokeStyle = "Black";
+//         ctx.strokeRect(this.x, this.y, this.w, PARAMS.BLOCKWIDTH);
+//         for (var i = 0; i < this.game.entities.length; i++) {
+//             this.game.entities[i].drawMinimap(ctx, this.x, this.y);
+//         }
+//     };
+// };
