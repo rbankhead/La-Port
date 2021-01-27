@@ -14,41 +14,41 @@ class SceneManager {
     loadLevelOne() {
         this.game.entities = [];
         //floor bricks
-        this.game.addEntity(new Brick(this.game,0*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,3*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,6*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,9*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,12*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,15*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,18*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,21*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,24*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,27*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,30*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,0*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,3*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,6*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,9*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,12*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,15*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,18*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,21*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,24*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,27*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
+        this.game.addEntity(new Brick(this.game,30*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,false,true));
         //left wall bricks
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 12 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 15 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 18 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 21 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 12 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 15 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 18 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 21 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,true));
         //right wall bricks
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 12 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 15 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 18 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 21 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 12 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 15 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 18 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 21 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true));
 
         this.game.addEntity(this.porta);
 

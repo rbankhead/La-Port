@@ -141,6 +141,7 @@ class Porta{
                             break;
 
                     }
+                    that.updateBB();
 
 
                 }

@@ -1,6 +1,7 @@
 class Projectile {
     constructor(game, x, y, xDestination,yDestination, color){
         Object.assign(this, {game, x, y, xDestination,yDestination, color});
+        this.updateBB();
         this.game.projectile = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles.png"); //add sprite
         if(this.color === "green"){
@@ -15,9 +16,8 @@ class Projectile {
         this.deltax = (xDestination-x);
         this.deltay= (yDestination-y);
         this.slope = this.deltay/this.deltax;
-        this.updateBB();
 
-        this.BB = new BoundingBox(this.x,this.y,32,16);
+
     };
 
     updateBB(){
@@ -36,15 +36,23 @@ class Projectile {
             this.y -= PROJECTILE_SPEED*Math.sin(degree);
         }
 
-        var that = this;
+        let that = this;
         this.game.entities.forEach(function(entity){
             if(entity.BB && that.BB.collide(entity.BB)){
-                if((entity instanceof Brick) && (that.lastBB.bottom <= entity.BB.top || that.lastBB.bottom >= entity.BB.bottom )){ //landing
-                    that.game.addEntity(new Portal(that.game,that.BB.x,that.BB.y,that.color, "top"));
+                if((that.lastBB && entity instanceof Brick) && (that.lastBB.bottom <= entity.BB.top) && entity.top){ //landing
+                    that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color, "top"));
                     that.removeFromWorld = true;
                 }
-                else if (entity instanceof Brick){
-                    that.game.addEntity(new Portal(that.game,that.BB.x,that.BB.y,that.color,"right"));
+                else if (that.lastBB && entity instanceof Brick && (that.lastBB.top >= entity.BB.bottom && entity.bottom)){
+                    that.game.addEntity(new Portal(that.game,entity.BB.right,that.BB.y,that.color,"bottom"));
+                    that.removeFromWorld = true;
+                }
+                else if (that.lastBB && entity instanceof Brick && (that.lastBB.left >= entity.BB.right && entity.right)){
+                    that.game.addEntity(new Portal(that.game,entity.BB.right-18,that.BB.y,that.color,"right")); //MAGIC NUMBER
+                    that.removeFromWorld = true;
+                }
+                else if (that.lastBB && entity instanceof Brick && (that.lastBB.right <= entity.BB.left && entity.left)){
+                    that.game.addEntity(new Portal(that.game,entity.BB.left-20,that.BB.y,that.color,"left")); //MAGIC NUMBER
                     that.removeFromWorld = true;
                 }
 
