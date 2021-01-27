@@ -17,8 +17,6 @@ class GameEngine {
         this.shift = false
         this.space = false
         this.E = false;
-        this.leftClick = false;
-        this.rightClick = false;
     };
 
     init(ctx) {

@@ -17,6 +17,73 @@ class Porta{
         this.animations = [];
         this.loadAnimations();
     }
+    updateVelocities(entryPortal, exitPortal){
+        console.log(exitPortal.orientation);
+        let tempx = this.velocity.x;
+        let tempy = this.velocity.y;
+        if (entryPortal.orientation === "top"){
+            switch(exitPortal.orientation){
+                case ("top"):
+                    this.velocity.y = -this.velocity.y;
+                    break;
+                case ("left"):
+                    this.velocity.x = this.velocity.y;
+                    this.velocity.y = tempx;
+                    break;
+                case ("right"):
+                    this.velocity.x = this.velocity.y;
+                    this.velocity.y = tempx;
+                    break;
+            }
+
+        } else if (entryPortal.orientation === "bottom"){
+            switch(exitPortal.orientation){
+                case ("bottom"):
+                    this.velocity.y = -this.velocity.y;
+                    break;
+                case ("left"):
+                    this.velocity.x = -this.velocity.y;
+                    this.velocity.y = tempx;
+                    break;
+                case ("right"):
+                    this.velocity.x = this.velocity.y;
+                    this.velocity.y = tempx;
+                    break;
+            }
+
+        } else if (entryPortal.orientation === "left") {
+            switch(exitPortal.orientation){
+                case ("bottom"):
+                    this.velocity.y = this.velocity.x;
+                    this.velocity.x = tempy;
+                    break;
+                case ("top"):
+                    this.velocity.y = -this.velocity.x;
+                    this.velocity.x = tempy;
+                    break;
+                case ("left"):
+                    this.velocity.x = -this.velocity.x;
+                    break;
+            }
+
+        } else if (entryPortal.orientation === "right") {
+            switch(exitPortal.orientation){
+                case ("bottom"):
+                    this.velocity.y = this.velocity.x;
+                    this.velocity.x = tempy;
+                    break;
+                case ("top"):
+                    this.velocity.y = -this.velocity.x;
+                    this.velocity.x = tempy;
+                    break;
+                case ("right"):
+                    this.velocity.x = -this.velocity.x;
+                    break;
+            }
+
+        }
+
+    }
 
     loadAnimations(){
         //initializing arrays
@@ -65,7 +132,7 @@ class Porta{
         const WALK_SPEED = 3;
         const RUN_SPEED = 4;
         const MIN_FALL = 4;
-        const MAX_FALL = 10;
+        const MAX_FALL = 15;
         const ACC_FALLING = .4; //each 'tick' will make Porta's velocity.y *= ACC_FALLING until MAX_FALL is reached
 
         //if we are wielding the gun. Q: are we ever not? maybe if holding companion cube? unsure
@@ -125,7 +192,7 @@ class Porta{
         //TODO falling
         //TODO portal interactions
 
-        if(this.velocity.y != 0) this.velocity.y += ACC_FALLING;
+        if(this.velocity.y != 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
         this.y += this.velocity.y;
 
         //collision
@@ -157,10 +224,11 @@ class Porta{
 
                     }
                     that.updateBB();
+                    that.updateVelocities(entity, entity.linkedPortal);
 
 
                 }
-                if (that.velocity.y > 0){ //falling
+                else if (that.velocity.y > 0){ //falling
                     if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
                         that.y = entity.BB.top - 32;
                         that.velocity.y = 0;
@@ -177,6 +245,7 @@ class Porta{
                 //porta hits a wall
                 //porta collides with a portal
                 //porta moves into a laser beam's path
+
 
             }
         });
