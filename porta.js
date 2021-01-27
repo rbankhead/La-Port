@@ -32,7 +32,7 @@ class Porta{
                     break;
                 case ("right"):
                     this.velocity.x = this.velocity.y;
-                    this.velocity.y = tempx;
+                    this.velocity.y = -tempx;
                     break;
             }
 
@@ -176,7 +176,7 @@ class Porta{
             this.facing = "left";
             this.state = this.game.shift ? "running" : "walking";
             this.velocity.x = this.game.shift ? -1*RUN_SPEED : -1*WALK_SPEED;
-            if (this.x>0) this.x += this.velocity.x;
+            this.x += this.velocity.x;
 
         }
 
@@ -228,25 +228,37 @@ class Porta{
 
 
                 }
-                else if (that.velocity.y > 0){ //falling
+                if (that.velocity.y > 0){ //falling
                     if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
                         that.y = entity.BB.top - 32;
                         that.velocity.y = 0;
+                        that.updateBB();
                     }
 
                 }
                 if (that.velocity.y < 0){ //jumping
+                    if((entity instanceof Brick) && that.lastBB.top >= entity.BB.bottom){ //landing
+                        that.y = entity.BB.bottom;
+                        that.velocity.y = 0.001;
+                        that.updateBB();
+                    }
+                }
+                 if (that.velocity.x > 0) { //walking into brick on the right
+                    if ((entity instanceof Brick) && that.lastBB.right <= entity.BB.left){
+                        that.x = entity.BB.left - 24;
+                        that.velocity.x = 0;
+                        that.updateBB();
+                    }
 
                 }
-                //if we got here we have a collision
-                //different types of collisions:
-                //porta lands on the ground
-                //porta hits a platform from below
-                //porta hits a wall
-                //porta collides with a portal
-                //porta moves into a laser beam's path
+                if (that.velocity.x < 0 && !that.BB.collide(entity.BB.top)) { //walking into brick on the left
+                    if ((entity instanceof Brick) && that.lastBB.left >= entity.BB.right){
+                        that.x = entity.BB.right;
+                        that.velocity.x = 0;
+                        that.updateBB();
+                    }
 
-
+                }
             }
         });
     }

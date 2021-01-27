@@ -61,6 +61,9 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,true));
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true));
 
+        this.game.addEntity(new Brick(this.game,31*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true)); //weird extra bricks to prevent porta from slipping between BBs
+        this.game.addEntity(new Brick(this.game,-1*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true)); //weird extra bricks to prevent porta from slipping between BBs
+
 
         this.game.addEntity(new Checkpoint(this.game, 100, 100));
         this.game.addEntity(new Coin(this.game, 150, 100));
