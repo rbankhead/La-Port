@@ -66,7 +66,7 @@ class Porta{
         const RUN_SPEED = 4;
         const MIN_FALL = 4;
         const MAX_FALL = 10;
-        const ACC_FALLING = 1.25; //each 'tick' will make Porta's velocity.y *= ACC_FALLING until MAX_FALL is reached
+        const ACC_FALLING = .4; //each 'tick' will make Porta's velocity.y *= ACC_FALLING until MAX_FALL is reached
 
         //if we are wielding the gun. Q: are we ever not? maybe if holding companion cube? unsure
         if (this.item === "portal gun") {
@@ -108,15 +108,25 @@ class Porta{
         } else if (this.game.left) {
             this.facing = "left";
             this.state = this.game.shift ? "running" : "walking";
-            this.velocity.x = this.game.shift ? RUN_SPEED : WALK_SPEED;
-            if (this.x>0) this.x -= this.velocity.x;
+            this.velocity.x = this.game.shift ? -1*RUN_SPEED : -1*WALK_SPEED;
+            if (this.x>0) this.x += this.velocity.x;
 
         }
 
         this.updateBB();
         //TODO jumping
+        /* The jumping is functional without stuttering because the y impulse
+            is not congruent to the y acceleration constant.  This means that
+            at the peak of the arc, the player does not become suspended, but instead
+            transitions from moving up very slowly to down very slowly, only becoming
+            zero upon collision with a surface.
+        */
+        if(this.game.space && this.velocity.y == 0) this.velocity.y = -10;
         //TODO falling
         //TODO portal interactions
+
+        if(this.velocity.y != 0) this.velocity.y += ACC_FALLING;
+        this.y += this.velocity.y;
 
         //collision
         var that = this;
@@ -127,18 +137,22 @@ class Porta{
                         case("top"):
                             that.x = entity.linkedPortal.x;
                             that.y = entity.linkedPortal.y-32;
+                            if(that.velocity.y == 0) that.velocity.y = .001; //bandaid to make gravity work
                             break;
                         case("bottom"):
                             that.x = entity.linkedPortal.x;
                             that.y = entity.linkedPortal.y+32;
+                            if(that.velocity.y == 0) that.velocity.y = .001;
                             break;
                         case("left"):
                             that.x = entity.linkedPortal.x-22;
                             that.y = entity.linkedPortal.y;
+                            if(that.velocity.y == 0) that.velocity.y = .001;
                             break;
                         case("right"):
                             that.x = entity.linkedPortal.x+22;
                             that.y = entity.linkedPortal.y;
+                            if(that.velocity.y == 0) that.velocity.y = .001;
                             break;
 
                     }

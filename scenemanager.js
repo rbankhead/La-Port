@@ -53,8 +53,8 @@ class SceneManager {
         this.game.addEntity(this.porta);
 
         this.game.addEntity(new Checkpoint(this.game, 100, 100));
-        this.game.addEntity(new Coin(this.game, 150, 130));
-        this.game.addEntity(new InfoSign(this.game, 150, 130));
+        this.game.addEntity(new Coin(this.game, 150, 100));
+        this.game.addEntity(new InfoSign(this.game, 60, 130));
         this.game.addEntity(new CompCube(this.game, 60, 175));
         this.game.addEntity(new Turret(this.game, 100, 175));
     };

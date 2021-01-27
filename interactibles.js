@@ -3,6 +3,8 @@ class CompCube {
         Object.assign(this, {game, x, y});
         this.game.companionCube = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/compCube.png"); //add sprite
+        this.BB = new BoundingBox(this.x,this.y, 25, 25);
+
     };
 
     update() {
@@ -10,8 +12,11 @@ class CompCube {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x, this.y);
-
+        ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y);
+        if (PARAMS.DEBUG){
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        }
     };
 };
 
