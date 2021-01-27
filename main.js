@@ -7,6 +7,7 @@ ASSET_MANAGER.queueDownload("./sprites/purpleportal.png");
 ASSET_MANAGER.queueDownload("./sprites/purpleportalrotate.png");
 ASSET_MANAGER.queueDownload("./sprites/greenportalrotate.png");
 ASSET_MANAGER.queueDownload("./sprites/porta.png");
+ASSET_MANAGER.queueDownload("./sprites/portareflected.png");
 ASSET_MANAGER.queueDownload("./sprites/projectiles.png");
 ASSET_MANAGER.queueDownload("./sprites/tileset.png");
 ASSET_MANAGER.queueDownload("./sprites/checkpoint.png");

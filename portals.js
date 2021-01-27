@@ -1,6 +1,7 @@
 class Portal {
     constructor(game, x, y, color, orientation){
         Object.assign(this, {game, x, y, color, orientation});
+
         if (this.color === "green"){
             if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true;
             this.game.greenPortal = this;
@@ -15,7 +16,7 @@ class Portal {
             console.log("invalid color entered for portal");
             return;
         }
-        this.state = "active";//opening, active, unlinked, closing
+
         switch(this.orientation){
             case("top"):
                 this.BB = new BoundingBox(this.x+9,this.y+14,26,1);
@@ -30,6 +31,8 @@ class Portal {
                 this.BB = new BoundingBox(this.x+19,this.y+10,1,26);
                 break;
         }
+
+
         if (this.orientation === "top" || this.orientation === "bottom") {
             this.animation = new Animator(this.spritesheet, 135, 12, 60, 39, 8, .1,25, false, true,true);
         } else {

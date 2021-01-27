@@ -4,6 +4,7 @@ class Porta{
         this.game.porta = this;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/porta.png");
+        this.spritesheetReflected = ASSET_MANAGER.getAsset("./sprites/portareflected.png");
 
         this.velocity = {x:0,y:0};
         this.item = "portal gun"; //none, portal gun
@@ -31,15 +32,15 @@ class Porta{
 
         //idle states
         this.animations["portal gun"]["right"]["idle"] = new Animator(this.spritesheet, 8, 8, 14, 25, 4, .2, 18, false,true);
-        this.animations["portal gun"]["left"]["idle"] = new Animator(this.spritesheet, 8, 8, 14, 25, 4, .2, 18, false,true);
+        this.animations["portal gun"]["left"]["idle"] = new Animator(this.spritesheetReflected, 137, 8, 14, 25, 4, .2, 18, false,true);
 
         //walking states
         this.animations["portal gun"]["right"]["walking"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .2, 18,false, true);
-        this.animations["portal gun"]["left"]["walking"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .2, 18, false,true);
+        this.animations["portal gun"]["left"]["walking"] = new Animator(this.spritesheetReflected, 8, 37, 14, 25, 8, .2, 18, false,true);
 
         //running states
         this.animations["portal gun"]["right"]["running"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .1, 18,false, true);
-        this.animations["portal gun"]["left"]["running"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .1, 18, false,true);
+        this.animations["portal gun"]["left"]["running"] = new Animator(this.spritesheetReflected, 8, 37, 14, 25, 8, .1, 18, false,true);
 
         //jumping states
         //this.animations["portal gun"]["right"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
