@@ -27,7 +27,7 @@ class Porta{
                     this.velocity.y = -this.velocity.y;
                     break;
                 case ("left"):
-                    this.velocity.x = this.velocity.y;
+                    this.velocity.x = -this.velocity.y;
                     this.velocity.y = tempx;
                     break;
                 case ("right"):
