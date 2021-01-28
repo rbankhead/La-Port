@@ -243,6 +243,7 @@ class Porta{
                 }
                 if (that.velocity.y > 0){ //falling
                     if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
+                        if (that.velocity.x > RUN_SPEED) that.velocity.x = that.game.shift ? RUN_SPEED : WALK_SPEED;
                         that.y = entity.BB.top - 32;
                         that.velocity.y = 0;
                         that.updateBB();
