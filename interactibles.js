@@ -1,10 +1,11 @@
 class CompanionCube {
+    
     constructor(game, x, y){
         Object.assign(this, {game, x, y});
         this.game.companionCube = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/compCube.png"); //add sprite
+        this.velocity = {x:0,y:.001}; //a nudge to get it to settle
         this.updateBB();
-        this.velocity = {x:0,y:0};
 
     };
 
@@ -78,10 +79,13 @@ class CompanionCube {
 
     updateBB(){
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x,this.y, 25, 25);
+        this.BB = new BoundingBox(this.x, this.y, 25, 25);
     }
 
     update() {
+        const MAX_FALL = 15;
+        const ACC_FALLING = .4;
+
         let that = this;
         this.game.entities.forEach(function(entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
@@ -112,8 +116,21 @@ class CompanionCube {
                     that.updateBB();
                     that.updateVelocities(entity, entity.linkedPortal);
                 }
+                if (that.velocity.y > 0){ //falling
+                    if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
+                        that.y = entity.BB.top - 27;
+                        that.velocity.y = 0;
+                        that.updateBB();
+                    }
+
+                }
             }
         });
+
+        //Gravity!
+        if(this.velocity.y != 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
+        this.y += this.velocity.y;
+        that.updateBB();
     };
 
     draw(ctx) {

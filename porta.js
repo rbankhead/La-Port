@@ -82,7 +82,7 @@ class Porta{
             }
 
         }
-
+        if(this.velocity.y == 0) this.velocity.y = .01; //makes sure there's no floating
     }
 
     loadAnimations(){
@@ -167,21 +167,22 @@ class Porta{
             this.state = "idle";
         }
         //left and right movement
-        else if (this.game.right) {
+        else if (this.game.right && this.velocity.y == 0) {
             this.facing = "right";
             this.state = this.game.shift ? "running" : "walking";
-            this.velocity.x = this.game.shift ? RUN_SPEED : WALK_SPEED;
-            this.x += this.velocity.x;
-        } else if (this.game.left) {
+            //this.velocity.x = this.game.shift ? RUN_SPEED : WALK_SPEED;
+            if(this.game.shift && this.velocity.x < RUN_SPEED) this.velocity.x += 1;
+            else if(this.velocity.x < WALK_SPEED) this.velocity.x += .5;
+        } else if (this.game.left && this.velocity.y == 0) {
             this.facing = "left";
             this.state = this.game.shift ? "running" : "walking";
-            this.velocity.x = this.game.shift ? -1*RUN_SPEED : -1*WALK_SPEED;
-            this.x += this.velocity.x;
-
+            //this.velocity.x = this.game.shift ? -1*RUN_SPEED : -1*WALK_SPEED;
+            if(this.game.shift && this.velocity.x > -1*RUN_SPEED) this.velocity.x -= 1;
+            else if(this.velocity.x > -1*WALK_SPEED) this.velocity.x -= .5;
         }
 
         this.updateBB();
-        //TODO jumping
+        //Jump
         /* The jumping is functional without stuttering because the y impulse
             is not congruent to the y acceleration constant.  This means that
             at the peak of the arc, the player does not become suspended, but instead
@@ -189,11 +190,23 @@ class Porta{
             zero upon collision with a surface.
         */
         if(this.game.space && this.velocity.y == 0) this.velocity.y = -10;
-        //TODO falling
-        //TODO portal interactions
-
+        //Gravity and Drag
         if(this.velocity.y != 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
+        if(this.velocity.y!=0){ //airborne
+            if((this.game.right && this.game.left)||(!this.game.right && !this.game.left)) 
+                this.velocity.x = this.velocity.x/1.02;
+            else if(this.game.left && this.velocity.x > -1* WALK_SPEED) this.velocity.x -= .25;
+            else if(this.game.right && this.velocity.x < WALK_SPEED) this.velocity.x += .25;
+        } else { //on the ground
+            if(this.velocity.x > 0 && !this.game.right) this.velocity.x -= .5;
+            else if(this.velocity.x < 0 && !this.game.left) this.velocity.x += .5;
+        }
+        //position update
+        if(Math.abs(this.velocity.x) < .25) this.velocity.x = 0; //prevents inching on weird small number
+        this.x += this.velocity.x;
         this.y += this.velocity.y;
+
+        //TODO portal interactions
 
         //collision
         var that = this;
