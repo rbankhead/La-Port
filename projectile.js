@@ -40,20 +40,22 @@ class Projectile {
         this.game.entities.forEach(function(entity){
             if(entity.BB && that.BB.collide(entity.BB)){
                 if((that.lastBB && entity instanceof Brick) && (that.lastBB.bottom <= entity.BB.top) && entity.top){ //landing
+                    //that.game.entities.unshift(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color, "top"))
                     that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color, "top"));
                     that.removeFromWorld = true;
                 }
                 else if (that.lastBB && entity instanceof Brick && (that.lastBB.top >= entity.BB.bottom && entity.bottom)){
+                    //that.game.entities.unshift(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"bottom"));
                     that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"bottom"));
                     that.removeFromWorld = true;
                 }
                 else if (that.lastBB && entity instanceof Brick && (that.lastBB.left >= entity.BB.right && entity.right)){
-                    //that.game.addEntity(new Portal(that.game,entity.BB.right-18,that.BB.y,that.color,"right")); //MAGIC NUMBER
+                    //that.game.entities.unshift(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"right"));
                     that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"right")); //MAGIC NUMBER
                     that.removeFromWorld = true;
                 }
                 else if (that.lastBB && entity instanceof Brick && (that.lastBB.right <= entity.BB.left && entity.left)){
-                    //that.game.addEntity(new Portal(that.game,entity.BB.left-20,that.BB.y,that.color,"left")); //MAGIC NUMBER
+                    //that.game.entities.unshift(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"left"));
                     that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"left")); //MAGIC NUMBER
                     that.removeFromWorld = true;
                 }
