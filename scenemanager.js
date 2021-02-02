@@ -12,6 +12,9 @@ class SceneManager {
 
     loadLevelOne() {
         this.game.entities = [];
+        this.game.addEntity(new Brick(this.game,31*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true)); //weird extra bricks to prevent porta from slipping between BBs
+        this.game.addEntity(new Brick(this.game,-1*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true)); //weird extra bricks to prevent porta from slipping between BBs
+
         //ceiling bricks
         this.game.addEntity(new Brick(this.game,0*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,false,false,false, true));
         this.game.addEntity(new Brick(this.game,3*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,false,false,false, true));
@@ -61,13 +64,13 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,true));
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true));
 
-        this.game.addEntity(new Brick(this.game,31*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true)); //weird extra bricks to prevent porta from slipping between BBs
-        this.game.addEntity(new Brick(this.game,-1*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true)); //weird extra bricks to prevent porta from slipping between BBs
-
+        this.game.addEntity(new InfoSign(this.game,0*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Press A or D to move right or left"));
+        this.game.addEntity(new InfoSign(this.game,9*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Press spacebar to jump"));
+        this.game.addEntity(new InfoSign(this.game,18*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Use left and right click to make portals"));
+        this.game.addEntity(new InfoSign(this.game,27*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"You can teleport between the green and purple portals!"));
 
         this.game.addEntity(new Checkpoint(this.game, 100, 100));
         this.game.addEntity(new Coin(this.game, 150, 100));
-        this.game.addEntity(new InfoSign(this.game, 60, 130));
         this.game.addEntity(new CompanionCube(this.game, 60, 175));
         this.game.addEntity(new Turret(this.game, 100, 175));
 

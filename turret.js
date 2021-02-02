@@ -85,8 +85,21 @@ class Turret {
         const MAX_FALL = 15;
         const ACC_FALLING = .4;
 
+        //collision
         let that = this;
-        this.game.entities.forEach(function(entity) {
+
+        /**
+         * This forEach loop iterates over all objects in the game.entities[] list & checks for collisions with turret
+         *
+         * We call forEach here on a slice().reverse() of the entities array (a shallow copy of the list which gets reversed)
+         * Because forEach iterates over the list in order and
+         * Portals are added to the end of the entities[] list when they are created and
+         * We need to check for portal collisions before we check for Brick collisions because
+         * It prevents a bug that would reduce velocity.y to zero inappropriately
+         *
+         * ***Beware of possible bugs as a result of iterating over this list in reverse***
+         */
+        this.game.entities.slice().reverse().forEach(function(entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Portal && entity.linkedPortal) {
                     switch (entity.linkedPortal.orientation) {
