@@ -261,6 +261,9 @@ class Porta{
                         that.updateBB();
                     }
                 }
+                if (entity instanceof InfoSign){
+                    entity.state = true;
+                }
             }
         });
     }
