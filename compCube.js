@@ -6,6 +6,7 @@ class CompanionCube {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/compCube.png"); //add sprite
         this.velocity = {x:0,y:.001}; //a nudge to get it to settle
         this.updateBB();
+        this.held = false;
 
     };
 
@@ -78,13 +79,47 @@ class CompanionCube {
     }
 
     updateBB(){
-        this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 25, 25);
+        if(!this.held){
+            this.lastBB = this.BB;
+            this.BB = new BoundingBox(this.x, this.y, 25, 25);
+        }
+    }
+
+    drop(){
+        this.held = false;
+        this.updateBB();
+        let that = this;
+        let validLocation = true;
+        this.game.entities.forEach(function(entity){
+            if (entity.BB && that.BB.collide(entity.BB)) {
+                console.log("maybe");
+                if((entity instanceof Brick)){
+                    console.log("ug");
+                    validLocation = false;
+                }
+            }
+        });
+        if (validLocation) {
+            that.game.E = false;
+            this.velocity = {x:0,y:.001}
+        } else {
+            this.held = true;
+            this.BB = new BoundingBox(-10,-10,0,0);
+        }
+
     }
 
     update() {
         const MAX_FALL = 15;
         const ACC_FALLING = .4;
+
+        if (this.held) {
+            this.x = this.game.porta.facing === "right" ? this.game.porta.x + this.game.porta.width : this.game.porta.x - this.game.porta.width;
+            this.y = this.game.porta.y+5;
+        }
+        // this.held = false;
+        // this.velocity.x = this.game.porta.velocity.x;
+        // this.velocity.y = this.game.porta.velocity.y;
 
         let that = this;
         /**
