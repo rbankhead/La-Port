@@ -1,3 +1,4 @@
+// noinspection JSSuspiciousNameCombination
 class Porta{
     constructor(game, x, y){
         Object.assign(this, {game, x, y});
@@ -5,6 +6,8 @@ class Porta{
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/porta.png");
         this.spritesheetReflected = ASSET_MANAGER.getAsset("./sprites/portareflected.png");
+        this.width = 14;
+        this.height = 25;
 
         this.velocity = {x:0,y:0};
         this.facing = "right"; //left, right
@@ -79,7 +82,7 @@ class Porta{
             }
 
         }
-        if(this.velocity.y == 0) this.velocity.y = .01; //makes sure there's no floating
+        if(this.velocity.y === 0) this.velocity.y = .01; //makes sure there's no floating
     }
 
     loadAnimations(){
@@ -90,16 +93,16 @@ class Porta{
         //initializing the animation objects for each state
 
         //idle states
-        this.animations["right"]["idle"] = new Animator(this.spritesheet, 8, 8, 14, 25, 4, .2, 18, false,true);
-        this.animations["left"]["idle"] = new Animator(this.spritesheetReflected, 137, 8, 14, 25, 4, .2, 18, false,true);
+        this.animations["right"]["idle"] = new Animator(this.spritesheet, 8, 8, this.width, this.height, 4, .2, 18, false,true);
+        this.animations["left"]["idle"] = new Animator(this.spritesheetReflected, 137, 8, this.width, this.height, 4, .2, 18, false,true);
 
         //walking states
-        this.animations["right"]["walking"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .2, 18,false, true);
-        this.animations["left"]["walking"] = new Animator(this.spritesheetReflected, 8, 37, 14, 25, 8, .2, 18, false,true);
+        this.animations["right"]["walking"] = new Animator(this.spritesheet, 8, 37, this.width, this.height, 8, .2, 18,false, true);
+        this.animations["left"]["walking"] = new Animator(this.spritesheetReflected, 8, 37, this.width, this.height, 8, .2, 18, false,true);
 
         //running states
-        this.animations["right"]["running"] = new Animator(this.spritesheet, 8, 37, 14, 25, 8, .1, 18,false, true);
-        this.animations["left"]["running"] = new Animator(this.spritesheetReflected, 8, 37, 14, 25, 8, .1, 18, false,true);
+        this.animations["right"]["running"] = new Animator(this.spritesheet, 8, 37, this.width, this.height, 8, .1, 18,false, true);
+        this.animations["left"]["running"] = new Animator(this.spritesheetReflected, 8, 37, this.width, this.height, 8, .1, 18, false,true);
 
         //jumping states
         //this.animations["portal gun"]["right"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
@@ -115,17 +118,16 @@ class Porta{
         this.BB = new BoundingBox(this.x,this.y,22,32);
     }
     update(){
-        const TICK = this.game.clockTick;
+        //const TICK = this.game.clockTick;
         const WALK_SPEED = 3;
         const RUN_SPEED = 4;
-        const MIN_FALL = 4;
         const MAX_FALL = 15;
-        const ACC_FALLING = .4; //each 'tick' will make Porta's velocity.y *= ACC_FALLING until MAX_FALL is reached
+        const ACC_FALLING = .4; //each 'tick' will make Porta velocity.y *= ACC_FALLING until MAX_FALL is reached
 
         /**
          * if left and right click are both pressed, set both flags to false and dont shoot any projectiles
          * on left click shoots purple portal at cursor
-         * on right click shoots green portal at curson
+         * on right click shoots green portal at cursor
          */
         if(this.game.leftclick && this.game.rightclick){
             this.game.rightclick = false;
@@ -141,7 +143,6 @@ class Porta{
             this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
         }
 
-
         /**
          *  Check if not moving or if both movement keys are pressed
          */
@@ -150,19 +151,24 @@ class Porta{
         }
 
         //left and right movement
-        else if (this.game.right && this.velocity.y == 0) {
+        else if (this.game.right && this.velocity.y === 0) {
             this.facing = "right";
             this.state = this.game.shift ? "running" : "walking";
             if(this.game.shift && this.velocity.x < RUN_SPEED) this.velocity.x += 1;
             else if(this.velocity.x < WALK_SPEED) this.velocity.x += .5;
-        } else if (this.game.left && this.velocity.y == 0) {
+        } else if (this.game.left && this.velocity.y === 0) {
             this.facing = "left";
             this.state = this.game.shift ? "running" : "walking";
             if(this.game.shift && this.velocity.x > -1*RUN_SPEED) this.velocity.x -= 1;
             else if(this.velocity.x > -1*WALK_SPEED) this.velocity.x -= .5;
         }
-
         this.updateBB();
+
+        if (this.holding && this.game.E) {
+            if (this.holding.held) {
+                this.holding.drop();
+            }
+        }
         //Jump
         /* The jumping is functional without stuttering because the y impulse
             is not congruent to the y acceleration constant.  This means that
@@ -170,10 +176,10 @@ class Porta{
             transitions from moving up very slowly to down very slowly, only becoming
             zero upon collision with a surface.
         */
-        if(this.game.space && this.velocity.y == 0) this.velocity.y = -10;
+        if(this.game.space && this.velocity.y === 0) this.velocity.y = -10;
         //Gravity and Drag
-        if(this.velocity.y != 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
-        if(this.velocity.y!=0){ //airborne
+        if(this.velocity.y !== 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
+        if(this.velocity.y!==0){ //airborne
             if((this.game.right && this.game.left)||(!this.game.right && !this.game.left)) 
                 this.velocity.x = this.velocity.x/1.02;
             else if(this.game.left && this.velocity.x > -1* WALK_SPEED) this.velocity.x -= .25;
@@ -188,7 +194,7 @@ class Porta{
         this.y += this.velocity.y;
 
         //collision
-        var that = this;
+        let that = this;
 
         /**
          * This forEach loop iterates over all objects in the game.entities[] list & checks for collisions with Porta
@@ -208,22 +214,22 @@ class Porta{
                         case("top"):
                             that.x = entity.linkedPortal.x;
                             that.y = entity.linkedPortal.y-32;
-                            if(that.velocity.y == 0) that.velocity.y = .001; //bandaid to make gravity work
+                            if(that.velocity.y === 0) that.velocity.y = .001; //band aid to make gravity work
                             break;
                         case("bottom"):
                             that.x = entity.linkedPortal.x;
                             that.y = entity.linkedPortal.y+32;
-                            if(that.velocity.y == 0) that.velocity.y = .001;
+                            if(that.velocity.y === 0) that.velocity.y = .001;
                             break;
                         case("left"):
                             that.x = entity.linkedPortal.x-22;
                             that.y = entity.linkedPortal.y;
-                            if(that.velocity.y == 0) that.velocity.y = .001;
+                            if(that.velocity.y === 0) that.velocity.y = .001;
                             break;
                         case("right"):
                             that.x = entity.linkedPortal.x+22;
                             that.y = entity.linkedPortal.y;
-                            if(that.velocity.y == 0) that.velocity.y = .001;
+                            if(that.velocity.y === 0) that.velocity.y = .001;
                             break;
 
                     }
@@ -261,8 +267,15 @@ class Porta{
                         that.updateBB();
                     }
                 }
-                if (entity instanceof InfoSign){
-                    entity.state = true;
+                if (entity instanceof CompanionCube) {
+                    if (that.game.E){
+                        if (!entity.held) {
+                            that.game.E = false;
+                            entity.held = true;
+                            entity.BB = new BoundingBox(-10,-10,0,0);
+                            that.holding = entity;
+                        }
+                    }
                 }
             }
         });
