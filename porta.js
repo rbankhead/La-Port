@@ -6,7 +6,7 @@ class Porta{
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/porta.png");
         this.spritesheetReflected = ASSET_MANAGER.getAsset("./sprites/portareflected.png");
 
-        this.velocity = {x:0,y:0};
+        this.velocity = {x:0,y:.001};
         this.facing = "right"; //left, right
         this.state = "walking"; //idle, walking, running, interacting, dying
         this.updateBB();

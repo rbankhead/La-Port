@@ -73,6 +73,9 @@ class SceneManager {
         this.game.addEntity(new Coin(this.game, 150, 100));
         this.game.addEntity(new CompanionCube(this.game, 60, 175));
         this.game.addEntity(new Turret(this.game, 100, 175));
+        this.game.addEntity(new Button(this.game, 24*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH - 20, function(){
+            console.log("Button Event Successful!");
+        }));
 
         this.game.addEntity(this.porta);
     };

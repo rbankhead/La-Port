@@ -32,3 +32,7 @@ const PARAMS = {
     SCALE: 1.5,
     BITWIDTH: 16,
 };
+
+function nudge(entity){
+    entity.velocity.y += .001;
+}
