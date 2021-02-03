@@ -87,6 +87,15 @@ class SceneManager {
 
         this.x = this.porta.x - midpoint;
 
+        /**
+         * If Porta dies, she teleports up and out of the level
+         * Once off screen (reaching -9*PARAMS.BLOCKWIDTH on the Y axis) we reload the level
+         * TODO: add logic to check for an activated checkpoint
+         */
+        if (this.porta.dead && this.porta.y < -9 * PARAMS.BLOCKWIDTH) {
+            this.porta = new Porta(this.game, 0 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH);
+            this.loadLevelOne();
+        };
     };
 
     draw(ctx) {

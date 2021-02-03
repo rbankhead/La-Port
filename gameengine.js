@@ -17,6 +17,7 @@ class GameEngine {
         this.shift = false
         this.space = false
         this.E = false;
+        this.R = false;
     };
 
     init(ctx) {
@@ -76,6 +77,9 @@ class GameEngine {
                 case "Space":
                     that.space = true;
                     break;
+                case "KeyR":
+                    that.R = true;
+                    break;
             }
         }, false);
 
@@ -101,6 +105,9 @@ class GameEngine {
                     break;
                 case "Space":
                     that.space = false;
+                    break;
+                case "KeyR":
+                    that.R = false;
                     break;
             }
         }, false);
