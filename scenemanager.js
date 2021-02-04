@@ -5,7 +5,8 @@ class SceneManager {
         this.x = 0;
         this.y = 0;
 
-        this.porta = new Porta(this.game, 0 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH);
+        this.portaSpawn = {x: 0 * PARAMS.BLOCKWIDTH, y: 28.5 * PARAMS.BLOCKWIDTH}
+        this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
 
         this.loadLevelOne();
     };
@@ -69,7 +70,8 @@ class SceneManager {
         this.game.addEntity(new InfoSign(this.game,18*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Use left and right click to make portals"));
         this.game.addEntity(new InfoSign(this.game,27*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"You can teleport between the green and purple portals!"));
 
-        this.game.addEntity(new Checkpoint(this.game, 100, 100));
+        this.game.addEntity(new Checkpoint(this.game, 13.5 * PARAMS.BLOCKWIDTH, 27.5 * PARAMS.BLOCKWIDTH));
+
         this.game.addEntity(new Coin(this.game, 150, 100));
         this.game.addEntity(new CompanionCube(this.game, 60, 175));
         this.game.addEntity(new Turret(this.game, 100, 175));
@@ -93,7 +95,7 @@ class SceneManager {
          * TODO: add logic to check for an activated checkpoint
          */
         if (this.porta.dead && this.porta.y < -9 * PARAMS.BLOCKWIDTH) {
-            this.porta = new Porta(this.game, 0 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH);
+            this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
             this.loadLevelOne();
         };
     };

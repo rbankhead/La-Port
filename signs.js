@@ -2,8 +2,9 @@ class Checkpoint {
     constructor(game, x, y){
         Object.assign(this, {game, x, y});
         this.game.checkpoint = this;
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/checkpoint.png"); //add sprite
-        this.animation = new Animator(this.spritesheet, 0, 0, 12, 19, 9, .1, 0, false, true);
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/checkpoint.png");
+        this.inactiveAnimation = new Animator(this.spritesheet, 0, 0, 12, 19, 1, .1, 0, false, true);
+        this.activeAnimation = new Animator(this.spritesheet, 0, 0, 12, 19, 9, .1, 0, false, true);
         this.BB = new BoundingBox(this.x,this.y,36,60);
     };
 
@@ -12,7 +13,11 @@ class Checkpoint {
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 3);
+        if (this.active) {
+            this.activeAnimation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 3);
+        } else {
+            this.inactiveAnimation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 3);
+        }
         if (PARAMS.DEBUG){
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);

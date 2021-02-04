@@ -297,6 +297,11 @@ class Porta{
                             }
                         }
                     }
+                    if (entity instanceof Checkpoint){
+                        entity.active = true;
+                        that.game.camera.portaSpawn.x = entity.x;
+                        that.game.camera.portaSpawn.y = entity.y;
+                    }
                 }
             });
 
