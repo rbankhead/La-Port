@@ -110,6 +110,7 @@ class CompanionCube {
     }
 
     update() {
+        nudge(this);
         const MAX_FALL = 15;
         const ACC_FALLING = .4;
 

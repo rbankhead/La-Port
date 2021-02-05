@@ -18,6 +18,7 @@ class Porta {
 
         this.animations = [];
         this.loadAnimations();
+        this.nudgeCounter = 0;
     }
 
     updateVelocities(entryPortal, exitPortal){
@@ -133,6 +134,8 @@ class Porta {
     }
 
     update() {
+        nudge(this);
+
         //const TICK = this.game.clockTick;
         const WALK_SPEED = 3;
         const RUN_SPEED = 4;

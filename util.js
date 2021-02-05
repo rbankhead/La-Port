@@ -33,6 +33,10 @@ const PARAMS = {
     BITWIDTH: 16,
 };
 
-function nudge(entity){
-    entity.velocity.y += .001;
+var nudgeCount = 0;
+function nudge(entity) {
+    if (nudgeCount++ >= 15) {
+        entity.velocity.y += .001;
+        nudgeCount = 0;
+    }
 }
