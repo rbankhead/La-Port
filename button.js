@@ -1,6 +1,6 @@
 class Button {
-    constructor(game, x, y, event, scale = 2) {
-        Object.assign(this, { game, x, y, scale, event});
+    constructor(game, x, y, door, scale = 2) {
+        Object.assign(this, { game, x, y, scale, door});
         this.game.switch = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/button.png"); //add sprite
         this.animations = [];
@@ -27,7 +27,7 @@ class Button {
 
         if (this.state == "depress" && this.transitionTimer <= 0) {
             this.state = "down"
-            this.event(); //activates button event
+            this.door.state = 1; //sets door to "opening"
         }
         let that = this;
         var collisionFlag = false;
@@ -49,6 +49,7 @@ class Button {
         }
         if (this.state == "release" && this.transitionTimer == 0) {
             this.state = "up";
+            this.door.state = 2; // sets door to "closing"
         }
         this.updateBB();
     };

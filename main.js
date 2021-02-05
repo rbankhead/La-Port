@@ -16,6 +16,7 @@ ASSET_MANAGER.queueDownload("./sprites/coin.png");
 ASSET_MANAGER.queueDownload("./sprites/compCube.png");
 ASSET_MANAGER.queueDownload("./sprites/turret.png");
 ASSET_MANAGER.queueDownload("./sprites/button.png");
+ASSET_MANAGER.queueDownload("./sprites/door.png");
 
 
 ASSET_MANAGER.downloadAll(function () {
