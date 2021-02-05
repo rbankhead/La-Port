@@ -12,12 +12,15 @@ class Porta {
         this.velocity = { x: 0, y: .001 };
         this.facing = "right"; //left, right
         this.state = "walking"; //idle, walking, running, interacting, dying
+        this.dead=false;
+        this.suicideCounter=0;
         this.updateBB();
 
         this.animations = [];
         this.loadAnimations();
     }
-    updateVelocities(entryPortal, exitPortal) {
+
+    updateVelocities(entryPortal, exitPortal){
         console.log(exitPortal.orientation);
         let tempx = this.velocity.x;
         let tempy = this.velocity.y;
@@ -108,15 +111,27 @@ class Porta {
         //this.animations["portal gun"]["right"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
         //this.animations["portal gun"]["left"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
 
-        //dying states. may adjust how this is done later
-        //this.animations["right"]["dying"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["left"]["dying"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
+        //dying states
+        this.animations["right"]["dying"] = new Animator(this.spritesheet, 8, 136, this.width, this.height, 8, .2, 18,false, true);
+        this.animations["left"]["dying"] = new Animator(this.spritesheetReflected, 8, 136, this.width, this.height, 8, .2, 18,true, true);
+        this.deathAnimation = new Animator(this.spritesheet, 232, 136, this.width, this.height, 1, .1, 18,false, true);
     }
 
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, 22, 32);
     }
+
+    die(){
+        /**
+         * Death can only be triggered via suicide currently (by holding R)
+         * TODO: Add BB under the level which kills Porta if she falls far enough to collide with it
+         * TODO: Add the ability for lasers to kill Porta if she collides with their beam for too long
+         */
+        this.dead=true;
+        this.velocity.y = -25; //arbitrary speed to teleport out of level
+    }
+
     update() {
         //const TICK = this.game.clockTick;
         const WALK_SPEED = 3;
@@ -178,24 +193,27 @@ class Porta {
         */
         if (this.game.space && this.velocity.y === 0) this.velocity.y = -10;
         //Gravity and Drag
-        if (this.velocity.y !== 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
-        if (this.velocity.y !== 0) { //airborne
-            if ((this.game.right && this.game.left) || (!this.game.right && !this.game.left))
-                this.velocity.x = this.velocity.x / 1.02;
-            else if (this.game.left && this.velocity.x > -1 * WALK_SPEED) this.velocity.x -= .25;
-            else if (this.game.right && this.velocity.x < WALK_SPEED) this.velocity.x += .25;
-        } else { //on the ground
-            if (this.velocity.x > 0 && !this.game.right) this.velocity.x -= .5;
-            else if (this.velocity.x < 0 && !this.game.left) this.velocity.x += .5;
+        if (!this.dead){ //if the player is dead and teleporting out, we don't need to worry about gravity
+
+            if (this.velocity.y !== 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
+            if(this.velocity.y!==0){ //airborne
+                if((this.game.right && this.game.left)||(!this.game.right && !this.game.left))
+                    this.velocity.x = this.velocity.x/1.02;
+                else if(this.game.left && this.velocity.x > -1* WALK_SPEED) this.velocity.x -= .25;
+                else if(this.game.right && this.velocity.x < WALK_SPEED) this.velocity.x += .25;
+            } else { //on the ground
+                if(this.velocity.x > 0 && !this.game.right) this.velocity.x -= .5;
+                else if(this.velocity.x < 0 && !this.game.left) this.velocity.x += .5;
+            }
+
         }
+
         //position update
         if (Math.abs(this.velocity.x) < .25) this.velocity.x = 0; //prevents inching on weird small number
         this.x += this.velocity.x;
         this.y += this.velocity.y;
 
         //collision
-        let that = this;
-
         /**
          * This forEach loop iterates over all objects in the game.entities[] list & checks for collisions with Porta
          *
@@ -207,97 +225,119 @@ class Porta {
          *
          * ***Beware of possible bugs as a result of iterating over this list in reverse***
          */
-        this.game.entities.slice().reverse().forEach(function (entity) {
-            if (entity.BB && that.BB.collide(entity.BB)) {
-                if (entity instanceof Portal && entity.linkedPortal) {
-                    switch (entity.linkedPortal.orientation) {
-                        case ("top"):
-                            that.x = entity.linkedPortal.x;
-                            that.y = entity.linkedPortal.y - 32;
-                            if (that.velocity.y === 0) that.velocity.y = .001; //band aid to make gravity work
-                            break;
-                        case ("bottom"):
-                            that.x = entity.linkedPortal.x;
-                            that.y = entity.linkedPortal.y + 32;
-                            if (that.velocity.y === 0) that.velocity.y = .001;
-                            break;
-                        case ("left"):
-                            that.x = entity.linkedPortal.x - 22;
-                            that.y = entity.linkedPortal.y;
-                            if (that.velocity.y === 0) that.velocity.y = .001;
-                            break;
-                        case ("right"):
-                            that.x = entity.linkedPortal.x + 22;
-                            that.y = entity.linkedPortal.y;
-                            if (that.velocity.y === 0) that.velocity.y = .001;
-                            break;
+        if(!this.dead){ //if the player is dead and teleporting out, do not check for collision
+            let that = this;
+            this.game.entities.slice().reverse().forEach(function(entity){
+                if(entity.BB && that.BB.collide(entity.BB)){
+                    if (entity instanceof Portal && entity.linkedPortal){
+                        switch (entity.linkedPortal.orientation){
+                            case("top"):
+                                that.x = entity.linkedPortal.x;
+                                that.y = entity.linkedPortal.y-32;
+                                if(that.velocity.y === 0) that.velocity.y = .001; //band aid to make gravity work
+                                break;
+                            case("bottom"):
+                                that.x = entity.linkedPortal.x;
+                                that.y = entity.linkedPortal.y+32;
+                                if(that.velocity.y === 0) that.velocity.y = .001;
+                                break;
+                            case("left"):
+                                that.x = entity.linkedPortal.x-22;
+                                that.y = entity.linkedPortal.y;
+                                if(that.velocity.y === 0) that.velocity.y = .001;
+                                break;
+                            case("right"):
+                                that.x = entity.linkedPortal.x+22;
+                                that.y = entity.linkedPortal.y;
+                                if(that.velocity.y === 0) that.velocity.y = .001;
+                                break;
+
+                        }
+                        that.updateBB();
+                        that.updateVelocities(entity, entity.linkedPortal);
 
                     }
-                    that.updateBB();
-                    that.updateVelocities(entity, entity.linkedPortal);
-
-                }
-                if (that.velocity.y > 0) { //falling
-                    if ((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top) { //landing
-                        if (that.velocity.x > RUN_SPEED) that.velocity.x = that.game.shift ? RUN_SPEED : WALK_SPEED;
-                        if (that.velocity.x < -RUN_SPEED) that.velocity.x = that.game.shift ? -RUN_SPEED : -WALK_SPEED;
-                        that.y = entity.BB.top - 32;
-                        that.velocity.y = 0;
-                        that.updateBB();
-                    }
-                }
-                if (that.velocity.y < 0) { //jumping
-                    if ((entity instanceof Brick) && that.lastBB.top >= entity.BB.bottom) { //landing
-                        that.y = entity.BB.bottom;
-                        that.velocity.y = 0.001;
-                        that.updateBB();
-                    }
-                }
-                if (that.velocity.x > 0) { //walking into brick on the right
-                    if ((entity instanceof Brick) && that.lastBB.right <= entity.BB.left) {
-                        that.x = entity.BB.left - 22.5;
-                        that.velocity.x = 0;
-                        that.updateBB();
-                    }
-                }
-                if (that.velocity.x < 0) { //walking into brick on the left
-                    if ((entity instanceof Brick) && that.lastBB.left >= entity.BB.right) {
-                        that.x = entity.BB.right;
-                        that.velocity.x = 0;
-                        that.updateBB();
-                    }
-                }
-                if (entity instanceof CompanionCube) {
-                    if (that.game.E) {
-                        if (!entity.held) {
-                            that.game.E = false;
-                            entity.held = true;
-                            entity.BB = new BoundingBox(-10, -10, 0, 0);
-                            that.holding = entity;
+                    if (that.velocity.y > 0){ //falling
+                        if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
+                            if (that.velocity.x > RUN_SPEED) that.velocity.x = that.game.shift ? RUN_SPEED : WALK_SPEED;
+                            if (that.velocity.x < -RUN_SPEED) that.velocity.x = that.game.shift ? -RUN_SPEED : -WALK_SPEED;
+                            that.y = entity.BB.top - 32;
+                            that.velocity.y = 0;
+                            that.updateBB();
                         }
                     }
-                }
-                if ((entity instanceof Door) && that.lastBB.right <= entity.BB.left) {
-                    if (entity.state != 3) {
-                        that.x = entity.BB.left - 22.5;
-                        that.velocity.x = 0;
-                        that.updateBB();
+                    if (that.velocity.y < 0){ //jumping
+                        if((entity instanceof Brick) && that.lastBB.top >= entity.BB.bottom){ //landing
+                            that.y = entity.BB.bottom;
+                            that.velocity.y = 0.001;
+                            that.updateBB();
+                        }
+                    }
+                    if (that.velocity.x > 0) { //walking into brick on the right
+                        if ((entity instanceof Brick) && that.lastBB.right <= entity.BB.left){
+                            that.x = entity.BB.left - 22.5;
+                            that.velocity.x = 0;
+                            that.updateBB();
+                        }
+                    }
+                    if (that.velocity.x < 0 ) { //walking into brick on the left
+                        if ((entity instanceof Brick) && that.lastBB.left >= entity.BB.right){
+                            that.x = entity.BB.right;
+                            that.velocity.x = 0;
+                            that.updateBB();
+                        }
+                    }
+                    if (entity instanceof CompanionCube) {
+                        if (that.game.E){
+                            if (!entity.held) {
+                                that.game.E = false;
+                                entity.held = true;
+                                entity.BB = new BoundingBox(-10,-10,0,0);
+                                that.holding = entity;
+                            }
+                        }
+                    }
+                    if (entity instanceof Checkpoint){
+                        entity.active = true;
+                        that.game.camera.portaSpawn.x = entity.x;
+                        that.game.camera.portaSpawn.y = entity.y;
                     }
                 }
-                if ((entity instanceof Door) && that.lastBB.left >= entity.BB.right) {
-                    if (entity.state != 3) {
-                        that.x = entity.BB.right;
-                        that.velocity.x = 0;
-                        that.updateBB();
-                    }
-                }
+            });
+
+            /**
+             * Suicide feature
+             * Giving the player the option to reset the level if they are stuck or just want to restart
+             * If R is being pressed the suicide counter increments by 1
+             * each tick this update() method is called so this increments approx 60x per second while R is held
+             * if the player releases R at any point, the else statement will trigger and reset the counter
+             *
+             * The code to reload the level after Porta teleports out is in the update() method of Scenemanager
+             *
+             **/
+            if (this.suicideCounter >= 90) this.die();
+            if (this.game.R){
+                this.state="dying"; //do this last so it takes priority over idle, walking etc
+                this.suicideCounter++;
+            } else {
+                this.suicideCounter = 0;
+
+                //reinitialize the animation so they restart if R is depressed
+                //without these lines tapping R will cause the animation to play all the way through even though you never die
+                //this is potentially expensive so look here if we have any performance issues later on
+                this.animations["right"]["dying"] = new Animator(this.spritesheet, 8, 136, this.width, this.height, 8, .2, 18,false, true);
+                this.animations["left"]["dying"] = new Animator(this.spritesheetReflected, 8, 136, this.width, this.height, 8, .2, 18,true, true);
             }
-        });
+        }
     }
 
-    draw(ctx) {
-        this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
-        if (PARAMS.DEBUG) {
+    draw(ctx){
+        if (this.dead){ //once dead, only display the teleporting out 'beam' frame
+            this.deathAnimation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        } else {
+            this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        }
+        if (PARAMS.DEBUG){
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
