@@ -54,6 +54,9 @@ class Projectile {
                     }
                     that.removeFromWorld = true;
                 }
+                if(that.lastBB && entity instanceof Door) {
+                    if(entity.state != 3) that.removeFromWorld = true;
+                }
             }
         });
         this.updateBB()

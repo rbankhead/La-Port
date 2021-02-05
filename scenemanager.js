@@ -61,7 +61,7 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 18 * PARAMS.BLOCKWIDTH,true));
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 21 * PARAMS.BLOCKWIDTH,true));
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH,true));
-        this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,true));
+        //this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,true));
         this.game.addEntity(new Brick(this.game,33*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true));
 
         this.game.addEntity(new InfoSign(this.game,0*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Press A or D to move right or left"));
@@ -73,8 +73,8 @@ class SceneManager {
         this.game.addEntity(new Coin(this.game, 150, 100));
         this.game.addEntity(new CompanionCube(this.game, 60, 175));
         this.game.addEntity(new Turret(this.game, 100, 175));
-        var door1 = new Door(this.game, 0, 0);
-        this.game.addEntity(new Button(this.game, 24*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH - 20, door1));
+        var door1 = new Door(this.game, 795, 645);
+        this.game.addEntity(new Button(this.game, 20*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH - 20, door1));
         this.game.addEntity(door1);
 
         this.game.addEntity(this.porta);
