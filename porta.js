@@ -302,6 +302,23 @@ class Porta {
                         that.game.camera.portaSpawn.x = entity.x;
                         that.game.camera.portaSpawn.y = entity.y;
                     }
+
+                    if ((entity instanceof Door) && that.lastBB.right <= entity.BB.left) {
+                        if (entity.state != 3) {
+                            that.x = entity.BB.left - 22.5;
+                            that.velocity.x = 0;
+                            that.updateBB();
+                        }
+                    }
+                    if ((entity instanceof Door) && that.lastBB.left >= entity.BB.right) {
+                        if (entity.state != 3) {
+                            that.x = entity.BB.right;
+                            that.velocity.x = 0;
+                            that.updateBB();
+                        }
+                    }
+
+
                 }
             });
 
