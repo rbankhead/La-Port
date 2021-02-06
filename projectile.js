@@ -42,8 +42,12 @@ class Projectile {
                 if(that.lastBB && entity instanceof Brick) {
                     if(entity instanceof GlassBrick){} //do nothing
                     else if(entity instanceof MirrorBrick){
+                        if(that.lastBB.left >= entity.BB.right || that.lastBB.right <= entity.BB.left){
                         that.deltax = -1*that.deltax;
                         that.slope = -1*that.slope;
+                        } else{
+                            that.slope = -1*that.slope;
+                        }
                         that.x = that.lastBB.x;
                         that.y = that.lastBB.y;
                     }
