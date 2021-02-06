@@ -40,20 +40,30 @@ class Projectile {
         this.game.entities.forEach(function(entity){
             if(entity.BB && that.BB.collide(entity.BB)){
                 if(that.lastBB && entity instanceof Brick) {
-                    if(entity instanceof GlassBrick) console.log("Glass");
-                    if(entity.top && that.lastBB.bottom <= entity.BB.top){
+                    if(entity instanceof GlassBrick){} //do nothing
+                    else if(entity instanceof MirrorBrick){
+                        that.deltax = -1*that.deltax;
+                        that.slope = -1*that.slope;
+                        that.x = that.lastBB.x;
+                        that.y = that.lastBB.y;
+                    }
+                    else if(entity.top && that.lastBB.bottom <= entity.BB.top){
                         that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color, "top"));
+                        that.removeFromWorld = true;
                     }
                     else if(entity.bottom && that.lastBB.top >= entity.BB.bottom){
                         that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"bottom"));
+                        that.removeFromWorld = true;
                     }
                     else if(entity.right && that.lastBB.left >= entity.BB.right){
                         that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"right"));
+                        that.removeFromWorld = true;
                     }
                     else if(entity.left && that.lastBB.right <= entity.BB.left){
                         that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"left"));
+                        that.removeFromWorld = true;
                     }
-                    that.removeFromWorld = true;
+                    
                 }
                 if(that.lastBB && entity instanceof Door) {
                     if(entity.state != 3) that.removeFromWorld = true;
