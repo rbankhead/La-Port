@@ -31,6 +31,7 @@ const PARAMS = {
     DEBUG: false,
     SCALE: 1.5,
     BITWIDTH: 16,
+    PORTAL_ANIM_OFFSET: 19,
 };
 
 var nudgeCount = 0;

@@ -335,7 +335,7 @@ class Porta {
              * The code to reload the level after Porta teleports out is in the update() method of Scenemanager
              *
              **/
-            if (this.suicideCounter >= 90) this.die();
+            if (this.suicideCounter >= 90 || this.y > 42 * PARAMS.BLOCKWIDTH) this.die();
             if (this.game.R){
                 this.state="dying"; //do this last so it takes priority over idle, walking etc
                 this.suicideCounter++;
