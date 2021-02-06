@@ -30,6 +30,7 @@ class SceneManager {
         this.game.addEntity(new InfoSign(this.game,42*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Touching a checkpoint will save your progress"));
 
         this.game.addEntity(new GlassBrick(this.game,4*PARAMS.BLOCKWIDTH, 20 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new MirrorBrick(this.game, 0*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Checkpoint(this.game, 45 * PARAMS.BLOCKWIDTH, 27.5 * PARAMS.BLOCKWIDTH));
 
         this.game.addEntity(new Coin(this.game, 150, 100));
