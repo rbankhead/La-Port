@@ -28,7 +28,16 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 const PARAMS = {
-    DEBUG: true,
+    DEBUG: false,
     SCALE: 1.5,
     BITWIDTH: 16,
+    PORTAL_ANIM_OFFSET: 19,
 };
+
+var nudgeCount = 0;
+function nudge(entity) {
+    if (nudgeCount++ >= 15) {
+        entity.velocity.y -= .001;
+        nudgeCount = 0;
+    }
+}

@@ -22,7 +22,7 @@ class Projectile {
 
     updateBB(){
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x,this.y,32,16)
+        this.BB = new BoundingBox(this.x,this.y,32*0.8,16*0.8)
     }
 
     update() {
@@ -40,19 +40,37 @@ class Projectile {
         this.game.entities.forEach(function(entity){
             if(entity.BB && that.BB.collide(entity.BB)){
                 if(that.lastBB && entity instanceof Brick) {
-                    if(entity.top && that.lastBB.bottom <= entity.BB.top){
-                        that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color, "top"));
+                    if(entity instanceof GlassBrick){} //do nothing
+                    else if(entity instanceof MirrorBrick){
+                        if(that.lastBB.left >= entity.BB.right || that.lastBB.right <= entity.BB.left){
+                        that.deltax = -1*that.deltax;
+                        that.slope = -1*that.slope;
+                        } else{
+                            that.slope = -1*that.slope;
+                        }
+                        that.x = that.lastBB.x;
+                        that.y = that.lastBB.y;
+                    }
+                    else if(entity.top && that.lastBB.bottom <= entity.BB.top){
+                        that.game.addEntity(new Portal(that.game,that.BB.x,entity.BB.top-PARAMS.PORTAL_ANIM_OFFSET,that.color, "top"));
+                        that.removeFromWorld = true;
                     }
                     else if(entity.bottom && that.lastBB.top >= entity.BB.bottom){
-                        that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"bottom"));
+                        that.game.addEntity(new Portal(that.game,that.BB.x,entity.BB.bottom-PARAMS.PORTAL_ANIM_OFFSET,that.color,"bottom"));
+                        that.removeFromWorld = true;
                     }
                     else if(entity.right && that.lastBB.left >= entity.BB.right){
-                        that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"right"));
+                        that.game.addEntity(new Portal(that.game,entity.BB.right-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y,that.color,"right"));
+                        that.removeFromWorld = true;
                     }
                     else if(entity.left && that.lastBB.right <= entity.BB.left){
-                        that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color,"left"));
+                        that.game.addEntity(new Portal(that.game,entity.BB.left-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y,that.color,"left"));
+                        that.removeFromWorld = true;
                     }
-                    that.removeFromWorld = true;
+                    
+                }
+                if(that.lastBB && entity instanceof Door) {
+                    if(entity.state != 3) that.removeFromWorld = true;
                 }
             }
         });
@@ -61,7 +79,7 @@ class Projectile {
 
     draw(ctx) {
         //this.animation.drawFrame(this.game.clockTick,ctx,0,0,4);
-        this.animation.drawFrame(this.game.clockTick,ctx,this.x- this.game.camera.x,this.y,PARAMS.SCALE);
+        this.animation.drawFrame(this.game.clockTick,ctx,this.x- this.game.camera.x,this.y,0.8*PARAMS.SCALE);
         if (PARAMS.DEBUG){
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
