@@ -16,19 +16,18 @@ class Portal {
             console.log("invalid color entered for portal");
             return;
         }
-
         switch(this.orientation){
             case("top"):
-                this.BB = new BoundingBox(this.x+9,this.y+14,26,1);
+                this.BB = new BoundingBox(this.x+9,this.y+PARAMS.PORTAL_ANIM_OFFSET,26,1);
                 break;
             case("bottom"):
-                this.BB = new BoundingBox(this.x+9,this.y+19,26,1);
+                this.BB = new BoundingBox(this.x+9,this.y+PARAMS.PORTAL_ANIM_OFFSET,26,1);
                 break;
             case("left"):
-                this.BB = new BoundingBox(this.x+19,this.y+10,1,26);
+                this.BB = new BoundingBox(this.x+PARAMS.PORTAL_ANIM_OFFSET,this.y+10,1,26);
                 break;
             case("right"):
-                this.BB = new BoundingBox(this.x+19,this.y+10,1,26);
+                this.BB = new BoundingBox(this.x+PARAMS.PORTAL_ANIM_OFFSET,this.y+10,1,26);
                 break;
         }
 
