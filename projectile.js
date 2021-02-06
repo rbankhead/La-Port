@@ -40,6 +40,7 @@ class Projectile {
         this.game.entities.forEach(function(entity){
             if(entity.BB && that.BB.collide(entity.BB)){
                 if(that.lastBB && entity instanceof Brick) {
+                    if(entity instanceof GlassBrick) console.log("Glass");
                     if(entity.top && that.lastBB.bottom <= entity.BB.top){
                         that.game.addEntity(new Portal(that.game,that.lastBB.x,that.lastBB.y,that.color, "top"));
                     }

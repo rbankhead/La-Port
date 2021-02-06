@@ -134,7 +134,7 @@ class Porta {
     }
 
     update() {
-        nudge(this);
+        //nudge(this);
 
         //const TICK = this.game.clockTick;
         const WALK_SPEED = 3;

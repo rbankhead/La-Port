@@ -49,7 +49,7 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 15 * PARAMS.BLOCKWIDTH,false,true));
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 18 * PARAMS.BLOCKWIDTH,false,true));
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 21 * PARAMS.BLOCKWIDTH,false,true));
-        this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH,false,true));
+        this.game.addEntity(new MirrorBrick(this.game,-3*PARAMS.BLOCKWIDTH, 24 * PARAMS.BLOCKWIDTH,false,true));
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 27 * PARAMS.BLOCKWIDTH,false,true));
         this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,false,true));
         //right wall bricks
@@ -69,13 +69,13 @@ class SceneManager {
         this.game.addEntity(new InfoSign(this.game,18*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Use left and right click to make portals"));
         this.game.addEntity(new InfoSign(this.game,27*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"You can teleport between the green and purple portals!"));
 
-        this.game.addEntity(new Brick(this.game,4*PARAMS.BLOCKWIDTH, 20 * PARAMS.BLOCKWIDTH,true));
+        this.game.addEntity(new GlassBrick(this.game,4*PARAMS.BLOCKWIDTH, 20 * PARAMS.BLOCKWIDTH,true));
         this.game.addEntity(new Checkpoint(this.game, 13.5 * PARAMS.BLOCKWIDTH, 27.5 * PARAMS.BLOCKWIDTH));
 
         this.game.addEntity(new Coin(this.game, 150, 100));
         this.game.addEntity(new CompanionCube(this.game, 60, 175));
         this.game.addEntity(new Turret(this.game, 100, 175));
-        var door1 = new Door(this.game, 795, 645);
+        var door1 = new Door(this.game, 805, 645);
         this.game.addEntity(new Button(this.game, 20*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH - 20, door1));
         this.game.addEntity(door1);
         //this.game.addEntity(new Laser(this.game, 50, 250));
