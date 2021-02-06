@@ -14,9 +14,6 @@ class Turret {
     }
 
     updateVelocities(entryPortal, exitPortal){
-        console.log(exitPortal.orientation);
-        let tempx = this.velocity.x;
-        let tempy = this.velocity.y;
         if (entryPortal.orientation === "top"){
             switch(exitPortal.orientation){
                 case ("top"):
@@ -24,11 +21,9 @@ class Turret {
                     break;
                 case ("left"):
                     this.velocity.x = this.velocity.y;
-                    this.velocity.y = tempx;
                     break;
                 case ("right"):
                     this.velocity.x = this.velocity.y;
-                    this.velocity.y = tempx;
                     break;
             }
 
@@ -39,11 +34,9 @@ class Turret {
                     break;
                 case ("left"):
                     this.velocity.x = -this.velocity.y;
-                    this.velocity.y = tempx;
                     break;
                 case ("right"):
                     this.velocity.x = this.velocity.y;
-                    this.velocity.y = tempx;
                     break;
             }
 
@@ -51,11 +44,9 @@ class Turret {
             switch(exitPortal.orientation){
                 case ("bottom"):
                     this.velocity.y = this.velocity.x;
-                    this.velocity.x = tempy;
                     break;
                 case ("top"):
                     this.velocity.y = -this.velocity.x;
-                    this.velocity.x = tempy;
                     break;
                 case ("left"):
                     this.velocity.x = -this.velocity.x;
@@ -66,11 +57,9 @@ class Turret {
             switch(exitPortal.orientation){
                 case ("bottom"):
                     this.velocity.y = this.velocity.x;
-                    this.velocity.x = tempy;
                     break;
                 case ("top"):
                     this.velocity.y = -this.velocity.x;
-                    this.velocity.x = tempy;
                     break;
                 case ("right"):
                     this.velocity.x = -this.velocity.x;
@@ -86,7 +75,7 @@ class Turret {
         const ACC_FALLING = .4;
 
         let that = this;
-        this.game.entities.forEach(function(entity) {
+        this.game.entities.slice().reverse().forEach(function(entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Portal && entity.linkedPortal) {
                     switch (entity.linkedPortal.orientation) {
@@ -117,7 +106,7 @@ class Turret {
                 }
                 if (that.velocity.y > 0){ //falling
                     if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
-                        that.y = entity.BB.top - 32;
+                        that.y = entity.BB.top - 30;
                         that.velocity.y = 0;
                         that.updateBB();
                     }
