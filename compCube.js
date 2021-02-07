@@ -92,9 +92,7 @@ class CompanionCube {
         let validLocation = true;
         this.game.entities.forEach(function(entity){
             if (entity.BB && that.BB.collide(entity.BB)) {
-                console.log("maybe");
                 if((entity instanceof Brick)){
-                    console.log("ug");
                     validLocation = false;
                 }
             }

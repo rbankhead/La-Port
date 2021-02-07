@@ -41,7 +41,8 @@ class InfoSign {
 
     draw(ctx) {
         //only draw when porta is touching this.BB
-        if (this.BB.collide(this.game.porta.BB)) ctx.fillText(this.text, this.x-this.game.camera.x - this.text.length*1.5, this.y-PARAMS.BLOCKWIDTH);
+        ctx.font="20px Arial";
+        if (this.BB.collide(this.game.porta.BB)) ctx.fillText(this.text, this.x-this.game.camera.x - this.text.length*3, this.y-PARAMS.BLOCKWIDTH);
 
         ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y, 15*InfoSign.scale, 15*InfoSign.scale);
         if (PARAMS.DEBUG){

@@ -180,7 +180,6 @@ class Porta {
             if (this.game.shift && this.velocity.x > -1 * RUN_SPEED) this.velocity.x -= 1;
             else if (this.velocity.x > -1 * WALK_SPEED) this.velocity.x -= .5;
         }
-        this.updateBB();
 
         if (this.holding && this.game.E) {
             if (this.holding.held) {
@@ -215,6 +214,7 @@ class Porta {
         if (Math.abs(this.velocity.x) < .25) this.velocity.x = 0; //prevents inching on weird small number
         this.x += this.velocity.x;
         this.y += this.velocity.y;
+        this.updateBB();
 
         //collision
         /**
@@ -260,36 +260,36 @@ class Porta {
                         that.updateVelocities(entity, entity.linkedPortal);
 
                     }
-                    if (that.velocity.y > 0){ //falling
-                        if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
-                            if (that.velocity.x > RUN_SPEED) that.velocity.x = that.game.shift ? RUN_SPEED : WALK_SPEED;
-                            if (that.velocity.x < -RUN_SPEED) that.velocity.x = that.game.shift ? -RUN_SPEED : -WALK_SPEED;
-                            that.y = entity.BB.top - 32;
-                            that.velocity.y = 0;
-                            that.updateBB();
+                    if (entity instanceof Brick){
+                        if (that.velocity.y > 0 && entity.top){ //falling
+                            if(that.lastBB.bottom <= entity.BB.top ){ //landing
+                                if (that.velocity.x > RUN_SPEED) that.velocity.x = that.game.shift ? RUN_SPEED : WALK_SPEED;
+                                if (that.velocity.x < -RUN_SPEED) that.velocity.x = that.game.shift ? -RUN_SPEED : -WALK_SPEED;
+                                that.y = entity.BB.top - 32;
+                                that.velocity.y = 0;
+                            }
                         }
-                    }
-                    if (that.velocity.y < 0){ //jumping
-                        if((entity instanceof Brick) && that.lastBB.top >= entity.BB.bottom){ //landing
-                            that.y = entity.BB.bottom;
-                            that.velocity.y = 0.001;
-                            that.updateBB();
+                        if (that.velocity.y < 0){ //jumping
+                            if(that.lastBB.top >= entity.BB.bottom ) { //landing
+                                that.y = entity.BB.bottom;
+                                that.velocity.y = 0.001;
+                            }
                         }
-                    }
-                    if (that.velocity.x > 0) { //walking into brick on the right
-                        if ((entity instanceof Brick) && that.lastBB.right <= entity.BB.left){
-                            that.x = entity.BB.left - 22.5;
-                            that.velocity.x = 0;
-                            that.updateBB();
+                        if (that.velocity.x > 0) { //walking into brick on the right
+                            if (that.lastBB.right <= entity.BB.left){
+                                that.x = entity.BB.left - 22.5;
+                                that.velocity.x = 0;
+                            }
                         }
-                    }
-                    if (that.velocity.x < 0 ) { //walking into brick on the left
-                        if ((entity instanceof Brick) && that.lastBB.left >= entity.BB.right){
-                            that.x = entity.BB.right;
-                            that.velocity.x = 0;
-                            that.updateBB();
+                        if (that.velocity.x < 0 && entity.right) { //walking into brick on the left
+                            if (that.lastBB.left >= entity.BB.right){
+                                that.x = entity.BB.right;
+                                that.velocity.x = 0;
+                            }
                         }
+                        that.updateBB();
                     }
+
                     if (entity instanceof CompanionCube) {
                         if (that.game.E){
                             if (!entity.held) {
