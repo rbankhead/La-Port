@@ -19,6 +19,7 @@ class Porta {
         this.animations = [];
         this.loadAnimations();
         this.nudgeCounter = 0;
+        this.shotCounter = 0;
     }
 
     updateVelocities(entryPortal, exitPortal){
@@ -46,7 +47,7 @@ class Porta {
                     this.velocity.y = -this.velocity.y;
                     break;
                 case ("left"):
-                    this.velocity.x = -this.velocity.y;
+                    this.velocity.x = this.velocity.y;
                     this.velocity.y = tempx;
                     break;
                 case ("right"):
@@ -108,9 +109,9 @@ class Porta {
         this.animations["right"]["running"] = new Animator(this.spritesheet, 8, 37, this.width, this.height, 8, .1, 18, false, true);
         this.animations["left"]["running"] = new Animator(this.spritesheetReflected, 8, 37, this.width, this.height, 8, .1, 18, false, true);
 
-        //jumping states
-        //this.animations["portal gun"]["right"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
-        //this.animations["portal gun"]["left"]["jumping"] = new Animator(this.spritesheet, TBD, TBD, TBD, TBD, TBD, TBD, false, true);
+        //shooting states
+        this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
+        this.animations["left"]["shooting"] = new Animator(this.spritesheetReflected, 101, 72, 23, 21, 5, .075,8,true, false);
 
         //dying states
         this.animations["right"]["dying"] = new Animator(this.spritesheet, 8, 136, this.width, this.height, 8, .2, 18,false, true);
@@ -151,32 +152,39 @@ class Porta {
             this.game.rightclick = false;
             this.game.leftclick = false;
         } else if (this.game.leftclick) {
+            this.state="shooting";
+            this.shotCounter = 1;
             if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
             this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/2, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
+            this.facing = this.game.leftclick.x + this.game.camera.x  >= this.x ? "right" : "left";
             this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
-
+            this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
+            this.animations["left"]["shooting"] = new Animator(this.spritesheetReflected, 101, 72, 23, 21, 5, .075,8,true, false);
         } else if (this.game.rightclick) {
+            this.state="shooting";
+            this.shotCounter = 1;
             if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
             this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.rightclick.x + this.game.camera.x, this.game.rightclick.y, "green"));
+            console.log(this.game.rightclick.x + " " + this.x);
+            this.facing = this.game.rightclick.x + this.game.camera.x >= this.x ? "right" : "left";
             this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
+            this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
+            this.animations["left"]["shooting"] = new Animator(this.spritesheetReflected, 101, 72, 23, 21, 5, .075,8,true, false);
         }
 
-        /**
-         *  Check if not moving or if both movement keys are pressed
-         */
-        if ((!this.game.right && !this.game.left) || (this.game.right && this.game.left)) {
-            this.state = "idle";
-        }
 
+        else if ((!this.game.right && !this.game.left) || (this.game.right && this.game.left)) {
+            if (this.shotCounter === 0) this.state = "idle"; //Check if not moving or if both movement keys are pressed
+        }
         //left and right movement
         else if (this.game.right && this.velocity.y === 0) {
             this.facing = "right";
-            this.state = this.game.shift ? "running" : "walking";
+            if (this.shotCounter === 0) this.state = this.game.shift ? "running" : "walking";
             if (this.game.shift && this.velocity.x < RUN_SPEED) this.velocity.x += 1;
             else if (this.velocity.x < WALK_SPEED) this.velocity.x += .5;
         } else if (this.game.left && this.velocity.y === 0) {
             this.facing = "left";
-            this.state = this.game.shift ? "running" : "walking";
+            if (this.shotCounter === 0) this.state = this.game.shift ? "running" : "walking";
             if (this.game.shift && this.velocity.x > -1 * RUN_SPEED) this.velocity.x -= 1;
             else if (this.velocity.x > -1 * WALK_SPEED) this.velocity.x -= .5;
         }
@@ -232,7 +240,7 @@ class Porta {
             let that = this;
             this.game.entities.slice().reverse().forEach(function(entity){
                 if(entity.BB && that.BB.collide(entity.BB)){
-                    if (entity instanceof Portal && entity.linkedPortal){
+                    if (entity instanceof Portal && entity.linkedPortal && entity.active){
                         switch (entity.linkedPortal.orientation){
                             case("top"):
                                 that.x = entity.linkedPortal.x;
@@ -348,12 +356,23 @@ class Porta {
                 this.animations["right"]["dying"] = new Animator(this.spritesheet, 8, 136, this.width, this.height, 8, .2, 18,false, true);
                 this.animations["left"]["dying"] = new Animator(this.spritesheetReflected, 8, 136, this.width, this.height, 8, .2, 18,true, true);
             }
+            if(this.state === "shooting"){
+                this.shotCounter++;
+                if(this.shotCounter > 15) {
+                    this.state = "idle";
+                    this.shotCounter = 0;
+                    this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
+                    this.animations["left"]["shooting"] = new Animator(this.spritesheetReflected, 101, 72, 23, 21, 5, .075,8,true, false);
+                }
+            }
         }
     }
 
     draw(ctx){
         if (this.dead){ //once dead, only display the teleporting out 'beam' frame
             this.deathAnimation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        } else if (this.shotCounter!==0 && this.facing==="left"){
+            this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x-10, this.y, PARAMS.SCALE);
         } else {
             this.animations[this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
