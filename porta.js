@@ -73,11 +73,11 @@ class Porta {
         } else if (entryPortal.orientation === "right") {
             switch (exitPortal.orientation) {
                 case ("bottom"):
-                    this.velocity.y = this.velocity.x;
+                    this.velocity.y = -this.velocity.x;
                     this.velocity.x = tempy;
                     break;
                 case ("top"):
-                    this.velocity.y = -this.velocity.x;
+                    this.velocity.y = this.velocity.x;
                     this.velocity.x = tempy;
                     break;
                 case ("right"):
@@ -152,7 +152,7 @@ class Porta {
             this.game.leftclick = false;
         } else if (this.game.leftclick) {
             if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
-            this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
+            this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/2, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
             this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
 
         } else if (this.game.rightclick) {
@@ -269,7 +269,7 @@ class Porta {
                                 that.velocity.y = 0;
                             }
                         }
-                        if (that.velocity.y < 0){ //jumping
+                        if (that.velocity.y < 0 && entity.bottom){ //jumping
                             if(that.lastBB.top >= entity.BB.bottom ) { //landing
                                 that.y = entity.BB.bottom;
                                 that.velocity.y = 0.001;

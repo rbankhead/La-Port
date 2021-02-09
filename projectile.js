@@ -60,11 +60,11 @@ class Projectile {
                         that.removeFromWorld = true;
                     }
                     else if(entity.right && that.lastBB.left >= entity.BB.right){
-                        that.game.addEntity(new Portal(that.game,entity.BB.right-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y,that.color,"right"));
+                        that.game.addEntity(new Portal(that.game,entity.BB.right-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y-15,that.color,"right"));
                         that.removeFromWorld = true;
                     }
                     else if(entity.left && that.lastBB.right <= entity.BB.left){
-                        that.game.addEntity(new Portal(that.game,entity.BB.left-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y,that.color,"left"));
+                        that.game.addEntity(new Portal(that.game,entity.BB.left-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y-15,that.color,"left"));
                         that.removeFromWorld = true;
                     }
                     
