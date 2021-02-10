@@ -46,14 +46,15 @@ class Portal {
 
         if (this.orientation === "top" || this.orientation === "bottom") {
             this.animation = new Animator(this.spritesheet, 135, 12, 60, 39, 8, .1,25, false, true,true);
-            this.openAnimation = new Animator(this.spritesheet, 70, 12, 60, 39, 8, .075,25, false, true,true);
+            this.openAnimation = new Animator(this.spritesheet, 70, 12, 60, 39, 8, .075,25, false, false,true);
             //this.closeAnimation = new Animator(this.spritesheet, 0, 12, 60, 39, 8, .075,25, false, false,true);
         } else {
             this.animation = new Animator(this.spritesheet, 12, 14, 36, 60, 8, .1,28, false, true);
-            this.openAnimation = new Animator(this.spritesheet, 12, 74, 36, 60, 8, .075,28, false, true);
+            this.openAnimation = new Animator(this.spritesheet, 12, 74, 36, 60, 8, .075,28, false, false);
             //this.closeAnimation = new Animator(this.spritesheet, 12, 134, 36, 60, 8, .075,28, false, false);
         }
     }
+
     update(){
         if (this.openingCounter < 15) {
             this.openingCounter++;
@@ -66,6 +67,7 @@ class Portal {
         }
 
     }
+
     draw(ctx){
         if (this.openingCounter<15 && !this.active){
             this.openAnimation.drawFrame(this.game.clockTick, ctx, this.x-this.game.camera.x, this.y, 1);

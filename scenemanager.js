@@ -14,26 +14,21 @@ class SceneManager {
     loadLevelOne() {
         this.game.entities = [];
 
-
-
+        //floor and ceiling
         for(let i=0;i<=30;i+=3){
             this.game.addEntity(new Brick(this.game,-3*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,false,true, i===30)); //leftmost walls
             if (i!==3) this.game.addEntity(new Brick(this.game,42*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true, i===6)); //end of room 1 walls
-            if (i!==27) this.game.addEntity(new Brick(this.game,51*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,i===30)); //start of room 2 walls
+            if (i!==27) this.game.addEntity(new Brick(this.game,51*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,i===30, i===24)); //start of room 2 walls
             if (i!==27) this.game.addEntity(new Brick(this.game,99*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,i===30)); //end of room 2 walls
         }
         for (let i=0;i<=99;i+=3){
             this.game.addEntity(new Brick(this.game,i*PARAMS.BLOCKWIDTH,0, false,false,true,true)); //ceiling
             this.game.addEntity(new Brick(this.game,i*PARAMS.BLOCKWIDTH,30 * PARAMS.BLOCKWIDTH, false,false,true)); //floor
         }
-        /**
-         * Floor and ceiling for entire level
-         */
         //end floor and ceiling
 
-        /**
-         * ROOM ONE
-         */
+
+        //room 1 bricks
         this.game.addEntity(new Brick(this.game, -1.5*PARAMS.BLOCKWIDTH,6*PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 0*PARAMS.BLOCKWIDTH,7.5*PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 0*PARAMS.BLOCKWIDTH,21*PARAMS.BLOCKWIDTH,true,true,true,false));
@@ -49,7 +44,6 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game, 9*PARAMS.BLOCKWIDTH,6*PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 10.5*PARAMS.BLOCKWIDTH,7.5*PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 12*PARAMS.BLOCKWIDTH,9*PARAMS.BLOCKWIDTH,true,true,true,true));
-
         this.game.addEntity(new Brick(this.game, 15*PARAMS.BLOCKWIDTH,12*PARAMS.BLOCKWIDTH,true,true,true,false));
         this.game.addEntity(new Brick(this.game, 15*PARAMS.BLOCKWIDTH,15*PARAMS.BLOCKWIDTH,true,true,false,true));
         this.game.addEntity(new Brick(this.game, 15*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,true));
@@ -78,8 +72,7 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 18*PARAMS.BLOCKWIDTH,true,true,true,true))
         this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 12*PARAMS.BLOCKWIDTH,true,true,true,true))
         this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 6*PARAMS.BLOCKWIDTH,true,true,true,true))
-
-        //end room 1
+        //end room 1 bricks
 
         this.game.addEntity(new Brick(this.game, 84*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,false));
         this.game.addEntity(new Brick(this.game, 78*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,false));
