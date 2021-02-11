@@ -13,6 +13,7 @@ class SceneManager {
 
     loadLevelOne() {
         this.game.entities = [];
+        
 
         //floor and ceiling
         for(let i=0;i<=30;i+=3){
@@ -101,6 +102,7 @@ class SceneManager {
         this.game.addEntity(door1);
         //this.game.addEntity(new Laser(this.game, 50, 250));
 
+        this.game.addEntity(new Hud(this.game));
         this.game.addEntity(this.porta);
     };
 

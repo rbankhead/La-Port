@@ -22,6 +22,7 @@ ASSET_MANAGER.queueDownload("./sprites/mirror.png");
 ASSET_MANAGER.queueDownload("./sprites/glass.png");
 
 
+
 ASSET_MANAGER.downloadAll(function () {
 	var canvas = document.getElementById('gameWorld');
 	var ctx = canvas.getContext('2d');

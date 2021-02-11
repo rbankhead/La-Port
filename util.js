@@ -37,7 +37,7 @@ const PARAMS = {
 var nudgeCount = 0;
 function nudge(entity) {
     if (nudgeCount++ >= 15) {
-        entity.velocity.y -= .001;
+        entity.velocity.y -= .1;
         nudgeCount = 0;
     }
 }

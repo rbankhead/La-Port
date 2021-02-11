@@ -20,6 +20,11 @@ class Porta {
         this.loadAnimations();
         this.nudgeCounter = 0;
         this.shotCounter = 0;
+
+        this.jumpSound = new Audio("./audio/jump.wav");
+        this.shootSound = new Audio("./audio/laser.wav");
+        this.dieSound = new Audio("./audio/die.wav");
+        this.suicideSound = new Audio("./audio/suicide.wav");
     }
 
     updateVelocities(entryPortal, exitPortal){
@@ -132,6 +137,7 @@ class Porta {
          */
         this.dead=true;
         this.velocity.y = -25; //arbitrary speed to teleport out of level
+        this.dieSound.play();
     }
 
     update() {
@@ -152,6 +158,7 @@ class Porta {
             this.game.rightclick = false;
             this.game.leftclick = false;
         } else if (this.game.leftclick) {
+            this.shootSound.play();
             this.state="shooting";
             this.shotCounter = 1;
             if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
@@ -161,6 +168,7 @@ class Porta {
             this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
             this.animations["left"]["shooting"] = new Animator(this.spritesheetReflected, 101, 72, 23, 21, 5, .075,8,true, false);
         } else if (this.game.rightclick) {
+            this.shootSound.play();
             this.state="shooting";
             this.shotCounter = 1;
             if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
@@ -201,7 +209,10 @@ class Porta {
             transitions from moving up very slowly to down very slowly, only becoming
             zero upon collision with a surface.
         */
-        if (this.game.space && this.velocity.y === 0) this.velocity.y = -10;
+        if (this.game.space && this.velocity.y === 0){
+            this.velocity.y = -10;
+            this.jumpSound.play();
+        }
         //Gravity and Drag
         if (!this.dead){ //if the player is dead and teleporting out, we don't need to worry about gravity
 
@@ -329,9 +340,17 @@ class Porta {
                         }
                     }
 
+                    if (entity instanceof Coin){
+                        Coin.coinCount += 1;
+                        entity.removeFromWorld = true;
+                        entity.playSound();
+                    }
 
                 }
             });
+
+            nudge(this);
+            
 
             /**
              * Suicide feature
@@ -344,7 +363,8 @@ class Porta {
              *
              **/
             if (this.suicideCounter >= 90 || this.y > 42 * PARAMS.BLOCKWIDTH) this.die();
-            if (this.game.R){
+            if (this.game.R && this.state!="dying"){
+                this.suicideSound.play();
                 this.state="dying"; //do this last so it takes priority over idle, walking etc
                 this.suicideCounter++;
             } else {
