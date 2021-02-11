@@ -281,7 +281,7 @@ class Porta {
                     }
                     if (entity instanceof Brick){
                         if (that.velocity.y > 0 && entity.top){ //falling
-                            if(that.lastBB.bottom <= entity.BB.top ){ //landing
+                            if(that.lastBB.bottom <= entity.BB.top || (that.BB.bottom >= entity.BB.top && that.BB.top <= entity.BB.top)){ //landing
                                 if (that.velocity.x > RUN_SPEED) that.velocity.x = that.game.shift ? RUN_SPEED : WALK_SPEED;
                                 if (that.velocity.x < -RUN_SPEED) that.velocity.x = that.game.shift ? -RUN_SPEED : -WALK_SPEED;
                                 that.y = entity.BB.top - 32;
@@ -289,19 +289,19 @@ class Porta {
                             }
                         }
                         if (that.velocity.y < 0 && entity.bottom){ //jumping
-                            if(that.lastBB.top >= entity.BB.bottom ) { //landing
+                            if(that.lastBB.top >= entity.BB.bottom || (that.BB.top <= entity.BB.top && that.BB.bottom >= entity.BB.top && !(that.lastBB.left < entity.BB.right || that.lastBB.right > entity.BB.right))) { //landing
                                 that.y = entity.BB.bottom;
                                 that.velocity.y = 0.001;
                             }
                         }
-                        if (that.velocity.x > 0) { //walking into brick on the right
-                            if (that.lastBB.right <= entity.BB.left){
+                        if (that.velocity.x > 0 && entity.left) { //walking into brick on the right
+                            if (that.lastBB.right <= entity.BB.left || (that.BB.right >= entity.BB.left && that.BB.right<=that.BB.left && !(that.BB.top >= entity.bottom))){
                                 that.x = entity.BB.left - 22.5;
                                 that.velocity.x = 0;
                             }
                         }
                         if (that.velocity.x < 0 && entity.right) { //walking into brick on the left
-                            if (that.lastBB.left >= entity.BB.right){
+                            if (that.lastBB.left >= entity.BB.right || (that.BB.left <= entity.BB.right && that.BB.right >= entity.BB.right)){
                                 that.x = entity.BB.right;
                                 that.velocity.x = 0;
                             }
