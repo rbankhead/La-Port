@@ -37,7 +37,7 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game, 1.5*PARAMS.BLOCKWIDTH,9*PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 3*PARAMS.BLOCKWIDTH,10.5*PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 3*PARAMS.BLOCKWIDTH,24*PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new Brick(this.game, 6*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 6*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,false,true,true));
         this.game.addEntity(new Brick(this.game, 6*PARAMS.BLOCKWIDTH,24*PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 9*PARAMS.BLOCKWIDTH,15*PARAMS.BLOCKWIDTH,true,true,true,false));
         this.game.addEntity(new Brick(this.game, 9*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,false,true));
@@ -69,18 +69,18 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game, 33*PARAMS.BLOCKWIDTH, 19.5*PARAMS.BLOCKWIDTH,true,true,true,true))
         this.game.addEntity(new Brick(this.game, 33*PARAMS.BLOCKWIDTH, 13.5*PARAMS.BLOCKWIDTH,true,true,true,true))
         this.game.addEntity(new Brick(this.game, 33*PARAMS.BLOCKWIDTH, 7.5*PARAMS.BLOCKWIDTH,true,true,true,true))
-        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 24*PARAMS.BLOCKWIDTH,true,true,true,true))
-        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 18*PARAMS.BLOCKWIDTH,true,true,true,true))
-        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 12*PARAMS.BLOCKWIDTH,true,true,true,true))
-        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 6*PARAMS.BLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 24*PARAMS.BLOCKWIDTH,true,false,true,true))
+        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 18*PARAMS.BLOCKWIDTH,true,false,true,true))
+        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 12*PARAMS.BLOCKWIDTH,true,false,true,true))
+        this.game.addEntity(new Brick(this.game, 39*PARAMS.BLOCKWIDTH, 6*PARAMS.BLOCKWIDTH,true,false,true,true))
         //end room 1 bricks
 
-        this.game.addEntity(new Brick(this.game, 84*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,false));
-        this.game.addEntity(new Brick(this.game, 78*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,false));
-        this.game.addEntity(new Brick(this.game, 72*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,false));
-        this.game.addEntity(new Brick(this.game, 66*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,false));
-        this.game.addEntity(new Brick(this.game, 60*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,false));
-        this.game.addEntity(new Brick(this.game, 54*PARAMS.BLOCKWIDTH,16.5*PARAMS.BLOCKWIDTH,true,true,true,false));
+        this.game.addEntity(new Brick(this.game, 84*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 78*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 72*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 66*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 60*PARAMS.BLOCKWIDTH,18*PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 54*PARAMS.BLOCKWIDTH,16.5*PARAMS.BLOCKWIDTH,true,true,true,true));
 
         this.game.addEntity(new InfoSign(this.game,0.75*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Welcome! Press A or D to move right or left"));
         this.game.addEntity(new InfoSign(this.game,12*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Press spacebar to jump"));
