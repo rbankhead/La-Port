@@ -20,6 +20,10 @@ ASSET_MANAGER.queueDownload("./sprites/door.png");
 ASSET_MANAGER.queueDownload("./sprites/laser.png");
 ASSET_MANAGER.queueDownload("./sprites/mirror.png");
 ASSET_MANAGER.queueDownload("./sprites/glass.png");
+ASSET_MANAGER.queueDownload("./sprites/background.png");
+ASSET_MANAGER.queueDownload("./sprites/forground.png");
+ASSET_MANAGER.queueDownload("./sprites/midground_far.png");
+ASSET_MANAGER.queueDownload("./sprites/midground.png");
 
 
 

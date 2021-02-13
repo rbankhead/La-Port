@@ -12,8 +12,10 @@ class SceneManager {
     };
 
     loadLevelOne() {
+        this.update(); // initialize screen positions
         this.game.entities = [];
-        
+
+        this.game.addEntity(new Background(this.game, -50));
 
         //floor and ceiling
         for(let i=0;i<=30;i+=3){
