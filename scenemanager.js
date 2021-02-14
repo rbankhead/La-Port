@@ -124,11 +124,11 @@ class SceneManager {
         this.game.addEntity(new CompanionCube(this.game, 150*PARAMS.BLOCKWIDTH, 6*PARAMS.BLOCKWIDTH));
         this.game.addEntity(new InfoSign(this.game,135.75*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Place the companion cube on the red switch to open the door"));
         this.game.addEntity(new InfoSign(this.game,153*PARAMS.BLOCKWIDTH,10.7*PARAMS.BLOCKWIDTH,"Press E to pick up or put down the companion cube"));
-        //153 last open brick x
         //end room 3
 
         //start room 5
         this.game.addEntity(new Coin(this.game, 238.5*PARAMS.BLOCKWIDTH-8, 9*PARAMS.BLOCKWIDTH));
+        this.game.addEntity(new InfoSign(this.game, 223.5*PARAMS.BLOCKWIDTH, 4.7*PARAMS.BLOCKWIDTH, "You can't create portals on COLOR bricks"));
         //MIRROR BRICKS IN ROOM 5 ARE PLACEHOLDERS FOR NO-PORTAL BRICKS
         for(let i=15;i<=30;i+=3) this.game.addEntity(new MirrorBrick(this.game,237*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new GlassBrick(this.game,219*PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH,true,true,true,true));
