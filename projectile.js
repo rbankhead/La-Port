@@ -52,18 +52,26 @@ class Projectile {
                         that.y = that.lastBB.y;
                     }
                     else if(entity.top && that.lastBB.bottom <= entity.BB.top){
+                        if (that.color==="purple" && that.game.purplePortal) that.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
+                        if (that.color === "green" && that.game.greenPortal) that.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
                         that.game.addEntity(new Portal(that.game,that.BB.x,entity.BB.top-PARAMS.PORTAL_ANIM_OFFSET,that.color, "top"));
                         that.removeFromWorld = true;
                     }
                     else if(entity.bottom && that.lastBB.top >= entity.BB.bottom){
+                        if (that.color==="purple" && that.game.purplePortal) that.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
+                        if (that.color === "green" && that.game.greenPortal) that.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
                         that.game.addEntity(new Portal(that.game,that.BB.x,entity.BB.bottom-PARAMS.PORTAL_ANIM_OFFSET,that.color,"bottom"));
                         that.removeFromWorld = true;
                     }
                     else if(entity.right && that.lastBB.left >= entity.BB.right){
+                        if (that.color==="purple" && that.game.purplePortal) that.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
+                        if (that.color === "green" && that.game.greenPortal) that.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
                         that.game.addEntity(new Portal(that.game,entity.BB.right-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y-15,that.color,"right"));
                         that.removeFromWorld = true;
                     }
                     else if(entity.left && that.lastBB.right <= entity.BB.left){
+                        if (that.color==="purple" && that.game.purplePortal) that.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
+                        if (that.color === "green" && that.game.greenPortal) that.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
                         that.game.addEntity(new Portal(that.game,entity.BB.left-PARAMS.PORTAL_ANIM_OFFSET,that.lastBB.y-15,that.color,"left"));
                         that.removeFromWorld = true;
                     }

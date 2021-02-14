@@ -161,7 +161,7 @@ class Porta {
             this.shootSound.play();
             this.state="shooting";
             this.shotCounter = 1;
-            if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
+            //if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
             this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/2, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
             this.facing = this.game.leftclick.x + this.game.camera.x  >= this.x ? "right" : "left";
             this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
@@ -171,7 +171,7 @@ class Porta {
             this.shootSound.play();
             this.state="shooting";
             this.shotCounter = 1;
-            if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
+            //if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
             this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.rightclick.x + this.game.camera.x, this.game.rightclick.y, "green"));
             console.log(this.game.rightclick.x + " " + this.x);
             this.facing = this.game.rightclick.x + this.game.camera.x >= this.x ? "right" : "left";
@@ -280,41 +280,57 @@ class Porta {
 
                     }
                     if (entity instanceof Brick){
-                        if (that.velocity.y > 0 && entity.top){ //falling
+                        //these variables exist exclusively for readability of code
+                        let falling = that.velocity.y > 0 && entity.top;
+                        let jumping = that.velocity.y < 0 && entity.bottom;
+                        let portaWasJustAboveBrick = that.lastBB.bottom <= entity.BB.top;
+                        let portaWasJustBelowBrick = that.lastBB.top >= entity.BB.bottom;
+                        let portaBottomFellIntoBrick = that.BB.bottom >= entity.BB.top;
+                        let portaTopIsAboveBrick = that.BB.top <= entity.BB.top;
+                        let portaWasRightOfBrick = that.lastBB.left >= entity.BB.right;
+                        let portaWasLeftOfBrick = that.lastBB.right <= entity.BB.left;
+                        let walkingIntoRightBrick = that.velocity.x > 0 && entity.left;
+                        let portaRightClippedIntoBrick = that.BB.right >= entity.BB.left;
+                        let portaLeftIsLeftOfBrick = that.BB.right >= entity.BB.left;
+                        let portaLeftClippedIntoBrick = that.BB.left <= entity.BB.right;
+                        let portaRightIsRightOfBrick = that.BB.right >= entity.BB.right;
+                        let walkingIntoLeftBrick = that.velocity.x < 0 && entity.right;
 
-                            if(that.lastBB.bottom <= entity.BB.top ||
-                                (that.BB.bottom >= entity.BB.top &&
-                                    that.BB.top <= entity.BB.top &&
-                                    !(that.lastBB.left >= entity.BB.right || that.lastBB.right <= entity.BB.left))){ //landing
 
+                        if (falling){ //falling
+                            if(portaWasJustAboveBrick ||
+                                (portaBottomFellIntoBrick &&
+                                    portaTopIsAboveBrick &&
+                                    !(portaWasRightOfBrick || portaWasLeftOfBrick))){ //landing
                                 if (that.velocity.x > RUN_SPEED) that.velocity.x = that.game.shift ? RUN_SPEED : WALK_SPEED;
                                 if (that.velocity.x < -RUN_SPEED) that.velocity.x = that.game.shift ? -RUN_SPEED : -WALK_SPEED;
                                 that.y = entity.BB.top - 32;
                                 that.velocity.y = 0;
                             }
                         }
-                        if (that.velocity.y < 0 && entity.bottom){ //jumping
-                            if(that.lastBB.top >= entity.BB.bottom || (that.BB.top <= entity.BB.top && that.BB.bottom >= entity.BB.top && !(that.lastBB.left < entity.BB.right || that.lastBB.right > entity.BB.right))) { //landing
+                        if (jumping){
+                            if(portaWasJustBelowBrick || (portaTopIsAboveBrick && portaBottomFellIntoBrick && !(portaWasRightOfBrick || portaWasLeftOfBrick))) { //landing
+                            //if(portaWasJustBelowBrick || (portaTopIsAboveBrick && portaBottomFellIntoBrick && !(that.lastBB.left < entity.BB.right || that.lastBB.right > entity.BB.right))) { //landing
                                 that.y = entity.BB.bottom;
                                 that.velocity.y = 0.001;
                             }
                         }
-
-                        if (that.velocity.x > 0 && entity.left) { //walking into brick on the right
-                            if (that.lastBB.right <= entity.BB.left || (that.BB.right >= entity.BB.left && that.BB.left <= that.BB.left && (!(that.lastBB.top >= entity.bottom) || (that.lastBB.bottom <= entity.top)))){
+                        if (walkingIntoRightBrick) { //walking into brick on the right
+                            if (portaWasLeftOfBrick || (portaRightClippedIntoBrick  && portaLeftIsLeftOfBrick && (!(portaWasJustBelowBrick || (portaWasJustAboveBrick))))){
                                 that.x = entity.BB.left - 22.5;
                                 that.velocity.x = 0;
                             }
                         }
-                        if (that.velocity.x < 0 && entity.right) { //walking into brick on the left
-                            if (that.lastBB.left >= entity.BB.right || (that.BB.left <= entity.BB.right && that.BB.right >= entity.BB.right && (!(that.lastBB.top >= entity.bottom) || !(that.lastBB.bottom <= entity.top)))){
+                        if (walkingIntoLeftBrick) { //walking into brick on the left
+                            if (portaWasRightOfBrick || (portaLeftClippedIntoBrick && portaRightIsRightOfBrick && (!(portaWasJustBelowBrick || (portaWasJustAboveBrick))))){
                                 that.x = entity.BB.right;
                                 that.velocity.x = 0;
                             }
                         }
-                        that.updateBB();
-                    }
 
+                        that.updateBB();
+
+                    }
                     if (entity instanceof CompanionCube) {
                         if (that.game.E){
                             if (!entity.held) {
@@ -330,7 +346,6 @@ class Porta {
                         that.game.camera.portaSpawn.x = entity.x;
                         that.game.camera.portaSpawn.y = entity.y;
                     }
-
                     if ((entity instanceof Door) && that.lastBB.right <= entity.BB.left) {
                         if (entity.state != 3) {
                             that.x = entity.BB.left - 22.5;
@@ -345,7 +360,6 @@ class Porta {
                             that.updateBB();
                         }
                     }
-
                     if (entity instanceof Coin){
                         Coin.coinCount += 1;
                         entity.removeFromWorld = true;
