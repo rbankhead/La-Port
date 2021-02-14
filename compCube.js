@@ -92,9 +92,7 @@ class CompanionCube {
         let validLocation = true;
         this.game.entities.forEach(function(entity){
             if (entity.BB && that.BB.collide(entity.BB)) {
-                console.log("maybe");
                 if((entity instanceof Brick)){
-                    console.log("ug");
                     validLocation = false;
                 }
             }
@@ -165,7 +163,7 @@ class CompanionCube {
                 }
                 if (that.velocity.y > 0){ //falling
                     if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
-                        that.y = entity.BB.top - 27;
+                        that.y = entity.BB.top - 25;
                         that.velocity.y = 0;
                         that.updateBB();
                     }

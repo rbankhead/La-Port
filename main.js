@@ -9,7 +9,7 @@ ASSET_MANAGER.queueDownload("./sprites/greenportalrotate.png");
 ASSET_MANAGER.queueDownload("./sprites/porta.png");
 ASSET_MANAGER.queueDownload("./sprites/portareflected.png");
 ASSET_MANAGER.queueDownload("./sprites/projectiles.png");
-ASSET_MANAGER.queueDownload("./sprites/tileset.png");
+ASSET_MANAGER.queueDownload("./sprites/brick.png");
 ASSET_MANAGER.queueDownload("./sprites/checkpoint.png");
 ASSET_MANAGER.queueDownload("./sprites/info.png");
 ASSET_MANAGER.queueDownload("./sprites/coin.png");
@@ -20,6 +20,11 @@ ASSET_MANAGER.queueDownload("./sprites/door.png");
 ASSET_MANAGER.queueDownload("./sprites/laser.png");
 ASSET_MANAGER.queueDownload("./sprites/mirror.png");
 ASSET_MANAGER.queueDownload("./sprites/glass.png");
+ASSET_MANAGER.queueDownload("./sprites/background.png");
+ASSET_MANAGER.queueDownload("./sprites/forground.png");
+ASSET_MANAGER.queueDownload("./sprites/midground_far.png");
+ASSET_MANAGER.queueDownload("./sprites/midground.png");
+
 
 
 ASSET_MANAGER.downloadAll(function () {
