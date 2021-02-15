@@ -16,8 +16,8 @@ class Projectile {
         this.deltax = (xDestination-x);
         this.deltay= (yDestination-y);
         this.slope = this.deltay/this.deltax;
-
-
+        this.reflectSound = AUDIO_MANAGER.getAsset("./audio/reflect.wav");
+        this.bounceCount = 0;
     };
 
     updateBB(){
@@ -42,6 +42,8 @@ class Projectile {
                 if(that.lastBB && entity instanceof Brick) {
                     if(entity instanceof GlassBrick){} //do nothing
                     else if(entity instanceof MirrorBrick){
+                        that.bounceCount++;
+                        that.reflectSound.play();
                         if(that.lastBB.left >= entity.BB.right || that.lastBB.right <= entity.BB.left){
                         that.deltax = -1*that.deltax;
                         that.slope = -1*that.slope;
@@ -82,6 +84,7 @@ class Projectile {
                 }
             }
         });
+        if(this.bounceCount >= 10) this.removeFromWorld = true;
         this.updateBB()
     };
 

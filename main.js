@@ -1,6 +1,18 @@
 var gameEngine = new GameEngine();
 
 var ASSET_MANAGER = new AssetManager();
+var AUDIO_MANAGER = new AudioManager();
+
+AUDIO_MANAGER.queueDownload("./audio/jump.wav");
+AUDIO_MANAGER.queueDownload("./audio/laser.wav");
+AUDIO_MANAGER.queueDownload("./audio/die.wav");
+AUDIO_MANAGER.queueDownload("./audio/suicide.wav");
+AUDIO_MANAGER.queueDownload("./audio/coin.wav");
+AUDIO_MANAGER.queueDownload("./audio/bonk.wav");
+AUDIO_MANAGER.queueDownload("./audio/button.wav");
+AUDIO_MANAGER.queueDownload("./audio/door.wav");
+AUDIO_MANAGER.queueDownload("./audio/reflect.wav");
+
 
 ASSET_MANAGER.queueDownload("./sprites/greenportal.png");
 ASSET_MANAGER.queueDownload("./sprites/purpleportal.png");
@@ -26,7 +38,7 @@ ASSET_MANAGER.queueDownload("./sprites/midground_far.png");
 ASSET_MANAGER.queueDownload("./sprites/midground.png");
 
 
-
+AUDIO_MANAGER.downloadAll();
 ASSET_MANAGER.downloadAll(function () {
 	var canvas = document.getElementById('gameWorld');
 	var ctx = canvas.getContext('2d');

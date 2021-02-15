@@ -8,12 +8,10 @@ class SceneManager {
         this.portaSpawn = {x: 0 * PARAMS.BLOCKWIDTH, y: 28.5 * PARAMS.BLOCKWIDTH}
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
 
-        this.themeSong = new Audio("./audio/lvlOne.wav");
         this.loadLevelOne();
     };
 
     loadLevelOne() {
-        this.themeSong.play();
         this.update(); // initialize screen positions
         this.game.entities = [];
 

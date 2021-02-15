@@ -6,7 +6,7 @@ class Coin {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/coin.png"); //add sprite
         this.animation = new Animator(this.spritesheet, 0, 0, 8, 7, 6, .1, 0, false, true);
         this.BB = new BoundingBox(this.x, this.y, 16, 16);
-        this.sound = new Audio("./audio/coin.wav")
+        this.sound = AUDIO_MANAGER.getAsset("./audio/coin.wav");
     };
 
     update() {

@@ -10,6 +10,7 @@ class Button {
         this.animations[3] = new Animator(this.spritesheet, 0, 10, 14, 9, 1, 1, 0, false, true); //down
         this.state = 0;
         this.BB = new BoundingBox(this.x, this.y, this.scale * 14, this.scale * 10);
+        this.sound = AUDIO_MANAGER.getAsset("./audio/button.wav");
     };
 
     updateBB() {
@@ -51,6 +52,7 @@ class Button {
         if((this.state == 1 || this.state == 2) && this.animations[this.state].currentFrame() >= 2){
             this.animations[this.state].elapsedTime = 0;
             this.state = (this.state + 2)%4;
+            this.sound.play();
         }
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';

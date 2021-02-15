@@ -21,10 +21,10 @@ class Porta {
         this.nudgeCounter = 0;
         this.shotCounter = 0;
 
-        this.jumpSound = new Audio("./audio/jump.wav");
-        this.shootSound = new Audio("./audio/laser.wav");
-        this.dieSound = new Audio("./audio/die.wav");
-        this.suicideSound = new Audio("./audio/suicide.wav");
+        this.jumpSound = AUDIO_MANAGER.getAsset("./audio/jump.wav");
+        this.shootSound = AUDIO_MANAGER.getAsset("./audio/laser.wav");
+        this.dieSound = AUDIO_MANAGER.getAsset("./audio/die.wav");
+        this.suicideSound = AUDIO_MANAGER.getAsset("./audio/suicide.wav");
     }
 
     updateVelocities(entryPortal, exitPortal){
@@ -382,7 +382,7 @@ class Porta {
              * The code to reload the level after Porta teleports out is in the update() method of Scenemanager
              *
              **/
-            if (this.suicideCounter >= 90 || this.y > 42 * PARAMS.BLOCKWIDTH) this.die();
+            if (this.suicideCounter >= 150 || this.y > 42 * PARAMS.BLOCKWIDTH) this.die();
             if (this.game.R && this.state!="dying"){
                 this.suicideSound.play();
                 this.state="dying"; //do this last so it takes priority over idle, walking etc

@@ -9,6 +9,7 @@ class Door {
         this.animations[3] = new Animator(this.spritesheet, 8*32, 0, 32, 59, 1, .1, 0, false, true); //open
         this.BB = new BoundingBox(this.x, this.y, this.scale*32, this.scale*59);
         this.state = 0;
+        this.sound = AUDIO_MANAGER.getAsset("./audio/door.wav");
     };
 
     update(){
@@ -20,6 +21,7 @@ class Door {
         if((this.state == 1 || this.state == 2) && this.animations[this.state].currentFrame() >= 8){
             this.animations[this.state].elapsedTime = 0;
             this.state = (this.state + 2)%4;
+            this.sound.play();
         }
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
