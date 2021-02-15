@@ -33,6 +33,7 @@ class InfoSign {
         //this.game.infoSign = this; RB: commenting out. this would make this.game.infoSign only equal to the most recently added sign. likely not helpful
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/info.png"); //add sprite
         this.BB = new BoundingBox(this.x,this.y,15*InfoSign.scale, 15*InfoSign.scale);
+        this.textWidth = this.game.ctx.measureText(this.text).width; /// width in pixels
     };
 
     update() {
@@ -41,8 +42,15 @@ class InfoSign {
 
     draw(ctx) {
         //only draw when porta is touching this.BB
-        ctx.font="20px Arial";
-        if (this.BB.collide(this.game.porta.BB)) ctx.fillText(this.text, this.x-this.game.camera.x - this.text.length*3, this.y-PARAMS.BLOCKWIDTH);
+
+        if (this.BB.collide(this.game.porta.BB)) {
+            ctx.fillStyle = "LightGrey";
+            ctx.fillRect(15+this.x - this.game.camera.x - (this.textWidth/2)-3, this.y-44, this.textWidth+6,26);
+            ctx.fillStyle = "Green";
+            ctx.strokeStyle = "Green";
+            ctx.strokeRect(15+this.x - this.game.camera.x - (this.textWidth/2)-3, this.y-44, this.textWidth+6,26);
+            ctx.fillText(this.text, 15+this.x - this.game.camera.x - this.textWidth/2, this.y-PARAMS.BLOCKWIDTH);
+        }
 
         ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y, 15*InfoSign.scale, 15*InfoSign.scale);
         if (PARAMS.DEBUG){
