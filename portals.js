@@ -60,12 +60,20 @@ class Portal {
             this.openingCounter++;
         } else this.active = true;
 
-        if (this.color === "green" && this.game.purplePortal){
-            this.linkedPortal = this.game.purplePortal;
-        } else if (this.color === "purple" && this.game.greenPortal) {
-            this.linkedPortal = this.game.greenPortal;
-        }
+        if (this.color === "green") {
+            if (this.game.purplePortal){
+                this.linkedPortal = this.game.purplePortal;
+            } else {
 
+            }
+        } else if (this.color === "purple"){
+            if (this.game.greenPortal){
+                this.linkedPortal = this.game.greenPortal;
+            } else {
+
+            }
+
+        }
     }
 
     draw(ctx){
