@@ -28,8 +28,9 @@ ASSET_MANAGER.queueDownload("./sprites/midground.png");
 
 
 ASSET_MANAGER.downloadAll(function () {
-	var canvas = document.getElementById('gameWorld');
-	var ctx = canvas.getContext('2d');
+	let canvas = document.getElementById('gameWorld');
+	let ctx = canvas.getContext('2d');
+	ctx.font="20px Arial";
 	PARAMS.CANVAS_WIDTH = canvas.width;
 	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
 
