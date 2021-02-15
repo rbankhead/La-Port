@@ -6,10 +6,20 @@ class Checkpoint {
         this.inactiveAnimation = new Animator(this.spritesheet, 0, 0, 12, 19, 1, .1, 0, false, true);
         this.activeAnimation = new Animator(this.spritesheet, 0, 0, 12, 19, 9, .1, 0, false, true);
         this.BB = new BoundingBox(this.x,this.y,36,60);
+        this.sound = AUDIO_MANAGER.getAsset("./audio/checkpoint.wav");
     };
 
     update() {
         
+    };
+
+    // method to take checkpoint from inactive to active state
+    // if checkpoint is active but not the current spawn, becomes spawn point
+    activate(){
+        if(!this.active) this.sound.play();
+        this.active = true;
+        this.game.camera.portaSpawn.x = this.x;
+        this.game.camera.portaSpawn.y = this.y;
     };
 
     draw(ctx) {

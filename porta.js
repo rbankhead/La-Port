@@ -107,12 +107,12 @@ class Porta {
         this.animations["left"]["idle"] = new Animator(this.spritesheetReflected, 137, 8, this.width, this.height, 4, .2, 18, false, true);
 
         //walking states
-        this.animations["right"]["walking"] = new Animator(this.spritesheet, 8, 37, this.width, this.height, 8, .2, 18, false, true);
-        this.animations["left"]["walking"] = new Animator(this.spritesheetReflected, 8, 37, this.width, this.height, 8, .2, 18, false, true);
+        this.animations["right"]["walking"] = new Animator(this.spritesheet, 8, 37, this.width, this.height, 8, .075, 18, false, true);
+        this.animations["left"]["walking"] = new Animator(this.spritesheetReflected, 8, 37, this.width, this.height, 8, .075, 18, false, true);
 
         //running states
-        this.animations["right"]["running"] = new Animator(this.spritesheet, 8, 37, this.width, this.height, 8, .1, 18, false, true);
-        this.animations["left"]["running"] = new Animator(this.spritesheetReflected, 8, 37, this.width, this.height, 8, .1, 18, false, true);
+        this.animations["right"]["running"] = new Animator(this.spritesheet, 8, 37, this.width, this.height, 8, .05, 18, false, true);
+        this.animations["left"]["running"] = new Animator(this.spritesheetReflected, 8, 37, this.width, this.height, 8, .05, 18, false, true);
 
         //shooting states
         this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
@@ -342,9 +342,7 @@ class Porta {
                         }
                     }
                     if (entity instanceof Checkpoint){
-                        entity.active = true;
-                        that.game.camera.portaSpawn.x = entity.x;
-                        that.game.camera.portaSpawn.y = entity.y;
+                        entity.activate();
                     }
                     if ((entity instanceof Door) && that.lastBB.right <= entity.BB.left) {
                         if (entity.state != 3) {
