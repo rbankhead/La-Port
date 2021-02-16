@@ -7,7 +7,7 @@ class SceneManager {
 
         this.portaSpawn = {x: 0 * PARAMS.BLOCKWIDTH, y: 28.5 * PARAMS.BLOCKWIDTH}
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
-
+        
         this.loadLevelOne();
     };
 
@@ -126,28 +126,28 @@ class SceneManager {
 
         //start room 5
         this.game.addEntity(new Coin(this.game, 238.5*PARAMS.BLOCKWIDTH-8, 9*PARAMS.BLOCKWIDTH));
-        this.game.addEntity(new InfoSign(this.game, 223.5*PARAMS.BLOCKWIDTH, 4.7*PARAMS.BLOCKWIDTH, "You can't create portals on COLOR bricks"));
+        this.game.addEntity(new InfoSign(this.game, 223.5*PARAMS.BLOCKWIDTH, 4.7*PARAMS.BLOCKWIDTH, "The blue bricks are made out the mysterious portal neutralizing mineral Portalite."));
         //MIRROR BRICKS IN ROOM 5 ARE PLACEHOLDERS FOR NO-PORTAL BRICKS
-        for(let i=15;i<=30;i+=3) this.game.addEntity(new MirrorBrick(this.game,237*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,true,true));
+        for(let i=15;i<=30;i+=3) this.game.addEntity(new PortProofBrick(this.game,237*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new GlassBrick(this.game,219*PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,228*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,231*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,234*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,237*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,228*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,231*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,234*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,237*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
         //end room 5
 
         //these are just placeholders to 'end' the level
-        this.game.addEntity(new MirrorBrick(this.game,240*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,243*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,246*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,249*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,252*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,240*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,243*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,246*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,249*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        this.game.addEntity(new MirrorBrick(this.game,252*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
-        for (let i=0;i<30;i+=3) this.game.addEntity(new MirrorBrick(this.game,252 * PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH, true,true,true,true))
+        this.game.addEntity(new PortProofBrick(this.game,240*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,243*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,246*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,249*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,252*PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,240*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,243*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,246*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,249*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,252*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
+        for (let i=0;i<30;i+=3) this.game.addEntity(new PortProofBrick(this.game,252 * PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH, true,true,true,true))
         //placeholder for end of level
         this.game.addEntity(new InfoSign(this.game,250*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Fin."));
 

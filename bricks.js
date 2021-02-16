@@ -56,3 +56,23 @@ class GlassBrick extends Brick{
         }
     };
 };
+
+class PortProofBrick extends Brick{
+    constructor(game, x, y, left, right, top, bottom){
+        super(game, x, y, left, right, top, bottom);
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/crackedBrick.png"); //add sprite
+
+    };
+
+    update() {
+        
+    };
+
+    draw(ctx) {
+        ctx.drawImage(this.spritesheet, 0, 0, 48, 48,this.x - this.game.camera.x, this.y,48*PARAMS.SCALE,48*PARAMS.SCALE);
+        if (PARAMS.DEBUG){
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        }
+    };
+};

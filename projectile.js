@@ -41,6 +41,9 @@ class Projectile {
             if(entity.BB && that.BB.collide(entity.BB)){
                 if(that.lastBB && entity instanceof Brick) {
                     if(entity instanceof GlassBrick){} //do nothing
+                    else if(entity instanceof PortProofBrick){
+                        that.removeFromWorld = true;
+                    }
                     else if(entity instanceof MirrorBrick){
                         that.bounceCount++;
                         that.reflectSound.play();
