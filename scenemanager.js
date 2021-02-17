@@ -149,6 +149,8 @@ class SceneManager {
         this.game.addEntity(new PortProofBrick(this.game,252*PARAMS.BLOCKWIDTH, 30 * PARAMS.BLOCKWIDTH,true,true,true,true));
         for (let i=0;i<30;i+=3) this.game.addEntity(new PortProofBrick(this.game,252 * PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH, true,true,true,true))
         //placeholder for end of level
+        this.game.addEntity(new InfoSign(this.game,231.5*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Try making linked portals on the ceiling and floor, then fall through them to gain momentum"));
+        this.game.addEntity(new InfoSign(this.game,234*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Once you're going fast, shoot a portal into the upper left wall to launch!"));
         this.game.addEntity(new InfoSign(this.game,250*PARAMS.BLOCKWIDTH,28.7*PARAMS.BLOCKWIDTH,"Fin."));
 
 
