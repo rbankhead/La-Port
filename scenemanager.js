@@ -186,6 +186,8 @@ class SceneManager {
          */
         if (this.porta.dead && this.porta.y < -9 * PARAMS.BLOCKWIDTH) {
             this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
+            this.game.purplePortal = false;
+            this.game.greenPortal = false;
             this.loadLevelOne();
         };
     };
