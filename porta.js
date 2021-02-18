@@ -141,13 +141,14 @@ class Porta {
     }
 
     update() {
-        //nudge(this);
+        nudge(this);
 
         //const TICK = this.game.clockTick;
         const WALK_SPEED = 3;
         const RUN_SPEED = 4;
         const MAX_FALL = 15;
         const ACC_FALLING = .4; //each 'tick' will make Porta velocity.y *= ACC_FALLING until MAX_FALL is reached
+
 
         /**
          * if left and right click are both pressed, set both flags to false and dont shoot any projectiles
@@ -366,8 +367,6 @@ class Porta {
 
                 }
             });
-
-            nudge(this);
             
 
             /**
@@ -381,13 +380,13 @@ class Porta {
              *
              **/
             if (this.suicideCounter >= 150 || this.y > 42 * PARAMS.BLOCKWIDTH) this.die();
-            if (this.game.R && this.state!="dying"){
+            if (this.game.R){//} && this.state!="dying"){
                 this.suicideSound.play();
                 this.state="dying"; //do this last so it takes priority over idle, walking etc
                 this.suicideCounter++;
             } else {
                 this.suicideCounter = 0;
-
+                this.suicideSound = AUDIO_MANAGER.getAsset("./audio/suicide.wav");
                 //reinitialize the animation so they restart if R is depressed
                 //without these lines tapping R will cause the animation to play all the way through even though you never die
                 //this is potentially expensive so look here if we have any performance issues later on

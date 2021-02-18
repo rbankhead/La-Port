@@ -28,7 +28,9 @@ class Coin {
             }
         } else {
             this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+            ctx.fillStyle = "LightGrey";
             ctx.fillText("X " + Coin.coinCount, 36, 24);
+            ctx.fillStyle="Green";
         }
     };
 };

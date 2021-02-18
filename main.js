@@ -37,6 +37,7 @@ ASSET_MANAGER.queueDownload("./sprites/background.png");
 ASSET_MANAGER.queueDownload("./sprites/forground.png");
 ASSET_MANAGER.queueDownload("./sprites/midground_far.png");
 ASSET_MANAGER.queueDownload("./sprites/midground.png");
+ASSET_MANAGER.queueDownload("./sprites/crackedBrick.png");
 
 
 AUDIO_MANAGER.downloadAll();

@@ -75,7 +75,7 @@ class CompanionCube {
             }
 
         }
-
+        if (this.velocity.y === 0) this.velocity.y = 0.001;
     }
 
     updateBB(){

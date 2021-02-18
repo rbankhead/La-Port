@@ -67,6 +67,7 @@ class Turret {
             }
 
         }
+        if (this.velocity.y === 0) this.velocity.y = 0.001;
 
     }
 
