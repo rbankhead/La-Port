@@ -30,10 +30,10 @@ class Portal {
         }
         switch(this.orientation){
             case("top"):
-                this.BB = new BoundingBox(this.x+9,this.y+PARAMS.PORTAL_ANIM_OFFSET-2,26,1);
+                this.BB = new BoundingBox(this.x+6,this.y+PARAMS.PORTAL_ANIM_OFFSET-2,30,1);
                 break;
             case("bottom"):
-                this.BB = new BoundingBox(this.x+9,this.y+PARAMS.PORTAL_ANIM_OFFSET+2,26,1);
+                this.BB = new BoundingBox(this.x+3,this.y+PARAMS.PORTAL_ANIM_OFFSET+2,30,1);
                 break;
             case("left"):
                 this.BB = new BoundingBox(this.x+PARAMS.PORTAL_ANIM_OFFSET,this.y+10,1,26);

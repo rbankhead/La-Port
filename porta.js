@@ -28,7 +28,6 @@ class Porta {
     }
 
     updateVelocities(entryPortal, exitPortal){
-        console.log(exitPortal.orientation);
         let tempx = this.velocity.x;
         let tempy = this.velocity.y;
         if (entryPortal.orientation === "top") {
@@ -56,7 +55,7 @@ class Porta {
                     this.velocity.y = tempx;
                     break;
                 case ("right"):
-                    this.velocity.x = this.velocity.y;
+                    this.velocity.x = -this.velocity.y;
                     this.velocity.y = tempx;
                     break;
             }
@@ -162,8 +161,8 @@ class Porta {
             this.shootSound.play();
             this.state="shooting";
             this.shotCounter = 1;
-            //if (this.game.purplePortal) this.game.purplePortal.removeFromWorld = true; //if there is already a purple portal then destroy the old one
-            this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/2, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
+
+            this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/4, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
             this.facing = this.game.leftclick.x + this.game.camera.x  >= this.x ? "right" : "left";
             this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
             this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
@@ -172,9 +171,8 @@ class Porta {
             this.shootSound.play();
             this.state="shooting";
             this.shotCounter = 1;
-            //if (this.game.greenPortal) this.game.greenPortal.removeFromWorld = true; //if there is already a green portal then destroy the old one
-            this.game.addEntity(new Projectile(this.game, this.x, this.y, this.game.rightclick.x + this.game.camera.x, this.game.rightclick.y, "green"));
-            console.log(this.game.rightclick.x + " " + this.x);
+
+            this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/4, this.game.rightclick.x + this.game.camera.x, this.game.rightclick.y, "green"));
             this.facing = this.game.rightclick.x + this.game.camera.x >= this.x ? "right" : "left";
             this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
             this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
