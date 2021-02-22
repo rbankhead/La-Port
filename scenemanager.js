@@ -4,13 +4,18 @@ class SceneManager {
         this.game.camera = this;
         this.x = 0;
         this.y = 0;
-
+        this.title = true;
         this.portaSpawn = {x: 0 * PARAMS.BLOCKWIDTH, y: 28.5 * PARAMS.BLOCKWIDTH}
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         PARAMS.BRICKBLOCKWIDTH = PARAMS.BLOCKWIDTH*3;
-        
-        this.loadLevelOne();
+
+        this.game.addEntity(new TitleScreen(this.game));
+        //this.loadLevelOne();
     };
+
+    titleScreen(){
+
+    }
 
     loadLevelOne() {
         this.update(); // initialize screen positions

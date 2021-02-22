@@ -162,7 +162,7 @@ class Porta {
             this.state="shooting";
             this.shotCounter = 1;
 
-            this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/4, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
+            if (!this.game.camera.title) this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/4, this.game.leftclick.x + this.game.camera.x, this.game.leftclick.y, "purple"));
             this.facing = this.game.leftclick.x + this.game.camera.x  >= this.x ? "right" : "left";
             this.game.leftclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
             this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
@@ -172,7 +172,7 @@ class Porta {
             this.state="shooting";
             this.shotCounter = 1;
 
-            this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/4, this.game.rightclick.x + this.game.camera.x, this.game.rightclick.y, "green"));
+            if (!this.game.camera.title) this.game.addEntity(new Projectile(this.game, this.x+this.width/2, this.y+this.height/4, this.game.rightclick.x + this.game.camera.x, this.game.rightclick.y, "green"));
             this.facing = this.game.rightclick.x + this.game.camera.x >= this.x ? "right" : "left";
             this.game.rightclick = false; //resetting mouse click input flags NOT handled in gameEngine as with keyboard. must be done here after action performed
             this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
