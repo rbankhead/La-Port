@@ -56,8 +56,8 @@ class Portal {
     }
 
     update(){
-        if (this.openingCounter < 15) {
-            this.openingCounter++;
+        if (this.openingCounter < .25) {
+            this.openingCounter+=this.game.clockTick;
         } else this.active = true;
 
         if (this.color === "green") {
@@ -85,5 +85,38 @@ class Portal {
             ctx.strokeStyle = 'Blue';
             ctx.strokeRect(this.BB.x-this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
+    }
+}
+
+class DyingPortal {
+    constructor(game, x, y, color, orientation) {
+        Object.assign(this, {game, x, y, color, orientation});
+        this.duration = 0;
+
+        if (this.color === "green") {
+            this.spritesheet = (this.orientation === "top" || this.orientation === "bottom") ?
+                ASSET_MANAGER.getAsset("./sprites/greenportalrotate.png") : ASSET_MANAGER.getAsset("./sprites/greenportal.png");
+
+        } else if (this.color === "purple") {
+            this.spritesheet = (this.orientation === "top" || this.orientation === "bottom") ?
+                ASSET_MANAGER.getAsset("./sprites/purpleportalrotate.png") : ASSET_MANAGER.getAsset("./sprites/purpleportal.png");
+
+        } else {
+            console.log("invalid color entered for portal");
+            return;
+        }
+
+        if (this.orientation === "top" || this.orientation === "bottom") {
+            this.animation = new Animator(this.spritesheet, 0, 12, 60, 39, 8, .075, 25, false, false, true);
+        } else {
+            this.animation = new Animator(this.spritesheet, 12, 134, 36, 60, 8, .075, 28, false, false);
+        }
+    }
+    update(){
+        this.duration += this.game.clockTick;
+        if (this.duration >= 1) this.removeFromWorld = true;
+    }
+    draw(ctx){
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x-this.game.camera.x, this.y, 1);
     }
 }

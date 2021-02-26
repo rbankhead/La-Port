@@ -10,7 +10,10 @@ class TitleScreen {
     update(){
         if(this.game.enter){
             this.game.camera.title = false;
+            this.game.rightclick = false;
+            this.game.leftclick = false;
             this.game.camera.loadLevelOne();
+            this.removeFromWorld = true;
         }
         this.counter += this.game.clockTick;
         if (this.counter > 0.25) {
