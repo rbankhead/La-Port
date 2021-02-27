@@ -40,6 +40,7 @@ ASSET_MANAGER.queueDownload("./sprites/midground.png");
 ASSET_MANAGER.queueDownload("./sprites/crackedBrick.png");
 ASSET_MANAGER.queueDownload("./sprites/TitleScreenWhite.png");
 ASSET_MANAGER.queueDownload("./sprites/TitleScreenBlue.png");
+ASSET_MANAGER.queueDownload("./sprites/jumpPad.png");
 
 
 AUDIO_MANAGER.downloadAll();
