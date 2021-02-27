@@ -27,7 +27,7 @@ class Projectile {
 
     update() {
         const PROJECTILE_SPEED = 950*this.game.clockTick;
-        console.log(PROJECTILE_SPEED)
+        //console.log(PROJECTILE_SPEED)
         let degree = Math.atan(this.slope);
         if(this.deltax>0){
             this.x += PROJECTILE_SPEED*Math.cos(degree);
@@ -114,11 +114,31 @@ class Projectile {
         });
         if(this.bounceCount >= 10) this.removeFromWorld = true;
         this.updateBB()
+
+
+    };
+
+    drawRotated(angle, ctx){
+        ctx.save();
+        var offscreenCanvas = document.createElement('canvas');
+        offscreenCanvas.width = 26;
+        offscreenCanvas.height = 26;
+        var offscreenCtx = offscreenCanvas.getContext('2d');
+        offscreenCtx.save();
+        offscreenCtx.translate(13,13);
+        offscreenCtx.rotate(angle*(Math.PI/180));
+        offscreenCtx.translate(-13, -13);
+
+        this.animation.drawFrame(this.game.clockTick,offscreenCtx,0,0,1);
+        offscreenCtx.restore();
+
+        ctx.drawImage(offscreenCanvas, this.x- this.game.camera.x, this.y, 33, 33);
     };
 
     draw(ctx) {
         //this.animation.drawFrame(this.game.clockTick,ctx,0,0,4);
-        this.animation.drawFrame(this.game.clockTick,ctx,this.x- this.game.camera.x,this.y,0.8*PARAMS.SCALE);
+        //this.animation.drawFrame(this.game.clockTick,ctx,this.x- this.game.camera.x,this.y,1);
+        this.drawRotated(90, ctx);
         if (PARAMS.DEBUG){
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
