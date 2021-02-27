@@ -15,9 +15,17 @@ class Projectile {
 
         this.deltax = (xDestination-x);
         this.deltay= (yDestination-y);
+        console.log(this.deltay);
         this.slope = this.deltay/this.deltax;
         this.reflectSound = AUDIO_MANAGER.getAsset("./audio/reflect.wav");
         this.bounceCount = 0;
+        this.angle = this.getAngle(this.deltax, this.deltay);
+        console.log(this.angle);
+    };
+
+    getAngle(dx, dy){
+        if(dy > 0) return (Math.atan(dx/dy) + (3*Math.PI/2));
+        return Math.atan(dx/dy) + (Math.PI/2);
     };
 
     updateBB(){
@@ -51,11 +59,14 @@ class Projectile {
                         if(that.lastBB.left >= entity.BB.right || that.lastBB.right <= entity.BB.left){
                         that.deltax = -1*that.deltax;
                         that.slope = -1*that.slope;
+
                         } else{
                             that.slope = -1*that.slope;
                         }
                         that.x = that.lastBB.x;
                         that.y = that.lastBB.y;
+
+                        that.angle = getAngle(that.deltax, that.deltax*that.slope);
                     }
                     else if(entity.top && that.lastBB.bottom <= entity.BB.top){
                         if (that.color==="purple" && that.game.purplePortal) {
@@ -126,7 +137,7 @@ class Projectile {
         var offscreenCtx = offscreenCanvas.getContext('2d');
         offscreenCtx.save();
         offscreenCtx.translate(13,13);
-        offscreenCtx.rotate(angle*(Math.PI/180));
+        offscreenCtx.rotate(-1*angle);
         offscreenCtx.translate(-13, -13);
 
         this.animation.drawFrame(this.game.clockTick,offscreenCtx,0,0,1);
@@ -138,7 +149,7 @@ class Projectile {
     draw(ctx) {
         //this.animation.drawFrame(this.game.clockTick,ctx,0,0,4);
         //this.animation.drawFrame(this.game.clockTick,ctx,this.x- this.game.camera.x,this.y,1);
-        this.drawRotated(90, ctx);
+        this.drawRotated(this.angle, ctx);
         if (PARAMS.DEBUG){
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
