@@ -315,7 +315,12 @@ class SceneManager {
             this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
             this.game.purplePortal = false;
             this.game.greenPortal = false;
-            this.loadLevelOne();
+            switch(this.game.level){
+                case 1: this.loadLevelOne(); break;
+                case 2: this.loadLevelTwo(); break;
+                case 3: this.loadLevelThree(); break;
+                default: this.loadLevelOne();
+            }
         };
     };
 
