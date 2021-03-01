@@ -13,6 +13,7 @@ AUDIO_MANAGER.queueDownload("./audio/button.wav");
 AUDIO_MANAGER.queueDownload("./audio/door.wav");
 AUDIO_MANAGER.queueDownload("./audio/reflect.wav");
 AUDIO_MANAGER.queueDownload("./audio/checkpoint.wav");
+AUDIO_MANAGER.queueDownload("./audio/lvlOne.wav");
 
 
 ASSET_MANAGER.queueDownload("./sprites/greenportal.png");
