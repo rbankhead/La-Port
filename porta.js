@@ -129,6 +129,8 @@ class Porta {
     }
 
     die(){
+        this.dieSound.pause();
+        this.dieSound.currentTime = 0;
         /**
          * Death can only be triggered via suicide currently (by holding R)
          * TODO: Add BB under the level which kills Porta if she falls far enough to collide with it
@@ -384,7 +386,8 @@ class Porta {
                 this.suicideCounter++;
             } else {
                 this.suicideCounter = 0;
-                this.suicideSound = AUDIO_MANAGER.getAsset("./audio/suicide.wav");
+                this.suicideSound.pause();
+                this.suicideSound.currentTime = 0;
                 //reinitialize the animation so they restart if R is depressed
                 //without these lines tapping R will cause the animation to play all the way through even though you never die
                 //this is potentially expensive so look here if we have any performance issues later on
