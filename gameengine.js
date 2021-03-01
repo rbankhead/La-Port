@@ -80,6 +80,9 @@ class GameEngine {
                 case "KeyR":
                     that.R = true;
                     break;
+                case "Enter":
+                    that.enter = true;
+                    break;
             }
         }, false);
 
@@ -108,6 +111,9 @@ class GameEngine {
                     break;
                 case "KeyR":
                     that.R = false;
+                    break;
+                case "Enter":
+                    that.enter = false;
                     break;
             }
         }, false);

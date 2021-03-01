@@ -36,8 +36,32 @@ class AudioManager {
 
             sound = new Audio(path);
             this.cache[path] = sound;
+
+            sound.addEventListener("ended", function(){
+                sound.pause();
+                sound.currentTime = 0;
+            });
         }
     };
+
+
+    muteAudio(mute) {
+        for(var key in this.cache) {
+            let asset = this.cache[key];
+            if (asset instanceof Audio) {
+                asset.muted = mute;
+            }
+        }
+    }
+
+    adjustVolume(volume) {
+        for(var key in this.cache) {
+            let asset = this.cache[key];
+            if (asset instanceof Audio) {
+                asset.volume = volume;
+            }
+        }
+    }
 
     getAsset(path) {
         return this.cache[path];
