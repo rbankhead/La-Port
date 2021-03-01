@@ -105,15 +105,17 @@ class Projectile {
                         that.removeFromWorld = true;
                     }
                     else if((entity.left && that.lastBB.right <= entity.BB.left) || (that.BB.top >= entity.BB.top && that.BB.bottom <= entity.BB.bottom)){
-                        if (that.color==="purple" && that.game.purplePortal) {
-                            if (that.game.purplePortal.openingCounter >= .25) that.game.addEntity(new DyingPortal(that.game,that.game.purplePortal.x,that.game.purplePortal.y,"purple",that.game.purplePortal.orientation))
-                            that.game.purplePortal.removeFromWorld = true;
-                        } //if there is already a purple portal then destroy the old one
-                        else if (that.color === "green" && that.game.greenPortal) {
-                            if (that.game.greenPortal.openingCounter >= .25) that.game.addEntity(new DyingPortal(that.game,that.game.greenPortal.x,that.game.greenPortal.y,"green",that.game.greenPortal.orientation))
-                            that.game.greenPortal.removeFromWorld = true;
-                        } //if there is already a green portal then destroy the old one
-                        that.game.addEntity(new Portal(that.game,entity.BB.left-PARAMS.PORTAL_ANIM_OFFSET,entity.BB.top+15,that.color,"left"));
+                        if(entity.left){
+                            if (that.color==="purple" && that.game.purplePortal) {
+                                if (that.game.purplePortal.openingCounter >= .25) that.game.addEntity(new DyingPortal(that.game,that.game.purplePortal.x,that.game.purplePortal.y,"purple",that.game.purplePortal.orientation))
+                                that.game.purplePortal.removeFromWorld = true;
+                            } //if there is already a purple portal then destroy the old one
+                            else if (that.color === "green" && that.game.greenPortal) {
+                                if (that.game.greenPortal.openingCounter >= .25) that.game.addEntity(new DyingPortal(that.game,that.game.greenPortal.x,that.game.greenPortal.y,"green",that.game.greenPortal.orientation))
+                                that.game.greenPortal.removeFromWorld = true;
+                            } //if there is already a green portal then destroy the old one
+                            that.game.addEntity(new Portal(that.game,entity.BB.left-PARAMS.PORTAL_ANIM_OFFSET,entity.BB.top+15,that.color,"left"));
+                        }
                         that.removeFromWorld = true;
                     }
                     

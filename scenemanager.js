@@ -9,6 +9,7 @@ class SceneManager {
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         PARAMS.BRICKBLOCKWIDTH = PARAMS.BLOCKWIDTH * 3;
 
+        this.coinRetentionPolicy = 0;
         this.game.addEntity(new TitleScreen(this.game));
         this.lvlMusic = new Audio();
         this.bgMusic("./audio/lvlOne.wav");
@@ -58,16 +59,14 @@ class SceneManager {
             if (i !== 9) this.game.addEntity(new Brick(this.game, 17 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //start of room 2 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 33 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //end of room 2 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //start of room 3 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //end of room 3 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //start of room 4 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i !== 4, true, i === 10, i === 8)); //end of room 3 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i !== 2 && i !== 6, i !== 2 && i !== 6, i === 10, i === 8)); //start of room 4 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 71 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //end of room 4 walls
             if (i > 1) this.game.addEntity(new Brick(this.game, 74 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, false)); //start of room 5 walls
             //this.game.addEntity(new Brick(this.game,253*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,false,false)); //end of level walls
         }
         //end room walls
         //floor and ceiling bricks
-        // bad tile for top
-        // 5 6 7 8 14 19 20 21 22 23 24 28 29 30 31 69
         for (let i = 0; i <= 78; i++) {
             if (i <= 75) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0, false, false, true, i !== 48)); //ceiling
             this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, (i < 5 || i > 8))); //floor
@@ -195,7 +194,7 @@ class SceneManager {
         for (let i = 8; i < 12; i++) this.game.addEntity(new PortProofBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         for (let i = 1; i < 6; i++) this.game.addEntity(new GlassBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new Coin(this.game, (62.5) * PARAMS.BRICKBLOCKWIDTH, 5.33 * PARAMS.BRICKBLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game, (63) * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, (63) * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, false));
 
 
         for (let i = 8; i < 11; i++) this.game.addEntity(new GlassBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
@@ -206,7 +205,7 @@ class SceneManager {
         for (let i = 8; i < 12; i++) this.game.addEntity(new PortProofBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 2 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new Brick(this.game, (68) * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
 
-        for (let i = 2; i < 10; i++) this.game.addEntity(new Brick(this.game, 69 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, false));
+        for (let i = 2; i < 10; i++) this.game.addEntity(new Brick(this.game, 69 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, !(i===8 || i===4), true, i === 2, false));
 
         this.game.addEntity(new GlassBrick(this.game, (68) * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new GlassBrick(this.game, (63) * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
@@ -244,6 +243,7 @@ class SceneManager {
         this.game.addEntity(new InfoSign(this.game, 77.166 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Try making linked portals on the ceiling and floor, then fall through them to gain momentum"));
         this.game.addEntity(new InfoSign(this.game, 75 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Once you're going fast, shoot a portal into the upper left wall to launch!"));
         this.game.addEntity(new InfoSign(this.game, 83.33 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Fin."));
+        for(let i=85;i<=95;i++) this.game.addEntity(new Brick(this.game, i*PARAMS.BRICKBLOCKWIDTH,10*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
 
 
 
@@ -265,6 +265,7 @@ class SceneManager {
 
         this.game.addEntity(new Hud(this.game));
         this.game.addEntity(this.porta);
+        this.coinRetentionPolicy = Coin.coinCount;
     }
 
     loadLevelThree() {
@@ -280,6 +281,7 @@ class SceneManager {
 
         this.game.addEntity(new Hud(this.game));
         this.game.addEntity(this.porta);
+        this.coinRetentionPolicy = Coin.coinCount;
     }
 
     updateAudio() {
@@ -315,6 +317,7 @@ class SceneManager {
             this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
             this.game.purplePortal = false;
             this.game.greenPortal = false;
+            Coin.coinCount = this.coinRetentionPolicy;
             switch(this.game.level){
                 case 1: this.loadLevelOne(); break;
                 case 2: this.loadLevelTwo(); break;
