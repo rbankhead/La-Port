@@ -255,6 +255,7 @@ class SceneManager {
     loadLevelTwo() {
         this.portaSpawn.x = 0 * PARAMS.BLOCKWIDTH;
         this.portaSpawn.y = 28.5 * PARAMS.BLOCKWIDTH;
+        this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         this.clearEntities();
         this.game.addEntity(new Background(this.game, -50));
         console.log("Level 2");
@@ -263,12 +264,13 @@ class SceneManager {
 
 
         this.game.addEntity(new Hud(this.game));
-        this.game.addEntity(new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y));
+        this.game.addEntity(this.porta);
     }
 
     loadLevelThree() {
         this.portaSpawn.x = 0 * PARAMS.BLOCKWIDTH;
         this.portaSpawn.y = 28.5 * PARAMS.BLOCKWIDTH;
+        this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         this.clearEntities();
         this.game.addEntity(new Background(this.game, -50));
         console.log("Level 3");
@@ -277,7 +279,7 @@ class SceneManager {
 
 
         this.game.addEntity(new Hud(this.game));
-        this.game.addEntity(new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y));
+        this.game.addEntity(this.porta);
     }
 
     updateAudio() {
