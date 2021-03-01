@@ -12,7 +12,8 @@ class SceneManager {
         this.game.addEntity(new TitleScreen(this.game));
         this.lvlMusic = new Audio();
         this.bgMusic("./audio/lvlOne.wav");
-        //this.loadLevelOne();
+        this.game.level = 1;
+        this.transition = false;
     };
 
     titleScreen() {
@@ -29,15 +30,23 @@ class SceneManager {
         });
     }
 
+    clearEntities() {
+        this.game.entities.forEach(function (entity) {
+            entity.removeFromWorld = true;
+        });
+    };
+
     loadLevelOne() {
         this.update(); // initialize screen positions
         //AUDIO_MANAGER.autoRepeat("./audio/lvlOne.wav");
         this.lvlMusic.play();
 
-        this.game.entities = [];
+
+        this.clearEntities();
 
         //parallax background
         this.game.addEntity(new Background(this.game, -50));
+        this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));
 
         //ground bricks to the left of room 1 to hide the blank part of the background image
         for (let i = -10; i < 0; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
@@ -243,6 +252,34 @@ class SceneManager {
 
     };
 
+    loadLevelTwo() {
+        this.portaSpawn.x = 0 * PARAMS.BLOCKWIDTH;
+        this.portaSpawn.y = 28.5 * PARAMS.BLOCKWIDTH;
+        this.clearEntities();
+        this.game.addEntity(new Background(this.game, -50));
+        console.log("Level 2");
+        for (let i = 0; i < 3; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));
+
+
+        this.game.addEntity(new Hud(this.game));
+        this.game.addEntity(new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y));
+    }
+
+    loadLevelThree() {
+        this.portaSpawn.x = 0 * PARAMS.BLOCKWIDTH;
+        this.portaSpawn.y = 28.5 * PARAMS.BLOCKWIDTH;
+        this.clearEntities();
+        this.game.addEntity(new Background(this.game, -50));
+        console.log("Level 3");
+        for (let i = 0; i < 3; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+
+
+        this.game.addEntity(new Hud(this.game));
+        this.game.addEntity(new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y));
+    }
+
     updateAudio() {
         var mute = document.getElementById("mute").checked;
         var volume = document.getElementById("volume").value;
@@ -250,10 +287,16 @@ class SceneManager {
         AUDIO_MANAGER.muteAudio(mute);
         AUDIO_MANAGER.adjustVolume(volume);
         this.lvlMusic.volume = volume;
-        this.lvlMusic.mute = mute;
+        this.lvlMusic.muted = mute;
     };
 
     update() {
+        if(this.transition == true){
+            this.transition = !this.transition;
+            this.game.level++;
+            if(this.game.level == 2) this.loadLevelTwo();
+            else this.loadLevelThree();
+        }
 
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;

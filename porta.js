@@ -364,6 +364,11 @@ class Porta {
                         entity.removeFromWorld = true;
                         entity.playSound();
                     }
+                    if (entity instanceof Exit){
+                        if(that.game.E){
+                            entity.transition();
+                        }
+                    }
 
                 }
             });
