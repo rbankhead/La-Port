@@ -6,6 +6,9 @@ class Turret {
         this.animation = new Animator(this.spritesheet, 0, 0, 8, 15, 4, .3, 1, false, true);
         this.velocity = {x:0,y:.001}; //a nudge to get it to settle
         this.BB = new BoundingBox(this.x, this.y, 16, 30);
+
+        this.laser = new Laser(this.game,this.x+8,this.y+15);
+        this.game.addEntity(this.laser)
     };
 
     updateBB(){
@@ -72,6 +75,8 @@ class Turret {
     }
 
     update() {
+        this.laser.x = this.x+8;
+        this.laser.y = this.y+15;
         const MAX_FALL = 15;
         const ACC_FALLING = .4;
 
@@ -130,3 +135,36 @@ class Turret {
         }
     };
 };
+
+class Laser {
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+        this.colliding = false;
+        this.BBwidth = 16;
+        this.BB = new BoundingBox(this.x, this.y, this.BBwidth, 2);
+    }
+    update(){
+        this.colliding = false;
+        this.BB = new BoundingBox(this.x, this.y, this.BBwidth, 2);
+
+        let that = this;
+        this.game.entities.slice().reverse().forEach(function(entity){
+            if(entity.BB && that.BB.collide(entity.BB)){
+
+                if (entity instanceof Brick || entity instanceof Door || entity instanceof CompanionCube) {
+                    that.colliding=true;
+                    that.BBwidth = entity.BB.x - that.BB.x;
+                }
+                if (entity instanceof Porta) {
+                    entity.die();
+                }
+            }
+        });
+        if (!this.colliding) this.BBwidth += 200*this.game.clockTick;
+    }
+    draw(ctx){
+        ctx.strokeStyle = "Red";
+        ctx.strokeRect(this.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        ctx.strokeStyle = "White";
+    }
+}

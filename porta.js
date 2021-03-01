@@ -14,11 +14,11 @@ class Porta {
         this.state = "walking"; //idle, walking, running, interacting, dying
         this.dead=false;
         this.suicideCounter=0;
+        this.bricked = false;
         this.updateBB();
 
         this.animations = [];
         this.loadAnimations();
-        this.nudgeCounter = 0;
         this.shotCounter = 0;
 
         this.jumpSound = AUDIO_MANAGER.getAsset("./audio/jump.wav");
@@ -143,6 +143,7 @@ class Porta {
 
     update() {
         nudge(this);
+        this.bricked = false;
 
         //const TICK = this.game.clockTick;
         const WALK_SPEED = 3;
@@ -281,6 +282,7 @@ class Porta {
 
                     }
                     if (entity instanceof Brick){
+                        that.bricked = true;
                         //these variables exist exclusively for readability of code
                         let falling = that.velocity.y > 0 && entity.top;
                         let jumping = that.velocity.y < 0 && entity.bottom;
@@ -346,14 +348,14 @@ class Porta {
                         entity.activate();
                     }
                     if ((entity instanceof Door) && that.lastBB.right <= entity.BB.left) {
-                        if (entity.state != 3) {
+                        if (entity.state !== 3) {
                             that.x = entity.BB.left - 22.5;
                             that.velocity.x = 0;
                             that.updateBB();
                         }
                     }
                     if ((entity instanceof Door) && that.lastBB.left >= entity.BB.right) {
-                        if (entity.state != 3) {
+                        if (entity.state !== 3) {
                             that.x = entity.BB.right;
                             that.velocity.x = 0;
                             that.updateBB();
@@ -381,7 +383,7 @@ class Porta {
              * each tick this update() method is called so this increments approx 60x per second while R is held
              * if the player releases R at any point, the else statement will trigger and reset the counter
              *
-             * The code to reload the level after Porta teleports out is in the update() method of Scenemanager
+             * The code to reload the level after Porta teleports out is in the update() method of Scene manager
              *
              **/
             if (this.suicideCounter >= 150 || this.y > 42 * PARAMS.BLOCKWIDTH) this.die();
@@ -407,6 +409,9 @@ class Porta {
                     this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
                     this.animations["left"]["shooting"] = new Animator(this.spritesheetReflected, 101, 72, 23, 21, 5, .075,8,true, false);
                 }
+            }
+            if (!this.bricked){
+                this.velocity.y += 0.001;
             }
         }
     }

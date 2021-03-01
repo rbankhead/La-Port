@@ -66,7 +66,7 @@ class Projectile {
                         that.x = that.lastBB.x;
                         that.y = that.lastBB.y;
 
-                        that.angle = getAngle(that.deltax, that.deltax*that.slope);
+                        that.angle = that.getAngle(that.deltax, that.deltax*that.slope);
                     }
                     else if(entity.top && that.lastBB.bottom <= entity.BB.top){
                         if (that.color==="purple" && that.game.purplePortal) {
