@@ -458,7 +458,7 @@ class SceneManager {
 
     loadLevelThree() {
         //this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
-        this.porta = new Porta(this.game, 15*PARAMS.BRICKBLOCKWIDTH, this.portaSpawn.y);
+        this.porta = new Porta(this.game, 30*PARAMS.BRICKBLOCKWIDTH, this.portaSpawn.y);  //debug spawn
         this.clearEntities();
         this.game.addEntity(new Background(this.game, -50));
         console.log("Level 3");
@@ -475,8 +475,8 @@ class SceneManager {
             this.game.addEntity(new GlassBrick(this.game, -1 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, true, i === 10)); //leftmost walls
             if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 14 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i===8)); //end of room 1 walls
             if (i < 8) this.game.addEntity(new PortProofBrick(this.game, 30 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 2 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 3 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 3 walls
+            //if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 3 walls
+            if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 3 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 4 walls
             if (i !== 1) this.game.addEntity(new Brick(this.game, 71 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==2 && i!==3 && i!==7, true, i === 2, i===0)); //end of room 4 walls
             if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 74 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 5 walls
@@ -511,7 +511,7 @@ class SceneManager {
 
         //Room 2
         //floor
-        for (let i = 14; i < 30; i++) this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        for (let i = 14; i < 31; i++) this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
         //ceiling
         for (let i = 14; i < 30; i++){
             if(i == 24 || i == 27 || i == 28) continue;
@@ -560,6 +560,27 @@ class SceneManager {
 
         this.game.addEntity(new InfoSign(this.game, 20.3 * PARAMS.BRICKBLOCKWIDTH, 6.6 * PARAMS.BRICKBLOCKWIDTH, "Portal gun go brrrr."));
         this.game.addEntity(new InfoSign(this.game, 16.3 * PARAMS.BRICKBLOCKWIDTH, 3.6 * PARAMS.BRICKBLOCKWIDTH, "Juan."));
+        this.game.addEntity(new Coin(this.game, 24.4 * PARAMS.BRICKBLOCKWIDTH, 1.5 * PARAMS.BRICKBLOCKWIDTH));
+
+        //Room 3
+
+        for (let i = 31; i < 52; i++) this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        //ceiling
+        for (let i = 31; i < 52; i++){
+            this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        }
+
+        this.game.addEntity(new JumpPad(this.game, 33.3 * PARAMS.BRICKBLOCKWIDTH, 8.9 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Brick(this.game, 33*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new CompanionCube(this.game, 33*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new PortProofBrick(this.game, 37*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 36*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 38*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new JumpPad(this.game, 38.3 * PARAMS.BRICKBLOCKWIDTH, 4.9 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Brick(this.game, 38*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new PortProofBrick(this.game, 44*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 43*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
 
         this.game.addEntity(new Hud(this.game));
         this.game.addEntity(this.porta);
