@@ -125,7 +125,7 @@ class Projectile {
                 }
             }
         });
-        if(this.bounceCount >= 10) this.removeFromWorld = true;
+        if(this.bounceCount >= 30) this.removeFromWorld = true;
         this.updateBB()
 
 

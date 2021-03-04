@@ -457,23 +457,24 @@ class SceneManager {
     }
 
     loadLevelThree() {
-        this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
+        //this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
+        this.porta = new Porta(this.game, 15*PARAMS.BRICKBLOCKWIDTH, this.portaSpawn.y);
         this.clearEntities();
         this.game.addEntity(new Background(this.game, -50));
         console.log("Level 3");
 
         //Room 1
         //floor
-        for (let i = 0; i < 4; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
-        for (let i = 4; i < 14; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        for (let i = 0; i < 4; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        for (let i = 4; i < 15; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
         //ceiling
         for (let i = 0; i < 4; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
-        for (let i = 4; i < 14; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        for (let i = 4; i < 15; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         //walls
         for (let i = 0; i <= 10; i++) {
             this.game.addEntity(new GlassBrick(this.game, -1 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, true, i === 10)); //leftmost walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 14 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i===8)); //end of room 1 walls
-            if (i < 8) this.game.addEntity(new Brick(this.game, 30 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 2 walls
+            if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 14 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i===8)); //end of room 1 walls
+            if (i < 8) this.game.addEntity(new PortProofBrick(this.game, 30 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 2 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 3 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 3 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 4 walls
@@ -505,6 +506,60 @@ class SceneManager {
         this.game.addEntity(new Brick(this.game, 10 * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new Brick(this.game, 10 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new Brick(this.game, 9 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new InfoSign(this.game, 1 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "The Glass Ceiling"));
+
+        //Room 2
+        //floor
+        for (let i = 14; i < 30; i++) this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        //ceiling
+        for (let i = 14; i < 30; i++){
+            if(i == 24 || i == 27 || i == 28) continue;
+            this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        }
+
+        //puzzle blocks
+        this.game.addEntity(new Brick(this.game, 24 * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 27 * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 28 * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new Checkpoint(this.game, 14*PARAMS.BRICKBLOCKWIDTH, 9.2*PARAMS.BRICKBLOCKWIDTH));
+
+        this.game.addEntity(new MirrorBrick(this.game, 17*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 20*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 16*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 19*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 23*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 21*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 25*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 26*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 26*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 24*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 25*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        //red herring and obstruction blocks
+        for(let i = 10; i>1; i-- ) this.game.addEntity(new PortProofBrick(this.game, 28 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 27*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new PortProofBrick(this.game, 22*PARAMS.BRICKBLOCKWIDTH, 8.5*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 23*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 24*PARAMS.BRICKBLOCKWIDTH, 8.5*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 20*PARAMS.BRICKBLOCKWIDTH, 8.2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 26*PARAMS.BRICKBLOCKWIDTH, 8.2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new MirrorBrick(this.game, 22*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 21*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new MirrorBrick(this.game, 17*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 16*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new InfoSign(this.game, 15 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "Reflective Slide"));
+        this.game.addEntity(new InfoSign(this.game, 19 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "It would be cool if there was a super obvious place to stand."));
+        this.game.addEntity(new InfoSign(this.game, 23 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "And maybe a couple of friendly hint signs on where to shoot."));
+        this.game.addEntity(new InfoSign(this.game, 26 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "When in doubt, rapid fire!"));
+
+        this.game.addEntity(new InfoSign(this.game, 20.3 * PARAMS.BRICKBLOCKWIDTH, 6.6 * PARAMS.BRICKBLOCKWIDTH, "Portal gun go brrrr."));
+        this.game.addEntity(new InfoSign(this.game, 16.3 * PARAMS.BRICKBLOCKWIDTH, 3.6 * PARAMS.BRICKBLOCKWIDTH, "Juan."));
 
         this.game.addEntity(new Hud(this.game));
         this.game.addEntity(this.porta);
