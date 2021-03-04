@@ -1,13 +1,14 @@
 class Turret {
-    constructor(game, x, y) {
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, facing='r') {
+        Object.assign(this, { game, x, y, facing });
         this.game.turret = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/turret.png"); //add sprite
-        this.animation = new Animator(this.spritesheet, 0, 0, 8, 15, 4, .3, 1, false, true);
+        this.animation = new Animator(this.spritesheet, 0, 15, 8, 15, 4, .3, 1, false, true);
+        if(this.facing =='l') this.animation = new Animator(this.spritesheet, 0, 0, 8, 15, 4, .3, 1, false, true);
         this.velocity = {x:0,y:.001}; //a nudge to get it to settle
         this.BB = new BoundingBox(this.x, this.y, 16, 30);
 
-        this.laser = new Laser(this.game,this.x+8,this.y+15);
+        this.laser = new Laser(this.game,this.x+4,this.y+15, this.facing);
         this.game.addEntity(this.laser)
     };
 
@@ -137,34 +138,39 @@ class Turret {
 };
 
 class Laser {
-    constructor(game, x, y) {
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, facing = 'r') {
+        Object.assign(this, { game, x, y, facing });
         this.colliding = false;
-        this.BBwidth = 16;
+        this.BBwidth = 1;
         this.BB = new BoundingBox(this.x, this.y, this.BBwidth, 2);
     }
     update(){
         this.colliding = false;
-        this.BB = new BoundingBox(this.x, this.y, this.BBwidth, 2);
+        if(this.facing == 'l') this.BB = new BoundingBox(this.x - this.BBwidth, this.y, this.BBwidth, 2);
+        else this.BB = new BoundingBox(this.x, this.y, this.BBwidth, 2);
 
         let that = this;
         this.game.entities.slice().reverse().forEach(function(entity){
             if(entity.BB && that.BB.collide(entity.BB)){
 
-                if (entity instanceof Brick || entity instanceof Door || entity instanceof CompanionCube) {
+                if (entity instanceof Brick || (entity instanceof Door && entity.state != 3) || entity instanceof CompanionCube) {
                     that.colliding=true;
-                    that.BBwidth = entity.BB.x - that.BB.x;
+                    if(that.facing == 'l') that.BBwidth = that.x - entity.BB.x - entity.BB.width;
+                    else that.BBwidth = entity.BB.x - that.BB.x;
                 }
                 if (entity instanceof Porta) {
                     entity.die();
                 }
             }
         });
-        if (!this.colliding) this.BBwidth += 200*this.game.clockTick;
+        if (!this.colliding){ 
+            this.BBwidth += 200*this.game.clockTick;
+        }
     }
     draw(ctx){
         ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        if(this.facing == 'l') ctx.strokeRect(this.x - this.BBwidth - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        else ctx.strokeRect(this.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         ctx.strokeStyle = "White";
     }
 }
