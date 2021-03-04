@@ -411,7 +411,7 @@ class Porta {
                 }
             }
             if (!this.bricked){
-                this.velocity.y += 0.001;
+                this.velocity.y -= 0.001;
             }
         }
     }
