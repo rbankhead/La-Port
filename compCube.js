@@ -175,7 +175,7 @@ class CompanionCube {
         //Gravity!
         if(this.velocity.y != 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
         this.y += this.velocity.y;
-        nudge(that);
+        if (!this.held) nudge(that);
         that.updateBB();
     };
 

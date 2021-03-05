@@ -14,6 +14,7 @@ AUDIO_MANAGER.queueDownload("./audio/door.wav");
 AUDIO_MANAGER.queueDownload("./audio/reflect.wav");
 AUDIO_MANAGER.queueDownload("./audio/checkpoint.wav");
 AUDIO_MANAGER.queueDownload("./audio/lvlOne.wav");
+AUDIO_MANAGER.queueDownload("./audio/Still Alive.mp3");
 
 
 ASSET_MANAGER.queueDownload("./sprites/greenportal.png");
@@ -42,6 +43,7 @@ ASSET_MANAGER.queueDownload("./sprites/crackedBrick.png");
 ASSET_MANAGER.queueDownload("./sprites/TitleScreenWhite.png");
 ASSET_MANAGER.queueDownload("./sprites/TitleScreenBlue.png");
 ASSET_MANAGER.queueDownload("./sprites/jumpPad.png");
+ASSET_MANAGER.queueDownload("./sprites/exit.png");
 
 
 AUDIO_MANAGER.downloadAll();

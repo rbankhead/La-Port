@@ -14,11 +14,11 @@ class Porta {
         this.state = "walking"; //idle, walking, running, interacting, dying
         this.dead=false;
         this.suicideCounter=0;
+        this.bricked = false;
         this.updateBB();
 
         this.animations = [];
         this.loadAnimations();
-        this.nudgeCounter = 0;
         this.shotCounter = 0;
 
         this.jumpSound = AUDIO_MANAGER.getAsset("./audio/jump.wav");
@@ -129,6 +129,8 @@ class Porta {
     }
 
     die(){
+        this.dieSound.pause();
+        this.dieSound.currentTime = 0;
         /**
          * Death can only be triggered via suicide currently (by holding R)
          * TODO: Add BB under the level which kills Porta if she falls far enough to collide with it
@@ -141,6 +143,7 @@ class Porta {
 
     update() {
         nudge(this);
+        this.bricked = false;
 
         //const TICK = this.game.clockTick;
         const WALK_SPEED = 3;
@@ -279,6 +282,7 @@ class Porta {
 
                     }
                     if (entity instanceof Brick){
+                        that.bricked = true;
                         //these variables exist exclusively for readability of code
                         let falling = that.velocity.y > 0 && entity.top;
                         let jumping = that.velocity.y < 0 && entity.bottom;
@@ -344,14 +348,14 @@ class Porta {
                         entity.activate();
                     }
                     if ((entity instanceof Door) && that.lastBB.right <= entity.BB.left) {
-                        if (entity.state != 3) {
+                        if (entity.state !== 3) {
                             that.x = entity.BB.left - 22.5;
                             that.velocity.x = 0;
                             that.updateBB();
                         }
                     }
                     if ((entity instanceof Door) && that.lastBB.left >= entity.BB.right) {
-                        if (entity.state != 3) {
+                        if (entity.state !== 3) {
                             that.x = entity.BB.right;
                             that.velocity.x = 0;
                             that.updateBB();
@@ -361,6 +365,11 @@ class Porta {
                         Coin.coinCount += 1;
                         entity.removeFromWorld = true;
                         entity.playSound();
+                    }
+                    if (entity instanceof Exit){
+                        if(that.game.E){
+                            entity.transition();
+                        }
                     }
 
                 }
@@ -374,7 +383,7 @@ class Porta {
              * each tick this update() method is called so this increments approx 60x per second while R is held
              * if the player releases R at any point, the else statement will trigger and reset the counter
              *
-             * The code to reload the level after Porta teleports out is in the update() method of Scenemanager
+             * The code to reload the level after Porta teleports out is in the update() method of Scene manager
              *
              **/
             if (this.suicideCounter >= 150 || this.y > 42 * PARAMS.BLOCKWIDTH) this.die();
@@ -384,7 +393,8 @@ class Porta {
                 this.suicideCounter++;
             } else {
                 this.suicideCounter = 0;
-                this.suicideSound = AUDIO_MANAGER.getAsset("./audio/suicide.wav");
+                this.suicideSound.pause();
+                this.suicideSound.currentTime = 0;
                 //reinitialize the animation so they restart if R is depressed
                 //without these lines tapping R will cause the animation to play all the way through even though you never die
                 //this is potentially expensive so look here if we have any performance issues later on
@@ -399,6 +409,9 @@ class Porta {
                     this.animations["right"]["shooting"] = new Animator(this.spritesheet, 8, 72, 23, 21, 5, .075, 8,false, false);
                     this.animations["left"]["shooting"] = new Animator(this.spritesheetReflected, 101, 72, 23, 21, 5, .075,8,true, false);
                 }
+            }
+            if (!this.bricked){
+                this.velocity.y -= 0.001;
             }
         }
     }

@@ -9,15 +9,13 @@ class SceneManager {
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         PARAMS.BRICKBLOCKWIDTH = PARAMS.BLOCKWIDTH * 3;
 
+        this.coinRetentionPolicy = 0;
         this.game.addEntity(new TitleScreen(this.game));
         this.lvlMusic = new Audio();
         this.bgMusic("./audio/lvlOne.wav");
-        //this.loadLevelOne();
+        this.game.level = 1;
+        this.transition = false;
     };
-
-    titleScreen() {
-
-    }
 
     bgMusic(path) {
         this.lvlMusic.pause();
@@ -29,15 +27,23 @@ class SceneManager {
         });
     }
 
+    clearEntities() {
+        this.game.entities.forEach(function (entity) {
+            entity.removeFromWorld = true;
+        });
+    };
+
     loadLevelOne() {
         this.update(); // initialize screen positions
         //AUDIO_MANAGER.autoRepeat("./audio/lvlOne.wav");
         this.lvlMusic.play();
 
-        this.game.entities = [];
+
+        this.clearEntities();
 
         //parallax background
         this.game.addEntity(new Background(this.game, -50));
+        //this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));
 
         //ground bricks to the left of room 1 to hide the blank part of the background image
         for (let i = -10; i < 0; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
@@ -49,16 +55,14 @@ class SceneManager {
             if (i !== 9) this.game.addEntity(new Brick(this.game, 17 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //start of room 2 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 33 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //end of room 2 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //start of room 3 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //end of room 3 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //start of room 4 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i !== 4, true, i === 10, i === 8)); //end of room 3 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i !== 2 && i !== 6, i !== 2 && i !== 6, i === 10, i === 8)); //start of room 4 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 71 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 10, i === 8)); //end of room 4 walls
             if (i > 1) this.game.addEntity(new Brick(this.game, 74 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, false)); //start of room 5 walls
             //this.game.addEntity(new Brick(this.game,253*PARAMS.BLOCKWIDTH, i * PARAMS.BLOCKWIDTH,true,true,false,false)); //end of level walls
         }
         //end room walls
         //floor and ceiling bricks
-        // bad tile for top
-        // 5 6 7 8 14 19 20 21 22 23 24 28 29 30 31 69
         for (let i = 0; i <= 78; i++) {
             if (i <= 75) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0, false, false, true, i !== 48)); //ceiling
             this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, (i < 5 || i > 8))); //floor
@@ -186,7 +190,7 @@ class SceneManager {
         for (let i = 8; i < 12; i++) this.game.addEntity(new PortProofBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         for (let i = 1; i < 6; i++) this.game.addEntity(new GlassBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new Coin(this.game, (62.5) * PARAMS.BRICKBLOCKWIDTH, 5.33 * PARAMS.BRICKBLOCKWIDTH));
-        this.game.addEntity(new Brick(this.game, (63) * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, (63) * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, false));
 
 
         for (let i = 8; i < 11; i++) this.game.addEntity(new GlassBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
@@ -197,7 +201,7 @@ class SceneManager {
         for (let i = 8; i < 12; i++) this.game.addEntity(new PortProofBrick(this.game, (56 + i) * PARAMS.BRICKBLOCKWIDTH, 2 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new Brick(this.game, (68) * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
 
-        for (let i = 2; i < 10; i++) this.game.addEntity(new Brick(this.game, 69 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, false));
+        for (let i = 2; i < 10; i++) this.game.addEntity(new Brick(this.game, 69 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, !(i===8 || i===4), true, i === 2, false));
 
         this.game.addEntity(new GlassBrick(this.game, (68) * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
         this.game.addEntity(new GlassBrick(this.game, (63) * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
@@ -234,7 +238,8 @@ class SceneManager {
         //placeholder for end of level
         this.game.addEntity(new InfoSign(this.game, 77.166 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Try making linked portals on the ceiling and floor, then fall through them to gain momentum"));
         this.game.addEntity(new InfoSign(this.game, 75 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Once you're going fast, shoot a portal into the upper left wall to launch!"));
-        this.game.addEntity(new InfoSign(this.game, 83.33 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Fin."));
+        this.game.addEntity(new Exit(this.game, 83.33 * PARAMS.BRICKBLOCKWIDTH, 9.45 * PARAMS.BRICKBLOCKWIDTH));
+        for(let i=85;i<=95;i++) this.game.addEntity(new Brick(this.game, i*PARAMS.BRICKBLOCKWIDTH,10*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
 
 
 
@@ -243,6 +248,571 @@ class SceneManager {
 
     };
 
+    loadLevelTwo() {
+        this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
+        this.clearEntities();
+        this.game.addEntity(new Background(this.game, -50));
+
+
+        for (let i = -10; i <= 75; i++) {
+            if (i<41 || (i>47 && i<57) || i>69) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0, false, false, false, i!==1)); //ceiling
+            if (i<30 || i>33) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true)); //floor
+        }
+        //room walls
+        for (let i = 0; i <= 10; i++) {
+            this.game.addEntity(new Brick(this.game, -1 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, true, i === 10)); //leftmost walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 14 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i===8)); //end of room 1 walls
+            if (i < 8) this.game.addEntity(new Brick(this.game, 30 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 2 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 3 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 3 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 4 walls
+            if (i !== 1) this.game.addEntity(new Brick(this.game, 71 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==2 && i!==3 && i!==7, true, i === 2, i===0)); //end of room 4 walls
+            if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 74 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 5 walls
+            if (i > 1) this.game.addEntity(new PortProofBrick(this.game, 90 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, i === 0)); //start of room 5 walls
+        }
+
+        //room 1
+        for(let i=0;i<9;i++){
+            this.game.addEntity(new Brick(this.game, 3*PARAMS.BRICKBLOCKWIDTH, i*PARAMS.BRICKBLOCKWIDTH, true,i!==2 && i!==4 && i!==8,false,i===8));
+            this.game.addEntity(new Brick(this.game, 7*PARAMS.BRICKBLOCKWIDTH, i*PARAMS.BRICKBLOCKWIDTH, i!==2 && i!==4 && i!==8,true,false,i===8));
+            this.game.addEntity(new Brick(this.game, 11*PARAMS.BRICKBLOCKWIDTH, i*PARAMS.BRICKBLOCKWIDTH, true,true,false,i===8));
+        }
+        let firstDoor = new Door(this.game, 3 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH);
+        let secondDoor = new Door(this.game, 6 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH);
+        let thirdDoor = new Door(this.game, 9 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH);
+        this.game.addEntity(new Button(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH - 20, firstDoor));
+        this.game.addEntity(new Button(this.game, 5.3 * PARAMS.BRICKBLOCKWIDTH, 2 * PARAMS.BRICKBLOCKWIDTH - 20, secondDoor));
+        this.game.addEntity(new Button(this.game, 10.5 * PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH - 20, thirdDoor));
+        this.game.addEntity(firstDoor);
+        this.game.addEntity(secondDoor);
+        this.game.addEntity(thirdDoor);
+
+        this.game.addEntity(new Brick(this.game, 0*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+        this.game.addEntity(new Brick(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, false,true,true,true));
+        this.game.addEntity(new Brick(this.game, 2*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true,false,true,true));
+        this.game.addEntity(new Brick(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true,true,false,true));
+        this.game.addEntity(new Brick(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true,true,true,false));
+        this.game.addEntity(new GlassBrick(this.game, 4*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+        this.game.addEntity(new GlassBrick(this.game, 5*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+        this.game.addEntity(new GlassBrick(this.game, 6*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+        this.game.addEntity(new Brick(this.game, 0*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+        this.game.addEntity(new Brick(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, false,true,false,true));
+        this.game.addEntity(new GlassBrick(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH, true,true,false,false));
+        this.game.addEntity(new GlassBrick(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true,true,false,false));
+        this.game.addEntity(new CompanionCube(this.game, 1.3*PARAMS.BRICKBLOCKWIDTH, 9*PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new CompanionCube(this.game, 4.3*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH));
+
+        this.game.addEntity(new MirrorBrick(this.game, 5*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 4*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, false,true,true,true));
+        this.game.addEntity(new Brick(this.game, 6*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true,false,true,true));
+        this.game.addEntity(new Brick(this.game, 4*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, false,true,true,true));
+        this.game.addEntity(new Brick(this.game, 6*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true,false,true,true));
+
+        this.game.addEntity(new GlassBrick(this.game, 9*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH, true,true,false,false));
+        this.game.addEntity(new GlassBrick(this.game, 9*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true,true,false,false));
+
+        this.game.addEntity(new Brick(this.game, 9*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true,false,false,true));
+        this.game.addEntity(new Brick(this.game, 10*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+
+        this.game.addEntity(new Brick(this.game, 9*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true,false,true,true));
+        this.game.addEntity(new Brick(this.game, 10*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+
+        this.game.addEntity(new Brick(this.game, 8*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false,false,true,true));
+        this.game.addEntity(new Brick(this.game, 9*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false,true,true,true));
+        this.game.addEntity(new Brick(this.game, 9*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true,true,true,false));
+        //end room 1
+
+        this.game.addEntity(new PortProofBrick(this.game,30*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH,true,true,false,true));
+        this.game.addEntity(new PortProofBrick(this.game,30*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH,false,false,true,false));
+        this.game.addEntity(new PortProofBrick(this.game,31*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH,false,false,true,false));
+        this.game.addEntity(new PortProofBrick(this.game,32*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH,false,false,true,false));
+        this.game.addEntity(new PortProofBrick(this.game,33*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH,false,false,true,false));
+        this.game.addEntity(new PortProofBrick(this.game,33*PARAMS.BRICKBLOCKWIDTH, 9*PARAMS.BRICKBLOCKWIDTH,true,true,false,false));
+        this.game.addEntity(new PortProofBrick(this.game,33*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH,true,true,false,false));
+        this.game.addEntity(new Turret(this.game, (29.3) * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
+
+        this.game.addEntity(new GlassBrick(this.game,20*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new GlassBrick(this.game,21*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new Coin(this.game,21.3*PARAMS.BRICKBLOCKWIDTH, 3.3*PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new GlassBrick(this.game,22*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new GlassBrick(this.game,20*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new GlassBrick(this.game,20*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new GlassBrick(this.game,21*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        //this.game.addEntity(new GlassBrick(this.game,18*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+
+        this.game.addEntity(new Brick(this.game,24.3*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new Brick(this.game,28*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+        this.game.addEntity(new Brick(this.game,18*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
+
+        //room 3 starting at x=37*Brickblockwid
+        this.game.addEntity(new Brick(this.game,37*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH,false,true,true,true))
+        this.game.addEntity(new CompanionCube(this.game,37.3*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Brick(this.game,51*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH,true,false,true,true))
+        this.game.addEntity(new CompanionCube(this.game,51.3*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH))
+        for (let i=2;i<=8;i++) {
+            if (i%2===1) this.game.addEntity(new MirrorBrick(this.game,44*PARAMS.BRICKBLOCKWIDTH, i*PARAMS.BRICKBLOCKWIDTH,true,true,i===2,i===8));
+            else this.game.addEntity(new GlassBrick(this.game,44*PARAMS.BRICKBLOCKWIDTH, i*PARAMS.BRICKBLOCKWIDTH,true,true,i===2,i===8))
+
+        }
+        for (let i=0;i<=14;i++) if (i<6 || i>8) this.game.addEntity(new Brick(this.game,(37+i)*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH,i===9,i===5,true,true))
+        for(let i=41;i<=47;i++) this.game.addEntity(new PortProofBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new Coin(this.game,44.4*PARAMS.BRICKBLOCKWIDTH,1.3*PARAMS.BRICKBLOCKWIDTH));
+        let fourthDoor = new Door(this.game, 51 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH);
+        let fifthDoor = new Door(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH);
+        this.game.addEntity(fourthDoor);
+        this.game.addEntity(fifthDoor);
+        this.game.addEntity(new Button(this.game, 37.3 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH - 20, fourthDoor));
+        this.game.addEntity(new Button(this.game, 51.3 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH - 20, fifthDoor));
+        //end room 3
+
+        for(let i=56;i<70;i++) {
+            if (i>56) this.game.addEntity(new PortProofBrick(this.game, i*PARAMS.BRICKBLOCKWIDTH,0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+            this.game.addEntity(new Brick(this.game, i*PARAMS.BRICKBLOCKWIDTH,5*PARAMS.BRICKBLOCKWIDTH,false,i===69,true,true))
+        }
+        this.game.addEntity(new GlassBrick(this.game,56*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,true,true,true,false))
+        this.game.addEntity(new MirrorBrick(this.game,56*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH,true,true,false,true))
+        this.game.addEntity(new PortProofBrick(this.game,63*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH,true,true,false,false))
+        this.game.addEntity(new GlassBrick(this.game,63*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,true,true,false,false))
+        this.game.addEntity(new MirrorBrick(this.game,63*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH,true,true,false,true))
+        this.game.addEntity(new GlassBrick(this.game,70*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,true,true,true,false))
+        this.game.addEntity(new MirrorBrick(this.game,70*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH,true,true,false,true))
+        for(let i=57;i<63;i++) {
+            this.game.addEntity(new GlassBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH,2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false));
+            this.game.addEntity(new GlassBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH,3*PARAMS.BRICKBLOCKWIDTH,false,false,false,true));
+        }
+        for(let i=64;i<70;i++) {
+            this.game.addEntity(new GlassBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH,2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false));
+            this.game.addEntity(new GlassBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH,3*PARAMS.BRICKBLOCKWIDTH,false,false,false,true));
+        }
+        this.game.addEntity(new Brick(this.game, 57*PARAMS.BRICKBLOCKWIDTH,9*PARAMS.BRICKBLOCKWIDTH,true,true,true,false));
+        this.game.addEntity(new Brick(this.game, 59*PARAMS.BRICKBLOCKWIDTH,8*PARAMS.BRICKBLOCKWIDTH,true,true,true,false));
+        this.game.addEntity(new Brick(this.game, 59*PARAMS.BRICKBLOCKWIDTH,9*PARAMS.BRICKBLOCKWIDTH,true,true,false,false));
+
+        this.game.addEntity(new GlassBrick(this.game, 61*PARAMS.BRICKBLOCKWIDTH,8*PARAMS.BRICKBLOCKWIDTH,true,false,true,true));
+        this.game.addEntity(new GlassBrick(this.game, 62*PARAMS.BRICKBLOCKWIDTH,8*PARAMS.BRICKBLOCKWIDTH,false,false,true,true));
+        this.game.addEntity(new GlassBrick(this.game, 63*PARAMS.BRICKBLOCKWIDTH,8*PARAMS.BRICKBLOCKWIDTH,false,false,true,true));
+        this.game.addEntity(new GlassBrick(this.game, 64*PARAMS.BRICKBLOCKWIDTH,8*PARAMS.BRICKBLOCKWIDTH,false,true,true,true));
+
+        this.game.addEntity(new Brick(this.game, 66*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,false));
+        this.game.addEntity(new Brick(this.game, 66*PARAMS.BRICKBLOCKWIDTH,7*PARAMS.BRICKBLOCKWIDTH,true,true,true,false));
+        this.game.addEntity(new Brick(this.game, 66*PARAMS.BRICKBLOCKWIDTH,8*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 68*PARAMS.BRICKBLOCKWIDTH,7*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 69*PARAMS.BRICKBLOCKWIDTH,8.6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 70*PARAMS.BRICKBLOCKWIDTH,7*PARAMS.BRICKBLOCKWIDTH,true,false,true,true));
+        this.game.addEntity(new Coin(this.game,56.3*PARAMS.BRICKBLOCKWIDTH,1.3*PARAMS.BRICKBLOCKWIDTH));
+
+
+        //room 5
+        for (let i=76;i<=89;i++){
+            if (i<87) this.game.addEntity(new PortProofBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true));
+            else if (i===87) this.game.addEntity(new PortProofBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH, -0.3*PARAMS.BRICKBLOCKWIDTH,false,false,false,true));
+            else this.game.addEntity(new PortProofBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH, -0.6*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+            this.game.addEntity(new PortProofBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        }
+        this.game.addEntity(new GlassBrick(this.game, 75*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,false,true,true,true));
+        this.game.addEntity(new Brick(this.game, 77*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 81*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Coin(this.game, 81.3*PARAMS.BRICKBLOCKWIDTH,1.3*PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new Brick(this.game, 85*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
+        this.game.addEntity(new Brick(this.game, 88*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,false,true,true));
+        this.game.addEntity(new Brick(this.game, 89*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,false,false,true,true));
+        this.game.addEntity(new Brick(this.game, 89*PARAMS.BRICKBLOCKWIDTH,2*PARAMS.BRICKBLOCKWIDTH,true,false,true,true));
+        this.game.addEntity(new PortProofBrick(this.game,90*PARAMS.BRICKBLOCKWIDTH, -0.6*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new PortProofBrick(this.game,91*PARAMS.BRICKBLOCKWIDTH, -0.3*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new PortProofBrick(this.game,92*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new PortProofBrick(this.game,93*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+
+        //secret room
+        this.game.addEntity(new PortProofBrick(this.game,93*PARAMS.BRICKBLOCKWIDTH, -1*PARAMS.BRICKBLOCKWIDTH,false,true,false,false))
+        this.game.addEntity(new PortProofBrick(this.game,93*PARAMS.BRICKBLOCKWIDTH, -2*PARAMS.BRICKBLOCKWIDTH,false,false,false,false))
+        this.game.addEntity(new PortProofBrick(this.game,95*PARAMS.BRICKBLOCKWIDTH, -1*PARAMS.BRICKBLOCKWIDTH,true,false,false,false))
+        this.game.addEntity(new PortProofBrick(this.game,95*PARAMS.BRICKBLOCKWIDTH, -2*PARAMS.BRICKBLOCKWIDTH,false,false,false,false))
+        this.game.addEntity(new Brick(this.game,94*PARAMS.BRICKBLOCKWIDTH, -2*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new Coin(this.game,94.3*PARAMS.BRICKBLOCKWIDTH, -1*PARAMS.BRICKBLOCKWIDTH))
+        //end secret room
+
+        this.game.addEntity(new GlassBrick(this.game,94*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new Brick(this.game,95*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new PortProofBrick(this.game,90*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        this.game.addEntity(new PortProofBrick(this.game,91*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        this.game.addEntity(new PortProofBrick(this.game,92*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        this.game.addEntity(new PortProofBrick(this.game,93*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        this.game.addEntity(new PortProofBrick(this.game,94*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        this.game.addEntity(new PortProofBrick(this.game,95*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        this.game.addEntity(new PortProofBrick(this.game,96*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
+        this.game.addEntity(new PortProofBrick(this.game,96*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,true))
+        this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,false))
+        this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH,true,false,false,false))
+        this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,false,false))
+
+        this.game.addEntity(new Checkpoint(this.game, 13.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new Checkpoint(this.game, 34.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new Checkpoint(this.game, 54.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new Checkpoint(this.game, 73.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new Exit(this.game, 96.3 * PARAMS.BRICKBLOCKWIDTH, 1.4 * PARAMS.BRICKBLOCKWIDTH));
+        //this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));  //debug exit
+        this.game.addEntity(new Hud(this.game));
+        this.game.addEntity(this.porta);
+        this.coinRetentionPolicy = Coin.coinCount;
+    }
+
+    loadLevelThree() {
+        this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
+        //this.porta = new Porta(this.game, 75*PARAMS.BRICKBLOCKWIDTH, this.portaSpawn.y);  //debug spawn
+        this.clearEntities();
+        this.game.addEntity(new Background(this.game, -50));
+        console.log("Level 3");
+
+        //Room 1
+        //floor
+        for (let i = 0; i < 4; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        for (let i = 4; i < 15; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        //ceiling
+        for (let i = 0; i < 4; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        for (let i = 4; i < 15; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        //walls
+        for (let i = 0; i <= 10; i++) {
+            this.game.addEntity(new GlassBrick(this.game, -1 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, true, i === 10)); //leftmost walls
+            if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 14 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i===8)); //end of room 1 walls
+            if (i < 8) this.game.addEntity(new PortProofBrick(this.game, 30 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 2 walls
+            //if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 3 walls
+            if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 3 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 4 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 71 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==2 && i!==3 && i!==7, true, i === 2, i===0)); //end of room 4 walls
+            if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 74 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 5 walls
+            this.game.addEntity(new PortProofBrick(this.game, 90 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, i === 0)); //start of room 5 walls
+        }
+        //right glass barrier
+        for (let i = 1; i < 9; i++) this.game.addEntity(new GlassBrick(this.game, 3 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        //glass steps
+        for (let i = 3.5; i < 11; i+=2.5) this.game.addEntity(new GlassBrick(this.game, 2 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        for (let i = 2; i < 9; i+=2.5) this.game.addEntity(new GlassBrick(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new Brick(this.game, 7 * PARAMS.BRICKBLOCKWIDTH, 8 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 7 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new CompanionCube(this.game, 7.3*PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH));
+        var cageDoor = new Door(this.game, 3*PARAMS.BRICKBLOCKWIDTH, 9*PARAMS.BRICKBLOCKWIDTH);
+        var buttonDoor = new Door(this.game, 8*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH);
+        this.game.addEntity(new Button(this.game, 7.3*PARAMS.BRICKBLOCKWIDTH, 7.75 * PARAMS.BRICKBLOCKWIDTH, buttonDoor));
+        this.game.addEntity(new Button(this.game, 9.3*PARAMS.BRICKBLOCKWIDTH, 6.75 * PARAMS.BRICKBLOCKWIDTH, cageDoor));
+        this.game.addEntity(cageDoor);
+        this.game.addEntity(buttonDoor);
+
+        this.game.addEntity(new Brick(this.game, 8 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 8 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 9 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 10 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 10 * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 10 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 9 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new InfoSign(this.game, 1 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "The Glass Ceiling"));
+
+        //Room 2
+        //floor
+        for (let i = 14; i < 31; i++) this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        //ceiling
+        for (let i = 14; i < 30; i++){
+            if(i == 24 || i == 27 || i == 28) continue;
+            this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        }
+
+        //puzzle blocks
+        this.game.addEntity(new Brick(this.game, 24 * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 27 * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 28 * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new Checkpoint(this.game, 14*PARAMS.BRICKBLOCKWIDTH, 9.2*PARAMS.BRICKBLOCKWIDTH));
+
+        this.game.addEntity(new MirrorBrick(this.game, 17*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 20*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 16*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 19*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 23*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 21*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 25*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 26*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 26*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 24*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 25*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        //red herring and obstruction blocks
+        for(let i = 10; i>1; i-- ) this.game.addEntity(new PortProofBrick(this.game, 28 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 27*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new PortProofBrick(this.game, 22*PARAMS.BRICKBLOCKWIDTH, 8.5*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 23*PARAMS.BRICKBLOCKWIDTH, 8*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 24*PARAMS.BRICKBLOCKWIDTH, 8.5*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 20*PARAMS.BRICKBLOCKWIDTH, 8.2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 26*PARAMS.BRICKBLOCKWIDTH, 8.2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new MirrorBrick(this.game, 22*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 21*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new MirrorBrick(this.game, 17*PARAMS.BRICKBLOCKWIDTH, 7*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 16*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new InfoSign(this.game, 15 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "Reflective Slide"));
+        this.game.addEntity(new InfoSign(this.game, 19 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "It would be cool if there was a super obvious place to stand."));
+        this.game.addEntity(new InfoSign(this.game, 23 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "And maybe a couple of friendly hint signs on where to shoot."));
+        this.game.addEntity(new InfoSign(this.game, 26 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "When in doubt, rapid fire!"));
+
+        this.game.addEntity(new InfoSign(this.game, 20.3 * PARAMS.BRICKBLOCKWIDTH, 6.6 * PARAMS.BRICKBLOCKWIDTH, "Portal gun go brrrr."));
+        this.game.addEntity(new InfoSign(this.game, 16.3 * PARAMS.BRICKBLOCKWIDTH, 3.6 * PARAMS.BRICKBLOCKWIDTH, "Juan."));
+        this.game.addEntity(new Coin(this.game, 24.4 * PARAMS.BRICKBLOCKWIDTH, 1.5 * PARAMS.BRICKBLOCKWIDTH));
+
+        //Room 3
+
+        this.game.addEntity(new Checkpoint(this.game, 30*PARAMS.BRICKBLOCKWIDTH, 9.2*PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new InfoSign(this.game, 31 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "Quickdraw and Whiplash"));
+
+        this.game.addEntity(new InfoSign(this.game, 34 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "Jump on the red pistons to launch!"));
+
+        //floor
+        for (let i = 31; i < 52; i++) this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        //ceiling
+        for (let i = 31; i < 52; i++){
+            this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        }
+
+        this.game.addEntity(new JumpPad(this.game, 33.3 * PARAMS.BRICKBLOCKWIDTH, 8.9 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Brick(this.game, 33*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new CompanionCube(this.game, 33*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new PortProofBrick(this.game, 31*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 32*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, true, false, true));
+        this.game.addEntity(new GlassBrick(this.game, 32*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true, true, true, false));
+
+        this.game.addEntity(new PortProofBrick(this.game, 34*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, false, false, true));
+        this.game.addEntity(new GlassBrick(this.game, 34*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true, true, true, false));
+        this.game.addEntity(new GlassBrick(this.game, 34*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new PortProofBrick(this.game, 35*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 36*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 37*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 38*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, true, true, true));
+        this.game.addEntity(new JumpPad(this.game, 38.3 * PARAMS.BRICKBLOCKWIDTH, 4.9 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Brick(this.game, 38*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new JumpPad(this.game, 40.3 * PARAMS.BRICKBLOCKWIDTH, 8.9 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new GlassBrick(this.game, 39*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, false, true));
+        this.game.addEntity(new GlassBrick(this.game, 39*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true, true, false, false));
+        this.game.addEntity(new GlassBrick(this.game, 39*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, false, false));
+        this.game.addEntity(new GlassBrick(this.game, 39*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, true, true, false));
+        this.game.addEntity(new GlassBrick(this.game, 39*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new MirrorBrick(this.game, 40*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new GlassBrick(this.game, 41*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, false, true));
+        this.game.addEntity(new GlassBrick(this.game, 41*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true, true, false, false));
+        this.game.addEntity(new GlassBrick(this.game, 41*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, false, false));
+        this.game.addEntity(new GlassBrick(this.game, 41*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new PortProofBrick(this.game, 45*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new PortProofBrick(this.game, 48*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, true, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 49*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 50*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 51*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH, false, true, true, true));
+        this.game.addEntity(new Brick(this.game, 52*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 52*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 48*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 48*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, true, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 49*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 50*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, false, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 51*PARAMS.BRICKBLOCKWIDTH, 3*PARAMS.BRICKBLOCKWIDTH, false, true, true, true));
+
+        let room3TurretDoor = new Door(this.game, 48*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH);
+        let room3Exit = new Door(this.game, 52*PARAMS.BRICKBLOCKWIDTH, 9*PARAMS.BRICKBLOCKWIDTH);
+        this.game.addEntity(new Button(this.game, 50.3*PARAMS.BRICKBLOCKWIDTH, 5.75*PARAMS.BRICKBLOCKWIDTH, room3Exit));
+        this.game.addEntity(new Button(this.game, 45.3*PARAMS.BRICKBLOCKWIDTH, 5.75*PARAMS.BRICKBLOCKWIDTH, room3TurretDoor));
+        this.game.addEntity(new Turret(this.game, 49*PARAMS.BRICKBLOCKWIDTH, 5*PARAMS.BRICKBLOCKWIDTH, 'l'))
+        this.game.addEntity(room3TurretDoor);
+        this.game.addEntity(room3Exit);
+
+        this.game.addEntity(new Coin(this.game, 41*PARAMS.BRICKBLOCKWIDTH, 2.7*PARAMS.BRICKBLOCKWIDTH));
+
+        //room 4
+        //floor
+        for (let i = 52; i < 74; i++) this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        //ceiling
+        for (let i = 52; i < 74; i++){
+            this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        }
+        let D41 = new Door(this.game, 65*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH);
+        let D42 = new Door(this.game, 62.4*PARAMS.BRICKBLOCKWIDTH, 6*PARAMS.BRICKBLOCKWIDTH);
+        let D43 = new Door(this.game, 65*PARAMS.BRICKBLOCKWIDTH, 9*PARAMS.BRICKBLOCKWIDTH);
+        let D44 = new Door(this.game, 66*PARAMS.BRICKBLOCKWIDTH, 9*PARAMS.BRICKBLOCKWIDTH);
+        let D45 = new Door(this.game, 60.4*PARAMS.BRICKBLOCKWIDTH, 4*PARAMS.BRICKBLOCKWIDTH);
+        this.game.addEntity(D41);
+        this.game.addEntity(D42);
+        this.game.addEntity(D43);
+        this.game.addEntity(D44);
+        this.game.addEntity(D45);
+        this.game.addEntity(new Button(this.game, 58.3*PARAMS.BRICKBLOCKWIDTH, 9.75*PARAMS.BRICKBLOCKWIDTH, D41));
+        this.game.addEntity(new Button(this.game, 66.3*PARAMS.BRICKBLOCKWIDTH, 6.75*PARAMS.BRICKBLOCKWIDTH, D42));
+        this.game.addEntity(new Button(this.game, 59.3*PARAMS.BRICKBLOCKWIDTH, 7.75*PARAMS.BRICKBLOCKWIDTH, D43));
+        this.game.addEntity(new Button(this.game, 59.7*PARAMS.BRICKBLOCKWIDTH, 7.75*PARAMS.BRICKBLOCKWIDTH, D44));
+        this.game.addEntity(new Button(this.game, 56.3*PARAMS.BRICKBLOCKWIDTH, 4.75*PARAMS.BRICKBLOCKWIDTH, D45));
+
+        for (let i = 56; i <= 62; i++){
+            if(i == 59){ 
+                this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+                continue;
+            }
+            if(i == 62){
+                this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, false, true, true, false));
+                continue;
+            }
+             this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        }
+        for (let i = 58; i <= 62; i++){
+            this.game.addEntity(new Brick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 8 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        }
+        this.game.addEntity(new Brick(this.game, 62 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 58 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 58 * PARAMS.BRICKBLOCKWIDTH, 6 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 60 * PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 60 * PARAMS.BRICKBLOCKWIDTH, 2 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 60 * PARAMS.BRICKBLOCKWIDTH, 1 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 58 * PARAMS.BRICKBLOCKWIDTH, 1 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+
+        this.game.addEntity(new Brick(this.game, 65 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new Brick(this.game, 65 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH, true, true, false, true));
+        this.game.addEntity(new Brick(this.game, 65 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, true, true, true, false));
+        this.game.addEntity(new Brick(this.game, 65 * PARAMS.BRICKBLOCKWIDTH, 8 * PARAMS.BRICKBLOCKWIDTH, true, true, false, false));
+
+        this.game.addEntity(new Brick(this.game, 66 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 66 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 66 * PARAMS.BRICKBLOCKWIDTH, 8 * PARAMS.BRICKBLOCKWIDTH, false, true, true, true));
+
+        this.game.addEntity(new Brick(this.game, 67 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 67 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 68 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 68 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 69 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 69 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 70 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        this.game.addEntity(new Brick(this.game, 70 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+
+        this.game.addEntity(new CompanionCube(this.game, 69 * PARAMS.BRICKBLOCKWIDTH, 1 * PARAMS.BRICKBLOCKWIDTH));
+
+        this.game.addEntity(new Checkpoint(this.game, 55*PARAMS.BRICKBLOCKWIDTH, 9.2*PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new InfoSign(this.game, 57 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "Two Doors, One Cube"));
+        this.game.addEntity(new Coin(this.game, 57*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH));
+
+
+
+        //room 5
+        //floor
+        for (let i = 74; i < 90; i++) this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        //ceiling
+        for (let i = 74; i < 90; i++){
+            this.game.addEntity(new PortProofBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        }
+        this.game.addEntity(new Checkpoint(this.game, 73*PARAMS.BRICKBLOCKWIDTH, 9.2*PARAMS.BRICKBLOCKWIDTH));
+
+        for (let i = 5; i < 10; i++){
+            this.game.addEntity(new PortProofBrick(this.game, 88 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, false, false));
+        }
+        this.game.addEntity(new PortProofBrick(this.game, 88 * PARAMS.BRICKBLOCKWIDTH, 2 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        this.game.addEntity(new PortProofBrick(this.game, 88 * PARAMS.BRICKBLOCKWIDTH, 4 * PARAMS.BRICKBLOCKWIDTH, true, true, true, false));
+
+        for (let i = 2; i < 10; i+=2){
+            for(let j = 74; j<78; j++){
+                if(j==77) this.game.addEntity(new PortProofBrick(this.game, j * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, true, true, true));
+                else this.game.addEntity(new PortProofBrick(this.game, j * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+            }
+            for(let j = 80; j<88; j++){
+                if(j==80) this.game.addEntity(new PortProofBrick(this.game, j * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, false, true, true));
+                else this.game.addEntity(new PortProofBrick(this.game, j * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+            }
+            if(i==2) this.game.addEntity(new PortProofBrick(this.game, 89 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, false, false, true, true));
+        }
+
+        this.game.addEntity(new JumpPad(this.game, 79*PARAMS.BRICKBLOCKWIDTH, 8.9*PARAMS.BRICKBLOCKWIDTH))
+
+        this.game.addEntity(new InfoSign(this.game, 76 * PARAMS.BRICKBLOCKWIDTH, 9.6 * PARAMS.BRICKBLOCKWIDTH, "Buttons (all the way) Down"));
+        this.game.addEntity(new Exit(this.game, 89.2 * PARAMS.BRICKBLOCKWIDTH, 9.45 * PARAMS.BRICKBLOCKWIDTH));
+
+        let dt1 = new Door(this.game, 77.4 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH);
+        let dt2 = new Door(this.game, 77.4 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH);
+        let dt3 = new Door(this.game, 77.4 * PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH);
+        let dt4 = new Door(this.game, 77.4 * PARAMS.BRICKBLOCKWIDTH, 1 * PARAMS.BRICKBLOCKWIDTH);
+
+        let d11 = new Door(this.game, 82 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH);
+        let d12 = new Door(this.game, 85 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH);
+        let d21 = new Door(this.game, 82 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH);
+        let d22 = new Door(this.game, 85 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH);
+        let d31 = new Door(this.game, 82 * PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH);
+        let d32 = new Door(this.game, 85 * PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH);
+        let d41 = new Door(this.game, 82 * PARAMS.BRICKBLOCKWIDTH, 1 * PARAMS.BRICKBLOCKWIDTH);
+        let d42 = new Door(this.game, 85 * PARAMS.BRICKBLOCKWIDTH, 1 * PARAMS.BRICKBLOCKWIDTH);
+        let dummyDoor = new Door(this.game, 90 * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH);
+
+        this.game.addEntity(dt1);
+        this.game.addEntity(dt2);
+        this.game.addEntity(dt3);
+        this.game.addEntity(dt4);
+
+        this.game.addEntity(d11);
+        this.game.addEntity(d12);
+        this.game.addEntity(d21);
+        this.game.addEntity(d22);
+        this.game.addEntity(d31);
+        this.game.addEntity(d32);
+        this.game.addEntity(d41);
+        this.game.addEntity(d42);
+
+        //top row
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 1.75 * PARAMS.BRICKBLOCKWIDTH, dt4));
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 1.75 * PARAMS.BRICKBLOCKWIDTH, dt3));
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 1.75 * PARAMS.BRICKBLOCKWIDTH, dt2));
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 1.75 * PARAMS.BRICKBLOCKWIDTH, dt1));
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 1.75 * PARAMS.BRICKBLOCKWIDTH, d22));
+        this.game.addEntity(new Button(this.game, 83 * PARAMS.BRICKBLOCKWIDTH, 1.75 * PARAMS.BRICKBLOCKWIDTH, dummyDoor));
+        this.game.addEntity(new Button(this.game, 86 * PARAMS.BRICKBLOCKWIDTH, 1.75 * PARAMS.BRICKBLOCKWIDTH, dummyDoor));
+
+
+        //second row
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 3.75 * PARAMS.BRICKBLOCKWIDTH, d41));
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 3.75 * PARAMS.BRICKBLOCKWIDTH, d21));
+        this.game.addEntity(new Button(this.game, 83 * PARAMS.BRICKBLOCKWIDTH, 3.75 * PARAMS.BRICKBLOCKWIDTH, dummyDoor));
+        this.game.addEntity(new Button(this.game, 86 * PARAMS.BRICKBLOCKWIDTH, 3.75 * PARAMS.BRICKBLOCKWIDTH, dummyDoor));
+
+        //third row
+        this.game.addEntity(new Button(this.game, 86 * PARAMS.BRICKBLOCKWIDTH, 5.75 * PARAMS.BRICKBLOCKWIDTH, d42));
+        this.game.addEntity(new Button(this.game, 83 * PARAMS.BRICKBLOCKWIDTH, 5.75 * PARAMS.BRICKBLOCKWIDTH, d11));
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 5.75 * PARAMS.BRICKBLOCKWIDTH, dummyDoor));
+
+        //bottom row
+        this.game.addEntity(new Button(this.game, 83 * PARAMS.BRICKBLOCKWIDTH, 7.75 * PARAMS.BRICKBLOCKWIDTH, d12));
+        this.game.addEntity(new Button(this.game, 86 * PARAMS.BRICKBLOCKWIDTH, 7.75 * PARAMS.BRICKBLOCKWIDTH, d31));
+        this.game.addEntity(new Button(this.game, 86 * PARAMS.BRICKBLOCKWIDTH, 7.75 * PARAMS.BRICKBLOCKWIDTH, d32));
+        this.game.addEntity(new Button(this.game, 80 * PARAMS.BRICKBLOCKWIDTH, 7.75 * PARAMS.BRICKBLOCKWIDTH, dummyDoor));
+
+        for(let i = 83; i<86; i++){
+            this.game.addEntity(new CompanionCube(this.game, i * PARAMS.BRICKBLOCKWIDTH, 9.5 * PARAMS.BRICKBLOCKWIDTH))
+        }
+
+        this.game.addEntity(new Turret(this.game, 76 * PARAMS.BRICKBLOCKWIDTH, 1 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Turret(this.game, 76 * PARAMS.BRICKBLOCKWIDTH, 3 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Turret(this.game, 76 * PARAMS.BRICKBLOCKWIDTH, 5 * PARAMS.BRICKBLOCKWIDTH))
+        this.game.addEntity(new Turret(this.game, 76 * PARAMS.BRICKBLOCKWIDTH, 7 * PARAMS.BRICKBLOCKWIDTH))
+
+        this.game.addEntity(new Coin(this.game, 89.5 * PARAMS.BRICKBLOCKWIDTH, 1.5 * PARAMS.BRICKBLOCKWIDTH));
+
+
+        this.game.addEntity(new Hud(this.game));
+        this.game.addEntity(this.porta);
+        this.coinRetentionPolicy = Coin.coinCount;
+    }
+
+    rollCredits(){
+        this.clearEntities();
+        this.bgMusic("./audio/Still Alive.mp3");
+        this.lvlMusic.play();
+    }
+
     updateAudio() {
         var mute = document.getElementById("mute").checked;
         var volume = document.getElementById("volume").value;
@@ -250,10 +820,21 @@ class SceneManager {
         AUDIO_MANAGER.muteAudio(mute);
         AUDIO_MANAGER.adjustVolume(volume);
         this.lvlMusic.volume = volume;
-        this.lvlMusic.mute = mute;
+        this.lvlMusic.muted = mute;
     };
 
     update() {
+        if(this.transition == true){
+            this.transition = !this.transition;
+            this.game.level++;
+            switch(this.game.level){
+                case 1: this.loadLevelOne(); break;
+                case 2: this.loadLevelTwo(); break;
+                case 3: this.loadLevelThree(); break;
+                case 4: this.rollCredits(); break;
+                default: this.loadLevelOne();
+            }
+        }
 
         this.updateAudio();
         PARAMS.DEBUG = document.getElementById("debug").checked;
@@ -270,8 +851,15 @@ class SceneManager {
             this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
             this.game.purplePortal = false;
             this.game.greenPortal = false;
-            this.loadLevelOne();
-        };
+            Coin.coinCount = this.coinRetentionPolicy;
+            switch(this.game.level){
+                case 1: this.loadLevelOne(); break;
+                case 2: this.loadLevelTwo(); break;
+                case 3: this.loadLevelThree(); break;
+                case 4: this.rollCredits(); break;
+                default: this.loadLevelOne();
+            }
+        }
     };
 
     draw(ctx) {
@@ -302,7 +890,7 @@ class SceneManager {
 
         }
     };
-};
+}
 
 // class Minimap {
 //     constructor(game, x, y, w) {

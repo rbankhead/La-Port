@@ -10,7 +10,10 @@ class Checkpoint {
     };
 
     update() {
-        
+        if(this.sound.currentTime>1){
+            this.sound.pause();
+            this.sound.currentTime = 0;
+        }
     };
 
     // method to take checkpoint from inactive to active state
