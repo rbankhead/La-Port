@@ -28,7 +28,6 @@ class Button {
         this.game.entities.slice().reverse().forEach(function (entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Porta || entity instanceof CompanionCube) {
-                    //entity.velocity.y = -20; //code to make button into launch pad
                     collisionFlag = true;
                     if(that.state == 0) that.state = 1;
                 }

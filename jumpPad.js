@@ -26,7 +26,7 @@ class JumpPad {
         this.game.entities.slice().reverse().forEach(function (entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Porta || entity instanceof CompanionCube) {
-                    entity.velocity.y = -20;
+                    entity.velocity.y = -21;
                     that.sound.play();
                     if(that.state == 0) that.state = 1;
                 }

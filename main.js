@@ -14,6 +14,7 @@ AUDIO_MANAGER.queueDownload("./audio/door.wav");
 AUDIO_MANAGER.queueDownload("./audio/reflect.wav");
 AUDIO_MANAGER.queueDownload("./audio/checkpoint.wav");
 AUDIO_MANAGER.queueDownload("./audio/lvlOne.wav");
+AUDIO_MANAGER.queueDownload("./audio/Still Alive.mp3");
 
 
 ASSET_MANAGER.queueDownload("./sprites/greenportal.png");
