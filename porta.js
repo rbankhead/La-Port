@@ -281,24 +281,23 @@ class Porta {
                         that.updateVelocities(entity, entity.linkedPortal);
 
                     }
+                    //these variables exist exclusively for readability of code
+                    let falling = that.velocity.y > 0 && entity.top;
+                    let jumping = that.velocity.y < 0 && entity.bottom;
+                    let portaWasJustAboveBrick = that.lastBB.bottom <= entity.BB.top;
+                    let portaWasJustBelowBrick = that.lastBB.top >= entity.BB.bottom;
+                    let portaBottomFellIntoBrick = that.BB.bottom >= entity.BB.top;
+                    let portaTopIsAboveBrick = that.BB.top <= entity.BB.top;
+                    let portaWasRightOfBrick = that.lastBB.left >= entity.BB.right;
+                    let portaWasLeftOfBrick = that.lastBB.right <= entity.BB.left;
+                    let walkingIntoRightBrick = that.velocity.x > 0 && entity.left;
+                    let portaRightClippedIntoBrick = that.BB.right >= entity.BB.left;
+                    let portaLeftIsLeftOfBrick = that.BB.right >= entity.BB.left;
+                    let portaLeftClippedIntoBrick = that.BB.left <= entity.BB.right;
+                    let portaRightIsRightOfBrick = that.BB.right >= entity.BB.right;
+                    let walkingIntoLeftBrick = that.velocity.x < 0 && entity.right;
                     if (entity instanceof Brick){
                         that.bricked = true;
-                        //these variables exist exclusively for readability of code
-                        let falling = that.velocity.y > 0 && entity.top;
-                        let jumping = that.velocity.y < 0 && entity.bottom;
-                        let portaWasJustAboveBrick = that.lastBB.bottom <= entity.BB.top;
-                        let portaWasJustBelowBrick = that.lastBB.top >= entity.BB.bottom;
-                        let portaBottomFellIntoBrick = that.BB.bottom >= entity.BB.top;
-                        let portaTopIsAboveBrick = that.BB.top <= entity.BB.top;
-                        let portaWasRightOfBrick = that.lastBB.left >= entity.BB.right;
-                        let portaWasLeftOfBrick = that.lastBB.right <= entity.BB.left;
-                        let walkingIntoRightBrick = that.velocity.x > 0 && entity.left;
-                        let portaRightClippedIntoBrick = that.BB.right >= entity.BB.left;
-                        let portaLeftIsLeftOfBrick = that.BB.right >= entity.BB.left;
-                        let portaLeftClippedIntoBrick = that.BB.left <= entity.BB.right;
-                        let portaRightIsRightOfBrick = that.BB.right >= entity.BB.right;
-                        let walkingIntoLeftBrick = that.velocity.x < 0 && entity.right;
-
 
                         if (falling){ //falling
                             if(portaWasJustAboveBrick ||
@@ -354,13 +353,16 @@ class Porta {
                             that.updateBB();
                         }
                     }
-                    if ((entity instanceof Door) && that.lastBB.left >= entity.BB.right) {
+                    if ((entity instanceof Door) && that.velocity < 0) {
                         if (entity.state !== 3) {
-                            that.x = entity.BB.right;
-                            that.velocity.x = 0;
-                            that.updateBB();
+                            if (portaWasRightOfBrick || (portaLeftClippedIntoBrick && portaRightIsRightOfBrick && (!(portaWasJustBelowBrick || (portaWasJustAboveBrick))))){
+                                that.x = entity.BB.right;
+                                that.velocity.x = 0;
+                                that.updateBB();
+                            }
                         }
                     }
+
                     if (entity instanceof Coin){
                         Coin.coinCount += 1;
                         entity.removeFromWorld = true;
