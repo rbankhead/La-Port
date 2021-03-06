@@ -241,6 +241,8 @@ class SceneManager {
         //placeholder for end of level
         this.game.addEntity(new InfoSign(this.game, 77.166 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Try making linked portals on the ceiling and floor, then fall through them to gain momentum"));
         this.game.addEntity(new InfoSign(this.game, 75 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Once you're going fast, shoot a portal into the upper left wall to launch!"));
+        this.game.addEntity(new InfoSign(this.game, 82.166 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Press E when standing on the teleporter to go to the next level!"));
+
         this.game.addEntity(new Exit(this.game, 83.33 * PARAMS.BRICKBLOCKWIDTH, 9.45 * PARAMS.BRICKBLOCKWIDTH));
         for(let i=85;i<=95;i++) this.game.addEntity(new Brick(this.game, i*PARAMS.BRICKBLOCKWIDTH,10*PARAMS.BRICKBLOCKWIDTH,true,true,true,true))
 
