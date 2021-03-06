@@ -271,7 +271,7 @@ class SceneManager {
             if (i < 8) this.game.addEntity(new Brick(this.game, 30 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 2 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 3 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 3 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 4 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10 && i!==2, i === 10, i === 8)); //start of room 4 walls
             if (i !== 1) this.game.addEntity(new Brick(this.game, 71 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==2 && i!==3 && i!==7, true, i === 2, i===0)); //end of room 4 walls
             if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 74 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 5 walls
             if (i > 1) this.game.addEntity(new PortProofBrick(this.game, 90 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, i === 0)); //start of room 5 walls
@@ -417,8 +417,6 @@ class SceneManager {
             this.game.addEntity(new PortProofBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
         }
         this.game.addEntity(new GlassBrick(this.game, 75*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,false,true,true,true));
-        this.game.addEntity(new InfoSign(this.game, 75.25 * PARAMS.BRICKBLOCKWIDTH, 9.56 * PARAMS.BRICKBLOCKWIDTH, "'Failing up'"));
-        this.game.addEntity(new InfoSign(this.game, 89.25 * PARAMS.BRICKBLOCKWIDTH, 5.56 * PARAMS.BRICKBLOCKWIDTH, "I meant 'falling up'"));
         this.game.addEntity(new Brick(this.game, 77*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 81*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Coin(this.game, 81.3*PARAMS.BRICKBLOCKWIDTH,1.3*PARAMS.BRICKBLOCKWIDTH));
@@ -453,6 +451,13 @@ class SceneManager {
         this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 0*PARAMS.BRICKBLOCKWIDTH,false,false,false,false))
         this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH,true,false,false,false))
         this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,false,false))
+
+        this.game.addEntity(new InfoSign(this.game, 0.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Don't Forget to Bring a Cube!"));
+        this.game.addEntity(new InfoSign(this.game, 18.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "The Guardian"));
+        this.game.addEntity(new InfoSign(this.game, 37.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Symmetry"));
+        this.game.addEntity(new InfoSign(this.game, 56.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Climbing Out of the Basement"));
+        this.game.addEntity(new InfoSign(this.game, 75.25 * PARAMS.BRICKBLOCKWIDTH, 9.56 * PARAMS.BRICKBLOCKWIDTH, "Failing Up"));
+        //this.game.addEntity(new InfoSign(this.game, 89.25 * PARAMS.BRICKBLOCKWIDTH, 5.56 * PARAMS.BRICKBLOCKWIDTH, "I meant 'falling up'"));
 
         this.game.addEntity(new Checkpoint(this.game, 13.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
         this.game.addEntity(new Checkpoint(this.game, 34.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
