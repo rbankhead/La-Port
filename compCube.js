@@ -11,27 +11,11 @@ class CompanionCube {
     };
 
     updateVelocities(entryPortal, exitPortal){
-        console.log(exitPortal.orientation);
         let tempx = this.velocity.x;
         let tempy = this.velocity.y;
-        if (entryPortal.orientation === "top"){
-            switch(exitPortal.orientation){
+        if (entryPortal.orientation === "top") {
+            switch (exitPortal.orientation) {
                 case ("top"):
-                    this.velocity.y = -this.velocity.y;
-                    break;
-                case ("left"):
-                    this.velocity.x = this.velocity.y;
-                    this.velocity.y = tempx;
-                    break;
-                case ("right"):
-                    this.velocity.x = this.velocity.y;
-                    this.velocity.y = tempx;
-                    break;
-            }
-
-        } else if (entryPortal.orientation === "bottom"){
-            switch(exitPortal.orientation){
-                case ("bottom"):
                     this.velocity.y = -this.velocity.y;
                     break;
                 case ("left"):
@@ -40,12 +24,27 @@ class CompanionCube {
                     break;
                 case ("right"):
                     this.velocity.x = this.velocity.y;
+                    this.velocity.y = -tempx;
+                    break;
+            }
+
+        } else if (entryPortal.orientation === "bottom") {
+            switch (exitPortal.orientation) {
+                case ("bottom"):
+                    this.velocity.y = -this.velocity.y;
+                    break;
+                case ("left"):
+                    this.velocity.x = this.velocity.y;
+                    this.velocity.y = tempx;
+                    break;
+                case ("right"):
+                    this.velocity.x = -this.velocity.y;
                     this.velocity.y = tempx;
                     break;
             }
 
         } else if (entryPortal.orientation === "left") {
-            switch(exitPortal.orientation){
+            switch (exitPortal.orientation) {
                 case ("bottom"):
                     this.velocity.y = this.velocity.x;
                     this.velocity.x = tempy;
@@ -60,13 +59,13 @@ class CompanionCube {
             }
 
         } else if (entryPortal.orientation === "right") {
-            switch(exitPortal.orientation){
+            switch (exitPortal.orientation) {
                 case ("bottom"):
-                    this.velocity.y = this.velocity.x;
+                    this.velocity.y = -this.velocity.x;
                     this.velocity.x = tempy;
                     break;
                 case ("top"):
-                    this.velocity.y = -this.velocity.x;
+                    this.velocity.y = this.velocity.x;
                     this.velocity.x = tempy;
                     break;
                 case ("right"):
@@ -165,17 +164,24 @@ class CompanionCube {
                     if((entity instanceof Brick) && that.lastBB.bottom <= entity.BB.top){ //landing
                         that.y = entity.BB.top - 25;
                         that.velocity.y = 0;
-                        that.updateBB();
                     }
 
+                }
+                if (that.velocity.y < 0){ //falling
+                    if((entity instanceof Brick) && that.lastBB.top >= entity.BB.bottom){ //landing
+                        that.y = entity.BB.bottom;
+                        that.velocity.y = 0.001;
+                    }
                 }
             }
         });
 
         //Gravity!
-        if(this.velocity.y != 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
-        this.y += this.velocity.y;
-        if (!this.held) nudge(that);
+        if (!this.held){
+            if(this.velocity.y != 0 && this.velocity.y < MAX_FALL) this.velocity.y += ACC_FALLING;
+            this.y += this.velocity.y;
+            if (this.velocity.y === 0) nudge(that);
+        }
         that.updateBB();
     };
 

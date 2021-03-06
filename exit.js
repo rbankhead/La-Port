@@ -10,6 +10,8 @@ class Exit {
 
     transition(){
         this.sound.play();
+        this.game.greenPortal = false;
+        this.game.purplePortal = false;
         this.game.camera.transition = true;
         this.game.camera.portaSpawn.x = 0*3 * PARAMS.BLOCKWIDTH;
         this.game.camera.portaSpawn.y = 28 * PARAMS.BLOCKWIDTH;

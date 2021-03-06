@@ -4,6 +4,8 @@ class Laser {
         this.game.laser = this;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/laser.png"); //add sprite
         this.length = 1;
+        this.killCounter = 0;
+        this.touchingPorta = false;
         this.BB = new BoundingBox(this.x, this.y, this.length, 10 * this.scale);
         this.growing = true;
     };
@@ -14,6 +16,7 @@ class Laser {
     }
 
     update() {
+        this.touchingPorta = false;
         let that = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
@@ -21,13 +24,18 @@ class Laser {
                 //TODO: Portal Collision?
                 //}
                 if (entity instanceof Porta) {
-                    entity.dead = true;
+                    this.touchingPorta = true;
+                    //this.killCounter += this.game.clockTick;
+                    if (this.killCounter>1) {
+                        //entity.die();
+                    }
                 }
                 else if (entity instanceof Brick || entity instanceof CompanionCube){ 
                     that.growing = false;
                     that.length = 0;
                 }
             } else that.growing = true;
+            if (!this.touchingPorta) this.killCounter = 0;
         });
         if(this.length == 0){
             this.removeFromWorld = true;

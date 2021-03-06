@@ -142,10 +142,13 @@ class Laser {
         Object.assign(this, { game, x, y, facing });
         this.colliding = false;
         this.BBwidth = 1;
+        this.killCounter = 0;
+        this.collidingPorta = false;
         this.BB = new BoundingBox(this.x, this.y, this.BBwidth, 2);
     }
     update(){
         this.colliding = false;
+        this.collidingPorta = false;
         if(this.facing == 'l') this.BB = new BoundingBox(this.x - this.BBwidth, this.y, this.BBwidth, 2);
         else this.BB = new BoundingBox(this.x, this.y, this.BBwidth, 2);
 
@@ -159,13 +162,16 @@ class Laser {
                     else that.BBwidth = entity.BB.x - that.BB.x;
                 }
                 if (entity instanceof Porta) {
-                    entity.die();
+                    that.collidingPorta = true;
+                    that.killCounter += that.game.clockTick;
+                    if (that.killCounter>0.5){
+                        entity.die();
+                    }
                 }
             }
         });
-        if (!this.colliding){ 
-            this.BBwidth += 200*this.game.clockTick;
-        }
+        if (!this.colliding) this.BBwidth += 200*this.game.clockTick;
+        if (!this.collidingPorta) this.killCounter = 0;
     }
     draw(ctx){
         ctx.strokeStyle = "Red";
