@@ -8,6 +8,7 @@ class SceneManager {
         this.portaSpawn = { x: 0 * PARAMS.BLOCKWIDTH, y: 28.5 * PARAMS.BLOCKWIDTH }
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         PARAMS.BRICKBLOCKWIDTH = PARAMS.BLOCKWIDTH * 3;
+        this.startTime = 0;
 
         this.coinRetentionPolicy = 0;
         this.game.addEntity(new TitleScreen(this.game));
@@ -34,6 +35,8 @@ class SceneManager {
     };
 
     loadLevelOne() {
+        this.timerOn = true;
+        this.startTime = this.game.timer.gameTime;
         this.update(); // initialize screen positions
         //AUDIO_MANAGER.autoRepeat("./audio/lvlOne.wav");
         this.lvlMusic.play();
@@ -870,6 +873,24 @@ class SceneManager {
 
     draw(ctx) {
         //HUD stuff goes here
+        if (this.timerOn) {
+            let start = this.game.timer.gameTime-this.startTime;
+            let hours = 0;
+            let mins = 0;
+            let seconds = Math.round(start)
+            while (seconds >= 60){
+                mins++;
+                seconds -= 60;
+            }
+            ctx.fillStyle = "White";
+            if (mins < 10) {
+                if (seconds < 10) ctx.fillText("0" + mins + ":" + "0" + seconds, 0 * PARAMS.BRICKBLOCKWIDTH + 4, 10.6 * PARAMS.BRICKBLOCKWIDTH);
+                else ctx.fillText("0" + mins + ":" + seconds, 0 * PARAMS.BRICKBLOCKWIDTH + 4, 10.6 * PARAMS.BRICKBLOCKWIDTH);
+            } else {
+                if (seconds < 10) ctx.fillText(mins + ":" + "0" + seconds, 0 * PARAMS.BRICKBLOCKWIDTH + 4, 10.6 * PARAMS.BRICKBLOCKWIDTH);
+                else ctx.fillText(mins + ":" + seconds, 0 * PARAMS.BRICKBLOCKWIDTH + 4, 10.6 * PARAMS.BRICKBLOCKWIDTH);
+            }
+        }
 
         if (PARAMS.DEBUG) {
             let xV = "xV=" + Math.floor(this.game.porta.velocity.x);
