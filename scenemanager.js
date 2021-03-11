@@ -253,7 +253,7 @@ class SceneManager {
         this.game.addEntity(this.porta);
         //uncomment for bug fix mode
         //this.game.addEntity(new Turret(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 9* PARAMS.BRICKBLOCKWIDTH))
-        this.game.addEntity(new Exit(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
+        //this.game.addEntity(new Exit(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
 
         //this.rollCredits();
     };
@@ -470,7 +470,7 @@ class SceneManager {
         this.game.addEntity(new Checkpoint(this.game, 54.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
         this.game.addEntity(new Checkpoint(this.game, 73.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
         this.game.addEntity(new Exit(this.game, 96.3 * PARAMS.BRICKBLOCKWIDTH, 1.4 * PARAMS.BRICKBLOCKWIDTH));
-        this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));  //debug exit
+        //this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));  //debug exit
         this.game.addEntity(new Hud(this.game));
         this.game.addEntity(this.porta);
         this.coinRetentionPolicy = Coin.coinCount;
