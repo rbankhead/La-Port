@@ -46,7 +46,7 @@ class SceneManager {
         this.clearEntities();
 
         //parallax background
-        this.game.addEntity(new Background(this.game, -50));
+        this.game.addEntity(new Background(this.game, -50, 0, 1));
         //this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));
 
         //ground bricks to the left of room 1 to hide the blank part of the background image
@@ -253,7 +253,7 @@ class SceneManager {
         this.game.addEntity(this.porta);
         //uncomment for bug fix mode
         //this.game.addEntity(new Turret(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 9* PARAMS.BRICKBLOCKWIDTH))
-        //this.game.addEntity(new Exit(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
+        this.game.addEntity(new Exit(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
 
         //this.rollCredits();
     };
@@ -262,7 +262,7 @@ class SceneManager {
         this.bgMusic("./audio/lvlTwo.wav");
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         this.clearEntities();
-        this.game.addEntity(new Background(this.game, -50));
+        this.game.addEntity(new Background(this.game, -50, 0, 2));
         this.lvlMusic.play();
 
 
@@ -470,7 +470,7 @@ class SceneManager {
         this.game.addEntity(new Checkpoint(this.game, 54.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
         this.game.addEntity(new Checkpoint(this.game, 73.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
         this.game.addEntity(new Exit(this.game, 96.3 * PARAMS.BRICKBLOCKWIDTH, 1.4 * PARAMS.BRICKBLOCKWIDTH));
-        //this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));  //debug exit
+        this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));  //debug exit
         this.game.addEntity(new Hud(this.game));
         this.game.addEntity(this.porta);
         this.coinRetentionPolicy = Coin.coinCount;
@@ -481,9 +481,12 @@ class SceneManager {
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         //this.porta = new Porta(this.game, 75*PARAMS.BRICKBLOCKWIDTH, this.portaSpawn.y);  //debug spawn
         this.clearEntities();
-        this.game.addEntity(new Background(this.game, -50));
+        this.game.addEntity(new Background(this.game, -50, 0, 3));
         console.log("Level 3");
         this.lvlMusic.play();
+
+        for (let i = -10; i < -1; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        for (let i = -10; i < -1; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
 
         //Room 1
         //floor

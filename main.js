@@ -37,15 +37,29 @@ ASSET_MANAGER.queueDownload("./sprites/door.png");
 ASSET_MANAGER.queueDownload("./sprites/laser.png");
 ASSET_MANAGER.queueDownload("./sprites/mirror.png");
 ASSET_MANAGER.queueDownload("./sprites/glass.png");
-ASSET_MANAGER.queueDownload("./sprites/background.png");
-ASSET_MANAGER.queueDownload("./sprites/forground.png");
-ASSET_MANAGER.queueDownload("./sprites/midground_far.png");
-ASSET_MANAGER.queueDownload("./sprites/midground.png");
 ASSET_MANAGER.queueDownload("./sprites/crackedBrick.png");
 ASSET_MANAGER.queueDownload("./sprites/TitleScreenWhite.png");
 ASSET_MANAGER.queueDownload("./sprites/TitleScreenBlue.png");
 ASSET_MANAGER.queueDownload("./sprites/jumpPad.png");
 ASSET_MANAGER.queueDownload("./sprites/exit.png");
+
+ASSET_MANAGER.queueDownload("./backgrounds/lvl1/background.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl1/forground.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl1/forground_far.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl1/midground_far.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl1/midground.png");
+
+ASSET_MANAGER.queueDownload("./backgrounds/lvl2/background.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl2/forground.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl2/forground_far.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl2/midground_far.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl2/midground.png");
+
+ASSET_MANAGER.queueDownload("./backgrounds/lvl3/background.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl3/forground.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl3/forground_far.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl3/midground_far.png");
+ASSET_MANAGER.queueDownload("./backgrounds/lvl3/midground.png");
 
 
 AUDIO_MANAGER.downloadAll();
