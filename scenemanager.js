@@ -16,6 +16,7 @@ class SceneManager {
         this.bgMusic("./audio/lvlOne.wav");
         this.game.level = 1;
         this.transition = false;
+        this.creditScroller = 0;
     };
 
     bgMusic(path) {
@@ -45,7 +46,7 @@ class SceneManager {
         this.clearEntities();
 
         //parallax background
-        this.game.addEntity(new Background(this.game, -50));
+        this.game.addEntity(new Background(this.game, -50, 0, 1));
         //this.game.addEntity(new Exit(this.game, 2 * PARAMS.BLOCKWIDTH, 28.5 * PARAMS.BLOCKWIDTH));
 
         //ground bricks to the left of room 1 to hide the blank part of the background image
@@ -254,12 +255,15 @@ class SceneManager {
         //this.game.addEntity(new Turret(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 9* PARAMS.BRICKBLOCKWIDTH))
         //this.game.addEntity(new Exit(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
 
+        //this.rollCredits();
     };
 
     loadLevelTwo() {
+        this.bgMusic("./audio/lvlTwo.wav");
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         this.clearEntities();
-        this.game.addEntity(new Background(this.game, -50));
+        this.game.addEntity(new Background(this.game, -50, 0, 2));
+        this.lvlMusic.play();
 
 
         for (let i = -10; i <= 75; i++) {
@@ -273,7 +277,7 @@ class SceneManager {
             if (i < 8) this.game.addEntity(new Brick(this.game, 30 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 2 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 36 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 3 walls
             if (i !== 9) this.game.addEntity(new Brick(this.game, 52 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //end of room 3 walls
-            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 4 walls
+            if (i !== 9) this.game.addEntity(new Brick(this.game, 55 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10 && i!==2, i === 10, i === 8)); //start of room 4 walls
             if (i !== 1) this.game.addEntity(new Brick(this.game, 71 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==2 && i!==3 && i!==7, true, i === 2, i===0)); //end of room 4 walls
             if (i !== 9) this.game.addEntity(new PortProofBrick(this.game, 74 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, i!==10, i!==10, i === 10, i === 8)); //start of room 5 walls
             if (i > 1) this.game.addEntity(new PortProofBrick(this.game, 90 * PARAMS.BRICKBLOCKWIDTH, i * PARAMS.BRICKBLOCKWIDTH, true, true, i === 2, i === 0)); //start of room 5 walls
@@ -419,8 +423,6 @@ class SceneManager {
             this.game.addEntity(new PortProofBrick(this.game,i*PARAMS.BRICKBLOCKWIDTH, 10*PARAMS.BRICKBLOCKWIDTH,false,false,true,false))
         }
         this.game.addEntity(new GlassBrick(this.game, 75*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,false,true,true,true));
-        this.game.addEntity(new InfoSign(this.game, 75.25 * PARAMS.BRICKBLOCKWIDTH, 9.56 * PARAMS.BRICKBLOCKWIDTH, "'Failing up'"));
-        this.game.addEntity(new InfoSign(this.game, 89.25 * PARAMS.BRICKBLOCKWIDTH, 5.56 * PARAMS.BRICKBLOCKWIDTH, "I meant 'falling up'"));
         this.game.addEntity(new Brick(this.game, 77*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Brick(this.game, 81*PARAMS.BRICKBLOCKWIDTH,6*PARAMS.BRICKBLOCKWIDTH,true,true,true,true));
         this.game.addEntity(new Coin(this.game, 81.3*PARAMS.BRICKBLOCKWIDTH,1.3*PARAMS.BRICKBLOCKWIDTH));
@@ -456,6 +458,13 @@ class SceneManager {
         this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 1*PARAMS.BRICKBLOCKWIDTH,true,false,false,false))
         this.game.addEntity(new PortProofBrick(this.game,97*PARAMS.BRICKBLOCKWIDTH, 2*PARAMS.BRICKBLOCKWIDTH,false,false,false,false))
 
+        this.game.addEntity(new InfoSign(this.game, 0.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Don't Forget to Bring a Cube!"));
+        this.game.addEntity(new InfoSign(this.game, 18.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "The Guardian"));
+        this.game.addEntity(new InfoSign(this.game, 37.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Symmetry"));
+        this.game.addEntity(new InfoSign(this.game, 56.25 * PARAMS.BRICKBLOCKWIDTH, 9.566 * PARAMS.BRICKBLOCKWIDTH, "Climbing Out of the Basement"));
+        this.game.addEntity(new InfoSign(this.game, 75.25 * PARAMS.BRICKBLOCKWIDTH, 9.56 * PARAMS.BRICKBLOCKWIDTH, "Failing Up"));
+        //this.game.addEntity(new InfoSign(this.game, 89.25 * PARAMS.BRICKBLOCKWIDTH, 5.56 * PARAMS.BRICKBLOCKWIDTH, "I meant 'falling up'"));
+
         this.game.addEntity(new Checkpoint(this.game, 13.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
         this.game.addEntity(new Checkpoint(this.game, 34.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
         this.game.addEntity(new Checkpoint(this.game, 54.25 * PARAMS.BRICKBLOCKWIDTH, 9.22 * PARAMS.BRICKBLOCKWIDTH));
@@ -468,11 +477,16 @@ class SceneManager {
     }
 
     loadLevelThree() {
+        this.bgMusic("./audio/lvlThree.wav");
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         //this.porta = new Porta(this.game, 75*PARAMS.BRICKBLOCKWIDTH, this.portaSpawn.y);  //debug spawn
         this.clearEntities();
-        this.game.addEntity(new Background(this.game, -50));
+        this.game.addEntity(new Background(this.game, -50, 0, 3));
         console.log("Level 3");
+        this.lvlMusic.play();
+
+        for (let i = -10; i < -1; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 10 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
+        for (let i = -10; i < -1; i++) this.game.addEntity(new GlassBrick(this.game, i * PARAMS.BRICKBLOCKWIDTH, 0 * PARAMS.BRICKBLOCKWIDTH, true, true, true, true));
 
         //Room 1
         //floor
@@ -819,9 +833,16 @@ class SceneManager {
     }
 
     rollCredits(){
+        this.x = 0;
         this.clearEntities();
         this.bgMusic("./audio/Still Alive.mp3");
         this.lvlMusic.play();
+        this.game.addEntity(new CreditBlurb(this.game,0,"Thanks for playing!"))
+        this.game.addEntity(new CreditBlurb(this.game,2,"La-Port: A 2d Portal Game by Richard Bankhead and James Wedum"))
+        this.game.addEntity(new CreditBlurb(this.game,4,"Created for TCSS491, Computational Worlds"))
+        this.game.addEntity(new CreditBlurb(this.game,5,"Special thanks to Christopher Marriott"))
+        this.game.addEntity(new CreditBlurb(this.game,7,"...and Valve Corp..."))
+        this.game.addEntity(new CreditBlurb(this.game,10,"~fin~"))
     }
 
     updateAudio() {
