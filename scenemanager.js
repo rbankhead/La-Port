@@ -259,9 +259,11 @@ class SceneManager {
     };
 
     loadLevelTwo() {
+        this.bgMusic("./audio/lvlTwo.wav");
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         this.clearEntities();
         this.game.addEntity(new Background(this.game, -50));
+        this.lvlMusic.play();
 
 
         for (let i = -10; i <= 75; i++) {
@@ -475,11 +477,13 @@ class SceneManager {
     }
 
     loadLevelThree() {
+        this.bgMusic("./audio/lvlThree.wav");
         this.porta = new Porta(this.game, this.portaSpawn.x, this.portaSpawn.y);
         //this.porta = new Porta(this.game, 75*PARAMS.BRICKBLOCKWIDTH, this.portaSpawn.y);  //debug spawn
         this.clearEntities();
         this.game.addEntity(new Background(this.game, -50));
         console.log("Level 3");
+        this.lvlMusic.play();
 
         //Room 1
         //floor
