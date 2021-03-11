@@ -16,6 +16,7 @@ class SceneManager {
         this.bgMusic("./audio/lvlOne.wav");
         this.game.level = 1;
         this.transition = false;
+        this.creditScroller = 0;
     };
 
     bgMusic(path) {
@@ -254,6 +255,7 @@ class SceneManager {
         //this.game.addEntity(new Turret(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 9* PARAMS.BRICKBLOCKWIDTH))
         //this.game.addEntity(new Exit(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
 
+        this.rollCredits();
     };
 
     loadLevelTwo() {
@@ -824,9 +826,16 @@ class SceneManager {
     }
 
     rollCredits(){
+        this.x = 0;
         this.clearEntities();
         this.bgMusic("./audio/Still Alive.mp3");
         this.lvlMusic.play();
+        this.game.addEntity(new CreditBlurb(this.game,0,"Thanks for playing!"))
+        this.game.addEntity(new CreditBlurb(this.game,2,"La-Port: A 2d Portal Game by Richard Bankhead and James Wedum"))
+        this.game.addEntity(new CreditBlurb(this.game,4,"Created for TCSS491, Computational Worlds"))
+        this.game.addEntity(new CreditBlurb(this.game,5,"Special thanks to Christopher Marriott"))
+        this.game.addEntity(new CreditBlurb(this.game,7,"...and Valve Corp..."))
+        this.game.addEntity(new CreditBlurb(this.game,10,"~fin~"))
     }
 
     updateAudio() {

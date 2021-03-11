@@ -72,3 +72,26 @@ class InfoSign {
         }
     };
 };
+
+class CreditBlurb {
+    constructor(game, lineNum, text){
+        Object.assign(this, {game, lineNum, text});
+        this.scroller = 0;
+    };
+
+    update() {
+        if (this.scroller < 750) this.scroller += 50*this.game.clockTick;
+
+    };
+
+    draw(ctx) {
+        ctx.font = "30px Arial";
+        this.textWidth = this.game.ctx.measureText(this.text).width; /// width in pixels
+        ctx.fillStyle = "LightGrey";
+        ctx.fillRect(595-this.textWidth/2, 768+(this.lineNum*(PARAMS.BLOCKWIDTH*2))-this.scroller-10, this.textWidth+10,41);
+        ctx.fillStyle = "Green";
+        ctx.strokeStyle = "Green";
+        ctx.strokeRect(595-this.textWidth/2, 768+(this.lineNum*(PARAMS.BLOCKWIDTH*2))-this.scroller-10, this.textWidth+10,41);
+        ctx.fillText(this.text, 600 - this.textWidth/2, 768+(this.lineNum*(PARAMS.BLOCKWIDTH*2)+PARAMS.BLOCKWIDTH)-4-this.scroller);
+    };
+};
