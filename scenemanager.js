@@ -255,7 +255,7 @@ class SceneManager {
         //this.game.addEntity(new Turret(this.game, 1*PARAMS.BRICKBLOCKWIDTH, 9* PARAMS.BRICKBLOCKWIDTH))
         //this.game.addEntity(new Exit(this.game, 0 * PARAMS.BRICKBLOCKWIDTH, 9 * PARAMS.BRICKBLOCKWIDTH));
 
-        this.rollCredits();
+        //this.rollCredits();
     };
 
     loadLevelTwo() {
